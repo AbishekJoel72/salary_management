@@ -13,7 +13,7 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Department</label>
 
-                        <select name="department" id="department" class="form-select">
+                        <select name="filter_department" id="filter_department" class="form-select">
                             <option value="">All Department</option>
 
                             @foreach ($departmentdata as $item)
@@ -27,7 +27,7 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Designation</label>
 
-                        <select name="designation" id="designation" class="form-select">
+                        <select name="filter_designation" id="filter_designation" class="form-select">
                             <option value="">All Designation</option>
                         </select>
                     </div>
@@ -35,7 +35,7 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Employee Type</label>
 
-                        <select name="employee_type" id="employee_type" class="form-select">
+                        <select name="filter_employee_type" id="filter_employee_type" class="form-select">
                             <option value="">All Employee Type</option>
                             <option value="daily">Daily</option>
                             <option value="monthly">Monthly</option>
@@ -44,13 +44,13 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Employee Code</label>
-                        <input type="text" name="employee_code" id="employee_code" class="form-control"
+                        <input type="text" name="filter_employee_code" id="filter_employee_code" class="form-control"
                             placeholder="Employee Code">
                     </div>
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Employee Name</label>
-                        <input type="text" name="employee_name" id="employee_name" class="form-control"
+                        <input type="text" name="filter_employee_name" id="filter_employee_name" class="form-control"
                             placeholder="Employee Name">
                     </div>
 
@@ -59,7 +59,7 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Status</label>
 
-                        <select name="status" id="status" class="form-select">
+                        <select name="filter_status" id="filter_status" class="form-select">
                             <option value="">All Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
@@ -148,7 +148,7 @@
                                         @foreach ($departmentdata as $item)
                                             <option value="{{ $item->id }}">
                                                 {{ $item->code }} - {{ $item->name }}
-                                                    </option>
+                                            </option>
                                         @endforeach
 
                                     </select>
@@ -336,7 +336,7 @@
                                         @foreach ($departmentdata as $item)
                                             <option value="{{ $item->id }}">
                                                 {{ $item->code }} - {{ $item->name }}
-                                                    </option>
+                                            </option>
                                         @endforeach
 
                                     </select>
@@ -354,7 +354,7 @@
                                         @foreach ($designationdata as $item)
                                             <option value="{{ $item->id }}">
                                                 {{ $item->name }}
-                                                    </option>
+                                            </option>
                                         @endforeach
 
                                     </select>
@@ -546,8 +546,51 @@
 @section('script')
     @include("layout.datatable")
     <script>
-        $(document).ready(function () {
 
+        function employeeTypeChange() {
+            let type = $('#Addmodel input[name="employee_type"]:checked').val();
+            if (type === 'daily') {
+
+                $('#daily_rate_field').show();
+                $('#monthly_salary_field').hide();
+
+                $('#add_daily_rate').prop('required', true);
+                $('#add_monthly_salary').prop('required', false);
+
+                $('#add_monthly_salary').val('');
+
+            } else if (type === 'monthly') {
+
+                $('#daily_rate_field').hide();
+                $('#monthly_salary_field').show();
+
+                $('#add_daily_rate').prop('required', false);
+                $('#add_monthly_salary').prop('required', true);
+
+                $('#add_daily_rate').val('');
+
+            } else {
+
+                $('#daily_rate_field').hide();
+                $('#monthly_salary_field').hide();
+
+                $('#add_daily_rate').prop('required', false);
+                $('#add_monthly_salary').prop('required', false);
+            }
+        }
+
+
+
+        $(document).on(
+            'change',
+            '#Addmodel input[name="employee_type"]',
+            function () {
+                employeeTypeChange();
+            }
+        );
+
+
+        $(document).ready(function () {
 
             $('.filter_date').datepicker({
                 format: 'dd-mm-yyyy',
@@ -555,58 +598,23 @@
                 todayHighlight: true
             });
 
-
-            function employeeTypeChange() {
-                let type = $('#Addmodel input[name="employee_type"]:checked').val();
-                if (type === 'daily') {
-
-                    $('#daily_rate_field').show();
-                    $('#monthly_salary_field').hide();
-
-                    $('#add_daily_rate').prop('required', true);
-                    $('#add_monthly_salary').prop('required', false);
-
-                    $('#add_monthly_salary').val('');
-
-                } else if (type === 'monthly') {
-
-                    $('#daily_rate_field').hide();
-                    $('#monthly_salary_field').show();
-
-                    $('#add_daily_rate').prop('required', false);
-                    $('#add_monthly_salary').prop('required', true);
-
-                    $('#add_daily_rate').val('');
-
-                } else {
-
-                    $('#daily_rate_field').hide();
-                    $('#monthly_salary_field').hide();
-
-                    $('#add_daily_rate').prop('required', false);
-                    $('#add_monthly_salary').prop('required', false);
-                }
-            }
-
-
-
-            $(document).on(
-                'change',
-                '#Addmodel input[name="employee_type"]',
-                function () {
-                    employeeTypeChange();
-                }
-            );
-
-
             employeeTypeChange();
 
-
-
-            $('#datatable').DataTable({
+            var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{{ route('employee') }}",
+                ajax: {
+                    url: "{{ route('employee') }}",
+                    data: function (d) {
+                        d.department = $('#filter_department').val();
+                        d.designation = $('#filter_designation').val();
+                        d.employee_type = $('#filter_employee_type').val();
+                        d.employee_code = $('#filter_employee_code').val();
+                        d.employee_name = $('#filter_employee_name').val();
+                        d.status = $('#filter_status').val();
+                    }
+                },
+
                 columns: [
                     {
                         data: 'DT_RowIndex',
@@ -650,17 +658,13 @@
                         data: 'employee_type',
                         name: 'employee_type',
                         className: 'text-center',
-
                         render: function (data, type, row) {
-
                             if (data === 'daily') {
-                                return `<span class="badge bg-info">Daily</span>`;
+                                return '<span class="badge bg-info">Daily</span>';
                             }
-
                             if (data === 'monthly') {
-                                return `<span class="badge bg-primary"> Monthly</span>`;
+                                return '<span class="badge bg-primary">Monthly</span>';
                             }
-
                             return '-';
                         }
                     },
@@ -679,7 +683,6 @@
                                 : '-';
                         }
                     },
-
                     {
                         data: 'monthly_salary',
                         name: 'monthly_salary',
@@ -694,12 +697,10 @@
                                 : '-';
                         }
                     },
-
                     {
                         data: 'joining_date',
                         name: 'joining_date',
                         className: 'text-center',
-
                         render: function (data, type, row) {
 
                             if (!data) {
@@ -715,27 +716,20 @@
                             return day + '-' + month + '-' + year;
                         }
                     },
-
-
                     {
                         data: 'status',
                         name: 'status',
                         className: 'text-center',
-
                         orderable: false,
                         searchable: false,
-
                         render: function (data, type, row) {
-
                             if (data == 1) {
-                                return `<span class="badge bg-success"> Active</span> `;
+                                return '<span class="badge bg-success">Active</span>';
                             } else {
-                                return `<span class="badge bg-danger">Inactive</span>`;
+                                return '<span class="badge bg-danger">Inactive</span>';
                             }
                         }
                     },
-
-
                     {
                         data: 'actions',
                         name: 'actions',
@@ -744,13 +738,31 @@
                         searchable: false,
                         width: '5%'
                     }
+
                 ]
+            });
+
+            $('#filterBtn').click(function (e) {
+                e.preventDefault();
+                table.ajax.reload();
+            });
+
+            $('#resetBtn').click(function () {
+                $('#filter_department').val('');
+                $('#filter_designation').html(
+                    '<option value="">All Designation</option>'
+                );
+                $('#filter_employee_type').val('');
+                $('#filter_employee_code').val('');
+                $('#filter_employee_name').val('');
+                $('#filter_status').val('');
+                table.ajax.reload();
             });
 
         });
 
         $(document).on('change', '#add_department', function () {
-        let departmentId = $(this).val();
+            let departmentId = $(this).val();
             let designation = $('#add_designation');
             designation.html(
                 '<option value="" disabled selected>Loading...</option>'
@@ -779,7 +791,7 @@
                     if (response.length > 0) {
                         $.each(response, function (key, item) {
                             designation.append(
-                                '<option value="' + item.id +'">' +item.name +'</option>'
+                                '<option value="' + item.id + '">' + item.name + '</option>'
                             );
                         });
                     } else {
@@ -798,6 +810,58 @@
             });
         });
 
+        $(document).on('change', '#filter_department', function () {
+            let departmentId = $(this).val();
+            let designation = $('#filter_designation');
+            designation.html(
+                '<option value="">Loading...</option>'
+            );
+            if (!departmentId) {
+                designation.html(
+                    '<option value="">All Designation</option>'
+                );
+                return;
+            }
+
+            $.ajax({
+                url: "{{ route('employee') }}",
+                type: "GET",
+                data: {
+                    departmentId: departmentId,
+                    get_designation_data: true
+                },
+                dataType: "json",
+                success: function (response) {
+                    designation.empty();
+                    designation.append(
+                        '<option value="">All Designation</option>'
+                    );
+
+                    if (response.length > 0) {
+                        $.each(response, function (key, item) {
+                            designation.append('<option value="' + item.id + '">' + item.name + '</option>');
+                        });
+                    } else {
+                        designation.append(
+                            '<option value="">No Designation Found</option>'
+                        );
+                    }
+                },
+
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+
+                    designation.html(
+                        '<option value="">Unable to load designation</option>'
+                    );
+
+                }
+
+            });
+
+        });
+
+        
         function loadEditDesignations(departmentId, designationId = null) {
             let designation = $('#edit_designation');
             designation.html(
@@ -828,7 +892,7 @@
                     if (response.length > 0) {
                         $.each(response, function (key, item) {
                             designation.append(
-                                '<option value="' +item.id +'">' +item.name +'</option>'
+                                '<option value="' + item.id + '">' + item.name + '</option>'
                             );
 
                         });

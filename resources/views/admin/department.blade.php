@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label  class="form-label mb-1"> Department </label>
-                        <input type="text" name="department" id="department" class="form-control" placeholder="Department">
+                        <input type="text" name="filter_department" id="filter_department" class="form-control" placeholder="Department">
                     </div>
 
                 </div>
@@ -189,7 +189,7 @@
                 ajax: {
                     url: "{{ route('department') }}",
                     data: function (d) {
-                        d.department = $('#department').val();
+                        d.department = $('#filter_department').val();
                     }
                 },
 
@@ -245,7 +245,7 @@
             });
 
             $('#resetBtn').click(function () {
-                $('#department').val('');
+                $('#filter_department').val('');
                 table.ajax.reload();
             });
 

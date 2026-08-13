@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Department;
+use App\Models\Designation;
 use App\Models\Employees;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -68,6 +70,23 @@ class AttendanceController extends Controller
             }
         }
 
+        if ($request->method() == 'GET') {
+
+            if ($request->get_designation_data) {
+
+                $department_id = $request->departmentId;
+
+                $designations = Designation::where(
+                    'department_id',
+                    $department_id
+                )
+                    ->where('status', '1')
+                    ->get();
+
+                return response()->json($designations);
+            }
+        }
+
         if ($request->ajax()) {
             if ($request->get_employee) {
                 $id = $request->id;
@@ -95,7 +114,39 @@ class AttendanceController extends Controller
                 }
             }
 
-            $data = Attendance::with('get_employee', 'get_employee.get_department', 'get_employee.get_designation')->get();
+            $data = Attendance::with('get_employee', 'get_employee.get_department', 'get_employee.get_designation');
+
+            if ($request->employee_id) {
+                $data->where('employee_id', $request->employee_id);
+            }
+
+            if ($request->department_id) {
+                $data->whereHas('get_employee', function ($query) use ($request) {
+                    $query->where('department_id', $request->department_id);
+                });
+            }
+
+            if ($request->designation_id) {
+                $data->whereHas('get_employee', function ($query) use ($request) {
+                    $query->where('designation_id', $request->designation_id);
+                });
+            }
+
+            if ($request->from_date) {
+                $fromDate = Carbon::createFromFormat('d-m-Y',$request->from_date)->format('Y-m-d');
+                $data->whereDate('attendance_date', '>=', $fromDate);
+            }
+
+            if ($request->to_date) {
+                $toDate = Carbon::createFromFormat('d-m-Y',$request->to_date)->format('Y-m-d');
+                $data->whereDate('attendance_date', '<=', $toDate);
+            }
+
+            if ($request->status) {
+                $data->where('status', $request->status);
+            }
+
+            $data = $data->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -130,6 +181,7 @@ class AttendanceController extends Controller
         }
 
         $this->data['employeedata'] = Employees::get();
+        $this->data['departmentdata'] = Department::get();
 
         return view('admin.attendance')->with($this->data);
     }

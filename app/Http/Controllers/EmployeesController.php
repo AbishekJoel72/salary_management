@@ -145,7 +145,7 @@ class EmployeesController extends Controller
                 return response()->json($status);
             }
 
-                if ($request->get_delete) {
+            if ($request->get_delete) {
                 $id = $request->id;
                 $delete = Employees::where('id', $id)->delete();
 
@@ -157,7 +157,33 @@ class EmployeesController extends Controller
                 }
             }
 
-            $data = Employees::with('get_department', 'get_designation')->get();
+            $data = Employees::with('get_department', 'get_designation');
+
+            if ($request->department) {
+                $data->where('department_id', $request->department);
+            }
+
+            if ($request->designation) {
+                $data->where('designation_id', $request->designation);
+            }
+
+            if ($request->employee_type) {
+                $data->where('employee_type', $request->employee_type);
+            }
+
+            if ($request->employee_code) {
+                $data->where('employee_code', 'like', '%'.$request->employee_code.'%');
+            }
+
+            if ($request->employee_name) {
+                $data->where('name', 'like', '%'.$request->employee_name.'%');
+            }
+
+            if ($request->status !== null && $request->status !== '') {
+                $data->where('status', $request->status);
+            }
+
+            $data = $data->get();
 
             return DataTables::of($data)
                 ->addIndexColumn()

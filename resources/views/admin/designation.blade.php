@@ -11,7 +11,7 @@
                     <div class="col-md-6 mb-3">
                         <label class="form-label mb-1"> Department </label>
 
-                        <select name="department" id="department" class="form-select">
+                        <select name="filter_department" id="filter_department" class="form-select">
                             <option value=""> All Department</option>
                             @foreach ($departmentdata as $item)
                                 <option value="{{ $item->id }}">{{ $item->code }} - {{ $item->name }}</option>
@@ -22,7 +22,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label mb-1"> Designation </label>
-                        <input type="text" name="designation" id="designation" class="form-control"
+                        <input type="text" name="filter_designation" id="filter_designation" class="form-control"
                             placeholder="Designation">
                     </div>
 
@@ -212,8 +212,8 @@
                 ajax: {
                     url: "{{ route('designation') }}",
                     data: function (d) {
-                        d.department = $('#department').val();
-                        d.designation = $('#designation').val();
+                        d.department = $('#filter_department').val();
+                        d.designation = $('#filter_designation').val();
                     }
                 },
 
@@ -269,8 +269,8 @@
             });
 
             $('#resetBtn').click(function () {
-                $('#department').val('');
-                $('#designation').val('');
+                $('#filter_department').val('');
+                $('#filter_designation').val('');
                 table.ajax.reload();
             });
 

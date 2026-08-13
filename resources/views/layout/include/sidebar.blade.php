@@ -29,7 +29,7 @@
                 </li>
                 <li class="{{ Request::routeIs('designation') ? 'active' : '' }}">
                     <a href="{{ route('designation') }}">
-                        <i class="fa-solid fa-briefcase"></i>
+                        <i class="fa-solid fa-briefcase me-2"></i>
 
                         <span class="sidebar-text">Designations</span>
                     </a>

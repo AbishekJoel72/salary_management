@@ -1,16 +1,9 @@
-/* ========================================
-   LOGIN PAGE
-======================================== */
+
 
 body {
     background-color: var(--bg-body);
     color: var(--text-primary);
 }
-
-
-/* ========================================
-   LOGIN CONTAINER
-======================================== */
 
 .login-container {
     min-height: 100vh;
@@ -18,35 +11,21 @@ body {
 }
 
 
-/* ========================================
-   LOGIN CARD
-======================================== */
-
 .login-card-row {
     width: 100%;
     max-width: 450px;
-
     background-color: var(--bg-card);
     border: 1px solid var(--border-color) !important;
-
     border-radius: var(--radius-lg) !important;
-
     box-shadow: var(--shadow-lg) !important;
-
     overflow: hidden;
 }
 
-
-/* ========================================
-   LOGIN FORM
-======================================== */
 
 .login-form {
     width: 100%;
 }
 
-
-/* Login Title */
 
 .login-form h2 {
     color: var(--text-primary);
@@ -56,118 +35,69 @@ body {
 }
 
 
-/* ========================================
-   CUSTOM INPUT
-======================================== */
-
 .input-group-custom {
     position: relative;
 }
 
 
-/* Input */
-
 .input-group-custom .form-control {
     height: 58px;
-
     background-color: var(--white);
-
     color: var(--text-primary);
-
     border: 1px solid var(--border-color);
-
     border-radius: var(--radius-md);
-
     padding: 18px 48px 8px 15px;
-
-    font-size: 15px;
-
+ font-size: 15px;
     box-shadow: none;
-
     transition: var(--transition);
 }
-
-
-/* Input Placeholder */
 
 .input-group-custom .form-control::placeholder {
     color: transparent;
 }
 
 
-/* Input Focus */
-
 .input-group-custom .form-control:focus {
     background-color: var(--white);
-
     color: var(--text-primary);
-
     border-color: var(--primary-color);
-
     box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.10);
 }
 
 
-/* ========================================
-   FLOATING LABEL
-======================================== */
-
 .input-group-custom label {
     color: var(--text-secondary);
-
     font-size: 14px;
-
     padding-left: 15px;
-
     transition: var(--transition);
 }
 
-
-/* Label Focus */
 
 .input-group-custom .form-control:focus ~ label {
     color: var(--primary-color);
 }
 
 
-/* ========================================
-   INPUT ICON
-======================================== */
-
 .input-icon-end {
     position: absolute;
-
     right: 16px;
     top: 50%;
-
     transform: translateY(-50%);
-
     z-index: 5;
-
     color: var(--text-muted);
-
     font-size: 18px;
-
     pointer-events: none;
-
     transition: var(--transition);
 }
-
-
-/* Icon when input focus */
 
 .input-group-custom .form-control:focus ~ .input-icon-end {
     color: var(--primary-color);
 }
 
 
-/* ========================================
-   PASSWORD TOGGLE
-======================================== */
 
 .toggle-password {
     cursor: pointer;
-
     pointer-events: auto;
 }
 
@@ -176,69 +106,46 @@ body {
 }
 
 
-/* ========================================
-   VALIDATION MESSAGE
-======================================== */
-
 .input-group-custom small {
     display: block;
-
     margin-top: 5px;
-
     font-size: 12px;
-
     color: var(--danger-color);
 }
 
 
-/* ========================================
-   REMEMBER ME
-======================================== */
 
 .form-check-input {
     width: 16px;
     height: 16px;
-
     border: 1px solid var(--border-color);
-
     cursor: pointer;
-
     box-shadow: none;
 }
 
 
 .form-check-input:focus {
     border-color: var(--primary-color);
-
     box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.10);
 }
 
 
 .form-check-input:checked {
     background-color: var(--primary-color);
-
     border-color: var(--primary-color);
 }
 
 
 .form-check-label {
     color: var(--text-secondary) !important;
-
     cursor: pointer;
-
     user-select: none;
 }
 
 
-/* ========================================
-   FORGOT PASSWORD
-======================================== */
-
 .forgot-link {
     color: var(--primary-color);
-
     font-weight: 500;
-
     transition: var(--transition);
 }
 
@@ -248,71 +155,44 @@ body {
 }
 
 
-/* ========================================
-   LOGIN BUTTON
-======================================== */
 
 .btn-custom-primary {
     width: 100%;
-
     height: 52px;
-
     border: 0;
-
     border-radius: var(--radius-md);
-
     background-color: var(--primary-color);
-
     color: var(--white);
-
     font-size: 15px;
-
-    font-weight: 600;
-
+ font-weight: 600;
     transition: var(--transition);
 }
 
 
-/* Button Hover */
 
 .btn-custom-primary:hover {
     background-color: var(--primary-hover);
-
     color: var(--white);
-
     transform: translateY(-1px);
-
     box-shadow: 0 8px 18px rgba(var(--primary-rgb), 0.20);
 }
 
 
-/* Button Active */
 
 .btn-custom-primary:active {
     background-color: var(--primary-hover);
-
     color: var(--white);
-
     transform: translateY(0);
-
     box-shadow: none;
 }
 
 
-/* Button Focus */
-
 .btn-custom-primary:focus {
     background-color: var(--primary-color);
-
     color: var(--white);
-
     box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.20);
 }
 
-
-/* ========================================
-   VALIDATION
-======================================== */
 
 .was-validated .form-control:invalid,
 .form-control.is-invalid {
@@ -326,21 +206,14 @@ body {
 }
 
 
-/* ========================================
-   RESPONSIVE
-======================================== */
-
 @media (max-width: 768px) {
-
     .login-container {
         padding: 20px 15px;
     }
-
     .login-card-row {
         width: 100% !important;
         max-width: 430px;
     }
-
     .login-card-row .col-md-12 {
         padding: 35px 25px !important;
     }
@@ -348,29 +221,22 @@ body {
 
 
 @media (max-width: 480px) {
-
     .login-container {
         padding: 15px;
     }
-
     .login-card-row {
         border-radius: var(--radius-md) !important;
     }
-
     .login-card-row .col-md-12 {
         padding: 30px 20px !important;
     }
-
     .login-form h2 {
         font-size: 24px;
-
         margin-bottom: 25px !important;
     }
-
     .input-group-custom .form-control {
         height: 55px;
     }
-
     .btn-custom-primary {
         height: 50px;
     }
