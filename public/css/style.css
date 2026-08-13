@@ -1,0 +1,1254 @@
+:root {
+    /* Primary */
+    --primary-color: #4f46e5;
+    --primary-hover: #4338ca;
+    --primary-light: #eef2ff;
+    --primary-rgb: 79, 70, 229;
+
+    /* Secondary */
+    --secondary-color: #64748b;
+    --secondary-hover: #475569;
+    --secondary-light: #f1f5f9;
+    --secondary-rgb: 100, 116, 139;
+
+    /* Success */
+    --success-color: #16a34a;
+    --success-hover: #15803d;
+    --success-light: #f0fdf4;
+    --success-rgb: 22, 163, 74;
+
+    /* Danger */
+    --danger-color: #dc2626;
+    --danger-hover: #b91c1c;
+    --danger-light: #fef2f2;
+    --danger-rgb: 220, 38, 38;
+
+    /* Warning */
+    --warning-color: #d97706;
+    --warning-hover: #b45309;
+    --warning-light: #fffbeb;
+    --warning-rgb: 217, 119, 6;
+
+    /* Info */
+    --info-color: #0891b2;
+    --info-hover: #0e7490;
+    --info-light: #ecfeff;
+    --info-rgb: 8, 145, 178;
+
+    /* Light */
+    --light-color: #f1f5f9;
+    --light-hover: #e2e8f0;
+    --light-rgb: 241, 245, 249;
+
+    /* Dark */
+    --dark-color: #1e293b;
+    --dark-hover: #0f172a;
+    --dark-light: #334155;
+    --dark-rgb: 30, 41, 59;
+
+    /* Text */
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+
+    /* Background */
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --bg-sidebar: #1e293b;
+
+    /* Border */
+    --border-color: #e2e8f0;
+
+    /* White / Black */
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Shadow */
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 10px 25px rgba(15, 23, 42, 0.10);
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+
+    /* Transition */
+    --transition: all 0.3s ease;
+}
+
+
+body {
+    background-color: var(--bg-body);
+    color: var(--text-primary);
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    border-radius: var(--radius-md);
+}
+
+
+/* =========================
+   BOOTSTRAP BUTTON OVERRIDE
+========================= */
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--primary-color);
+    --bs-btn-border-color: var(--primary-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--primary-hover);
+    --bs-btn-hover-border-color: var(--primary-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--primary-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--primary-hover);
+    --bs-btn-active-border-color: var(--primary-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--primary-color);
+    --bs-btn-disabled-border-color: var(--primary-color);
+
+    font-weight: 600;
+}
+
+
+.btn-secondary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--secondary-color);
+    --bs-btn-border-color: var(--secondary-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--secondary-hover);
+    --bs-btn-hover-border-color: var(--secondary-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--secondary-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--secondary-hover);
+    --bs-btn-active-border-color: var(--secondary-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--secondary-color);
+    --bs-btn-disabled-border-color: var(--secondary-color);
+
+    font-weight: 600;
+}
+
+
+.btn-success {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--success-color);
+    --bs-btn-border-color: var(--success-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--success-hover);
+    --bs-btn-hover-border-color: var(--success-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--success-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--success-hover);
+    --bs-btn-active-border-color: var(--success-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--success-color);
+    --bs-btn-disabled-border-color: var(--success-color);
+
+    font-weight: 600;
+}
+
+
+.btn-danger {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--danger-color);
+    --bs-btn-border-color: var(--danger-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--danger-hover);
+    --bs-btn-hover-border-color: var(--danger-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--danger-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--danger-hover);
+    --bs-btn-active-border-color: var(--danger-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--danger-color);
+    --bs-btn-disabled-border-color: var(--danger-color);
+
+    font-weight: 600;
+}
+
+
+.btn-warning {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--warning-color);
+    --bs-btn-border-color: var(--warning-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--warning-hover);
+    --bs-btn-hover-border-color: var(--warning-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--warning-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--warning-hover);
+    --bs-btn-active-border-color: var(--warning-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--warning-color);
+    --bs-btn-disabled-border-color: var(--warning-color);
+
+    font-weight: 600;
+}
+
+
+.btn-info {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--info-color);
+    --bs-btn-border-color: var(--info-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--info-hover);
+    --bs-btn-hover-border-color: var(--info-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--info-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--info-hover);
+    --bs-btn-active-border-color: var(--info-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--info-color);
+    --bs-btn-disabled-border-color: var(--info-color);
+
+    font-weight: 600;
+}
+
+
+.btn-light {
+    --bs-btn-color: var(--text-primary);
+    --bs-btn-bg: var(--light-color);
+    --bs-btn-border-color: var(--light-color);
+
+    --bs-btn-hover-color: var(--text-primary);
+    --bs-btn-hover-bg: var(--light-hover);
+    --bs-btn-hover-border-color: var(--light-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--light-rgb);
+
+    --bs-btn-active-color: var(--text-primary);
+    --bs-btn-active-bg: var(--light-hover);
+    --bs-btn-active-border-color: var(--light-hover);
+
+    --bs-btn-disabled-color: var(--text-secondary);
+    --bs-btn-disabled-bg: var(--light-color);
+    --bs-btn-disabled-border-color: var(--light-color);
+
+    font-weight: 600;
+}
+
+
+.btn-dark {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--dark-color);
+    --bs-btn-border-color: var(--dark-color);
+
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--dark-hover);
+    --bs-btn-hover-border-color: var(--dark-hover);
+
+    --bs-btn-focus-shadow-rgb: var(--dark-rgb);
+
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--dark-hover);
+    --bs-btn-active-border-color: var(--dark-hover);
+
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--dark-color);
+    --bs-btn-disabled-border-color: var(--dark-color);
+
+    font-weight: 600;
+}
+
+
+.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.bg-secondary {
+    background-color: var(--secondary-color) !important;
+}
+
+.bg-success {
+    background-color: var(--success-color) !important;
+}
+
+.bg-danger {
+    background-color: var(--danger-color) !important;
+}
+
+.bg-warning {
+    background-color: var(--warning-color) !important;
+}
+
+.bg-info {
+    background-color: var(--info-color) !important;
+}
+
+.bg-light {
+    background-color: var(--light-color) !important;
+}
+
+.bg-dark {
+    background-color: var(--dark-color) !important;
+}
+
+.bg-white {
+    background-color: var(--white) !important;
+}
+
+
+
+
+/* ------------------------------------------------- Adjustment of Input, select, textarea --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+.form-control,
+.form-select {
+    min-height: 45px;
+    width: 100%;
+    font-size: 15px;
+    color: var(--text);
+    background-color: #fff;
+    border: 1px solid #a19fa6 !important;
+    border-radius: 7px;
+    box-sizing: border-box;
+
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: var(--primary-light) !important;
+    background-color: #FCFAFF;
+}
+
+
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+
+
+    border-color: var(--primary) !important;
+    background-color: #fff;
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.12) !important;
+
+    outline: none;
+}
+
+.form-select {
+    cursor: pointer;
+}
+
+
+
+.card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: #2d2a3e;
+    letter-spacing: -0.2px;
+    margin-bottom: 0;
+}
+
+.modal-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2d2a3e;
+    letter-spacing: -0.25px;
+}
+
+
+
+
+/* ------------------------------------------------- Inline validation --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 80px;
+}
+
+.form-field small {
+    height: 10px;
+    display: block;
+    font-size: 14px;
+    color: red;
+}
+
+.text-errors {
+    font-size: 13px;
+}
+
+
+
+/* ------------------------------------------------- Datepicker Adjustment --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+
+.datepicker {
+    z-index: 1060 !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 8px !important;
+    background: var(--bg-card) !important;
+    box-shadow: var(--shadow-lg) !important;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-primary);
+    min-width: 260px;
+}
+
+
+.datepicker .datepicker-switch {
+    color: var(--primary-color) !important;
+
+    font-weight: 600;
+
+    text-align: center;
+
+    border-radius: var(--radius-sm);
+}
+
+
+.datepicker .datepicker-switch:hover {
+    background: var(--primary-light) !important;
+
+    color: var(--primary-hover) !important;
+}
+
+
+.datepicker .prev,
+.datepicker .next {
+    color: var(--primary-color) !important;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+}
+
+
+.datepicker .prev:hover,
+.datepicker .next:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-hover) !important;
+}
+
+
+
+.datepicker table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 2px;
+}
+
+
+.datepicker table tr td,
+.datepicker table tr th {
+    text-align: center;
+    width: 34px;
+    height: 34px;
+    padding: 0 !important;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+}
+
+
+.datepicker table tr th {
+    color: var(--text-secondary) !important;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+
+
+.datepicker table tr td.day {
+    color: var(--text-primary);
+    background: transparent;
+}
+
+
+.datepicker table tr td.day:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-color) !important;
+    cursor: pointer;
+}
+
+
+.datepicker table tr td.active,
+.datepicker table tr td.active:hover {
+    background: var(--primary-color) !important;
+    color: var(--white) !important;
+    border-radius: var(--radius-sm);
+}
+
+
+
+.datepicker table tr td.today,
+.datepicker table tr td.today:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-color) !important;
+    border: 1px solid var(--primary-color);
+    border-radius: var(--radius-sm);
+}
+
+
+
+.datepicker table tr td.old,
+.datepicker table tr td.new {
+    color: var(--text-muted) !important;
+}
+
+
+.datepicker table tr td.disabled,
+.datepicker table tr td.disabled:hover {
+    color: var(--text-muted) !important;
+    background: transparent !important;
+    cursor: not-allowed;
+}
+
+.datepicker .month,
+.datepicker .year {
+    border-radius: var(--radius-sm);
+    padding: 8px !important;
+    color: var(--text-primary);
+}
+
+
+.datepicker .month:hover,
+.datepicker .year:hover {
+    background: var(--primary-light) !important;
+    color: var(--primary-color) !important;
+}
+
+
+.datepicker .month.active,
+.datepicker .year.active {
+    background: var(--primary-color) !important;
+    color: var(--white) !important;
+    border-radius: var(--radius-sm);
+}
+
+
+.datepicker table tr td,
+.datepicker .month,
+.datepicker .year,
+.datepicker .prev,
+.datepicker .next,
+.datepicker .datepicker-switch {
+    transition: var(--transition);
+}
+
+
+
+/* ------------------------------------------------- Time Picker--------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+
+/* =========================================================
+   TIMEPICKER
+   ========================================================= */
+
+.bootstrap-timepicker-widget {
+    z-index: 1060 !important;
+
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-md) !important;
+
+    padding: 8px !important;
+
+    background: var(--bg-card) !important;
+
+    box-shadow: var(--shadow-lg) !important;
+
+    font-family: 'Poppins', sans-serif;
+
+    color: var(--text-primary);
+}
+
+
+/* =========================================================
+   TIMEPICKER TABLE
+   ========================================================= */
+
+.bootstrap-timepicker-widget table {
+    width: 100%;
+}
+
+
+.bootstrap-timepicker-widget table td {
+    padding: 4px !important;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   TIME INPUT
+   ========================================================= */
+
+.bootstrap-timepicker-widget input {
+    width: 55px;
+
+    height: 38px;
+
+    padding: 6px 8px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--bg-card);
+
+    color: var(--text-primary);
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: 14px;
+
+    text-align: center;
+
+    outline: none;
+}
+
+
+.bootstrap-timepicker-widget input:focus {
+    border-color: var(--primary-color);
+
+    box-shadow: 0 0 0 3px rgba(
+        var(--primary-rgb),
+        0.12
+    );
+}
+
+
+/* =========================================================
+   UP / DOWN BUTTONS
+   ========================================================= */
+
+.bootstrap-timepicker-widget a {
+    color: var(--primary-color) !important;
+
+    font-size: 16px;
+
+    text-decoration: none;
+
+    border-radius: var(--radius-sm);
+}
+
+
+.bootstrap-timepicker-widget a:hover {
+    background: var(--primary-light) !important;
+
+    color: var(--primary-hover) !important;
+}
+
+
+/* =========================================================
+   MERIDIAN - AM / PM
+   ========================================================= */
+
+.bootstrap-timepicker-widget .bootstrap-timepicker-meridian {
+    width: 55px;
+
+    height: 38px;
+
+    padding: 6px;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-sm);
+
+    background: var(--bg-card);
+
+    color: var(--primary-color);
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.bootstrap-timepicker-widget .bootstrap-timepicker-meridian:hover {
+    background: var(--primary-light);
+
+    color: var(--primary-hover);
+}
+
+
+/* =========================================================
+   HOUR / MINUTE SEPARATOR
+   ========================================================= */
+
+.bootstrap-timepicker-widget .separator {
+    color: var(--text-secondary);
+
+    font-weight: 600;
+
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   DISABLED
+   ========================================================= */
+
+.bootstrap-timepicker-widget .disabled {
+    color: var(--text-muted) !important;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   MODAL SUPPORT
+   ========================================================= */
+
+.modal .bootstrap-timepicker-widget {
+    z-index: 1060 !important;
+}
+
+
+
+/* ------------------------------------------------- DataTable--------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+.table-body {
+    overflow: visible !important;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+
+}
+
+
+
+#datatable {
+    width: 100% !important;
+    margin-top: 12px;
+    border-collapse: collapse !important;
+}
+
+#datatable thead th {
+    background: #fff;
+    padding: 10px 12px;
+    font-weight: 600;
+    text-align: center;
+}
+
+#datatable tbody td {
+    padding: 5px 12px;
+    vertical-align: middle;
+}
+
+#datatable thead th,
+#datatable tbody td {
+    padding: 8px 10px !important;
+    font-size: 13px;
+    white-space: nowrap !important;
+    border: 1px solid #000 !important;
+    box-sizing: border-box;
+    overflow: visible !important;
+}
+
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_length {
+    margin-bottom: 12px;
+}
+
+.dataTables_wrapper .row:first-child {
+    margin-bottom: 10px;
+}
+
+
+
+/* ------------------------------------------------- select2 --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+.select2-container .select2-selection--single {
+    height: 45px !important;
+    padding: 6px 12px;
+    border: 1px solid #ced4da !important;
+    border-radius: 6px !important;
+    display: flex;
+    align-items: center;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #212529;
+    line-height: 38px;
+    padding-left: 2px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 38px;
+    right: 8px;
+}
+
+.select2-container--default .select2-results>.select2-results__options {
+    max-height: 220px;
+}
+
+.select2-results__option--highlighted {
+    background-color: #0d6efd !important;
+    color: white !important;
+}
+
+.select2-container--open .select2-selection--single {
+    border-color: #0d6efd !important;
+    box-shadow: 0 0 0 0.15rem rgba(13, 110, 253, .25);
+}
+
+.select2-container .select2-selection--single .select2-selection__placeholder {
+    color: #6c757d;
+}
+
+.select2-container--default .select2-selection--single:focus {
+    outline: none !important;
+}
+
+/* ------------------------------------------------- swal2 --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+
+.swal2-popup {
+    font-size: 14px !important;
+}
+
+
+.custom-title {
+    text-align: center !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+}
+
+.custom-text {
+    text-align: center !important;
+    font-size: 14px !important;
+}
+
+
+.session-title {
+    width: 100% !important;
+    text-align: center !important;
+    margin: 0 auto 10px auto !important;
+}
+
+
+
+/* ------------------------------------------------Sidebar --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+.side-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: 270px;
+
+    color: var(--white);
+
+    padding: 20px 20px 0;
+
+    background: var(--primary-color) !important;
+
+    transition: width 0.3s ease;
+
+    z-index: 1100;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+}
+
+
+
+
+
+/* Sidebar Menu */
+
+.side-bar ul {
+    list-style: none;
+
+    padding: 0;
+    margin: 0;
+
+    overflow-y: auto;
+
+    flex-grow: 1;
+
+    padding-bottom: 20px;
+
+    scrollbar-width: none;
+
+    position: relative;
+    z-index: 2;
+}
+
+
+.side-bar ul::-webkit-scrollbar {
+    display: none;
+}
+
+
+.side-bar ul li {
+    list-style: none;
+
+    margin-bottom: 5px;
+}
+
+
+.side-bar ul li a {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    color: rgba(255, 255, 255, 0.85);
+
+    text-decoration: none;
+
+    padding: 12px 15px;
+
+    border-radius: var(--radius-sm);
+
+    white-space: nowrap;
+
+    transition: var(--transition);
+
+    position: relative;
+}
+
+
+/* Hover */
+
+.side-bar ul li a:hover {
+    background: rgba(255, 255, 255, 0.12);
+
+    color: var(--white);
+
+    transform: translateX(4px);
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Active */
+
+.side-bar ul li.active a {
+    background: var(--white);
+
+    color: var(--primary-color) !important;
+
+    box-shadow: var(--shadow-md);
+}
+
+
+.side-bar ul li.active a::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 3px;
+    height: 28px;
+
+    transform: translateY(-50%);
+
+    border-radius: 0 5px 5px 0;
+
+    background: var(--primary-color);
+}
+
+
+/* Icons */
+
+.side-bar ul li a i {
+    font-size: 18px;
+
+    min-width: 24px;
+
+    text-align: center;
+
+    color: rgba(255, 255, 255, 0.88);
+
+    transition: var(--transition);
+}
+
+
+.side-bar ul li a:hover i {
+    color: var(--white);
+
+    transform: scale(1.08);
+}
+
+
+.side-bar ul li.active a i {
+    color: var(--primary-color) !important;
+}
+
+.sidebar-title {
+    color: var(--white);
+
+    font-size: 25px;
+
+    /* font-weight: 700; */
+
+    margin-bottom: 0;
+
+    position: relative;
+
+    z-index: 3;
+}
+
+
+.sidebar-title i {
+    color: rgba(255, 255, 255, 0.80);
+
+    transition: var(--transition);
+}
+
+
+.sidebar-title:hover i {
+    color: var(--white);
+
+    transform: scale(1.08);
+}
+
+
+.side-bar hr {
+    position: relative;
+
+    z-index: 3;
+
+    border: 0;
+
+    height: 1px;
+
+    background:
+        linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.30),
+            transparent);
+
+    opacity: 1;
+}
+
+
+/* ------------------------------------------------header --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+.header {
+    position: fixed;
+
+    top: 0;
+    left: 270px;
+    right: 0;
+
+    height: 80px;
+
+    background: var(--bg-card);
+
+    padding: 8px 15px;
+
+    border-bottom: 1px solid var(--border-color);
+
+    transition: left 0.3s ease;
+
+    z-index: 1000;
+
+    box-shadow:
+        0 3px 15px rgba(var(--primary-rgb), 0.07);
+}
+
+
+.header.collapsed {
+    left: 80px;
+}
+
+
+.header-left i {
+    color: var(--primary-color) !important;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+
+.header-left i:hover {
+    color: var(--primary-hover) !important;
+
+    transform: scale(1.1);
+}
+
+
+.header nav {
+    background: var(--light-color) !important;
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-md);
+
+    padding: 8px 14px !important;
+
+    color: var(--primary-color) !important;
+}
+
+
+#adminDropdown {
+    color: var(--primary-color) !important;
+}
+
+
+#adminDropdown span:first-child {
+    color: var(--text-primary) !important;
+
+    font-weight: 600;
+}
+
+
+#adminDropdown span:last-child {
+    color: var(--text-secondary) !important;
+
+    font-size: 12px;
+}
+
+
+#adminDropdown i {
+    color: var(--primary-color) !important;
+
+    width: 17px;
+
+    text-align: center;
+
+    margin-right: 4px;
+}
+
+
+#adminDropdown:hover span:first-child {
+    color: var(--primary-color) !important;
+}
+
+
+.header .dropdown-menu {
+    margin-top: 8px;
+
+    background: var(--bg-card);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-lg);
+
+    padding: 5px;
+
+    min-width: 160px;
+}
+
+
+.header .dropdown-item {
+    color: var(--text-primary);
+
+    border-radius: var(--radius-sm);
+
+    padding: 8px 11px;
+
+    font-size: 14px;
+
+    transition: var(--transition);
+}
+
+
+.header .dropdown-item:hover {
+    background: var(--primary-light);
+
+    color: var(--primary-color);
+}
+
+
+
+
+
+/* ------------------------------------------------- Main Container --------------------------------------------
+  ----------------------------------------------------------------------------------------------------------
+  ----------------------------------------------------------------------------------------------------------------------*/
+
+.main-container {
+    margin-left: 270px;
+    padding: 85px 20px 85px 20px;
+    min-height: 100vh;
+    transition:
+        margin-left 0.3s ease;
+}
+
+
+.main-container.collapsed {
+    margin-left: 80px;
+}
+
+
+
+@media (max-width: 991.98px) {
+
+    .main-container {
+        margin-left: 0;
+        padding:
+            80px 15px 75px 15px;
+        min-height: 100vh;
+    }
+
+    .main-container.collapsed {
+        margin-left: 0;
+    }
+}
+
+
+@media (max-width: 575.98px) {
+
+    .main-container {
+        padding:
+            75px 10px 70px 10px;
+    }
+}

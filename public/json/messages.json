@@ -1,0 +1,6 @@
+{
+    "insert_confirm": "Are you sure you want to Insert",
+    "update_confirm": "Are you sure you want to Update",
+    "update_state": "Are you sure you want to Update Status",
+    "delete_confirm": "Are you sure you want to delete"
+}
