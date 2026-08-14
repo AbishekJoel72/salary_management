@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employees;
 use App\Models\SalaryDetails;
 use App\Models\SalaryPeriod;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -216,4 +217,116 @@ class SalaryDetailsController extends Controller
             )
         );
     }
+
+  public function SalaryDetailsPDF(Request $request)
+{
+    $salaryDetails = SalaryDetails::with([
+        'get_salaryperiod',
+        'get_employee',
+    ]);
+
+
+    // Salary Period
+    if ($request->filled('salary_period_id')) {
+
+        $salaryDetails->where(
+            'salary_period_id',
+            $request->salary_period_id
+        );
+    }
+
+
+    // Employee
+    if ($request->filled('employee_id')) {
+
+        $salaryDetails->where(
+            'employee_id',
+            $request->employee_id
+        );
+    }
+
+
+    // Salary Type
+    if ($request->filled('salary_type')) {
+
+        $salaryDetails->where(
+            'salary_type',
+            $request->salary_type
+        );
+    }
+
+
+    // Status
+    if ($request->filled('status')) {
+
+        $salaryDetails->where(
+            'status',
+            $request->status
+        );
+    }
+
+
+    // Start Date
+    if ($request->filled('start_date')) {
+
+        $startDate = Carbon::createFromFormat(
+            'd-m-Y',
+            $request->start_date
+        )->format('Y-m-d');
+
+
+        $salaryDetails->whereHas(
+            'get_salaryperiod',
+            function ($query) use ($startDate) {
+
+                $query->whereDate(
+                    'start_date',
+                    '>=',
+                    $startDate
+                );
+
+            }
+        );
+    }
+
+
+    // End Date
+    if ($request->filled('end_date')) {
+
+        $endDate = Carbon::createFromFormat(
+            'd-m-Y',
+            $request->end_date
+        )->format('Y-m-d');
+
+
+        $salaryDetails->whereHas(
+            'get_salaryperiod',
+            function ($query) use ($endDate) {
+
+                $query->whereDate(
+                    'end_date',
+                    '<=',
+                    $endDate
+                );
+
+            }
+        );
+    }
+
+
+    $salaryDetails = $salaryDetails
+        ->orderBy('id', 'desc')
+        ->get();
+
+
+    $pdf = Pdf::loadView(
+        'admin.salary_details_pdf',
+        compact('salaryDetails')
+    );
+
+
+    return $pdf->download(
+        'salary-details-' . date('d-m-Y') . '.pdf'
+    );
+}
 }

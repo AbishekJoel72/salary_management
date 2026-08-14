@@ -1,7 +1,6 @@
 @extends('layout.default')
 
 @section('content')
-
     <div class="container">
 
         {{-- Filter Card --}}
@@ -26,7 +25,6 @@
                             </option>
 
                             @foreach ($salaryperioddata as $item)
-
                                 <option value="{{ $item->id }}">
 
                                     {{ ucfirst($item->period_type) }}
@@ -36,7 +34,6 @@
                                     {{ \Carbon\Carbon::parse($item->end_date)->format('d-m-Y') }}
 
                                 </option>
-
                             @endforeach
 
                         </select>
@@ -107,7 +104,8 @@
                         <label class="form-label mb-1">
                             Start Date
                         </label>
-                        <input type="text" id="filter_start_date" class="form-control filter_date" placeholder="Start Date">
+                        <input type="text" id="filter_start_date" class="form-control filter_date"
+                            placeholder="Start Date">
                     </div>
 
 
@@ -154,6 +152,17 @@
                     Salary Details
                 </h5>
 
+                <div class="d-flex align-items-center gap-2">
+
+                    <a href="javascript:void(0)" class="btn btn-sm btn-danger exportBtn" data-type="pdf">
+
+                        <i class="fa-solid fa-file-pdf me-1"></i>
+                        Download PDF
+
+                    </a>
+
+                </div>
+
             </div>
 
 
@@ -197,15 +206,13 @@
         </div>
 
     </div>
-
 @endsection
 
 @section('script')
-
-    @include("layout.dataTable")
+    @include('layout.dataTable')
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
 
             $('.filter_date').datepicker({
                 format: 'dd-mm-yyyy',
@@ -226,7 +233,7 @@
 
                     type: "GET",
 
-                    data: function (d) {
+                    data: function(d) {
 
                         d.get_salary_details = true;
 
@@ -342,7 +349,7 @@
                         searchable: false,
                         className: 'text-center',
 
-                        render: function (data) {
+                        render: function(data) {
 
                             if (data === 'calculated') {
                                 return '<span class="badge bg-info">Calculated</span>';
@@ -377,7 +384,7 @@
 
 
             // Filter
-            $('#filter_btn').on('click', function () {
+            $('#filter_btn').on('click', function() {
 
                 table.ajax.reload(null, false);
 
@@ -385,7 +392,7 @@
 
 
             // Reset
-            $('#reset_filter').on('click', function () {
+            $('#reset_filter').on('click', function() {
 
                 $('#filter_salary_period').val('');
                 $('#filter_employee').val('');
@@ -399,6 +406,28 @@
             });
 
         });
-    </script>
 
+        $(document).on('click', '.exportBtn', function(e) {
+
+            e.preventDefault();
+
+            let type = $(this).data('type');
+
+            let salary_period_id = $('#filter_salary_period').val();
+            let employee_id = $('#filter_employee').val();
+            let salary_type = $('#filter_salary_type').val();
+            let status = $('#filter_status').val();
+
+            let url = "{{ route('salary_details_export') }}";
+
+            window.location.href =
+                url +
+                '?type=' + encodeURIComponent(type) +
+                '&salary_period_id=' + encodeURIComponent(salary_period_id) +
+                '&employee_id=' + encodeURIComponent(employee_id) +
+                '&salary_type=' + encodeURIComponent(salary_type) +
+                '&status=' + encodeURIComponent(status);
+
+        });
+    </script>
 @endsection

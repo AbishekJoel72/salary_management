@@ -14,12 +14,12 @@
         {{-- ================= ADMIN MENU ================= --}}
         {{-- @if (session('user_role') == 'admin') --}}
 
-        {{-- <li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
+        <li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
             <a href="{{ route('dashboard') }}">
                 <i class="fa-solid fa-gauge me-2"></i>
                 <span class="sidebar-text">Dashboard</span>
             </a>
-        </li> --}}
+        </li>
 
         <li class="{{ Request::routeIs('department') ? 'active' : '' }}">
             <a href="{{ route('department') }}">

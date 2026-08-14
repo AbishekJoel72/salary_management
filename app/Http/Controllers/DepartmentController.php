@@ -30,7 +30,7 @@ class DepartmentController extends Controller
 
                             return redirect()->back()->withInput();
                         }
-                        
+
                         $department = new Department;
                         $department->code = $request->department_code;
                         $department->name = $request->department_name;
@@ -164,6 +164,7 @@ class DepartmentController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
+        
 
         return view('admin.department');
     }
