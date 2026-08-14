@@ -294,30 +294,41 @@
                         className: 'text-end'
                     },
 
-                    {
-                        data: 'full_days',
-                        name: 'full_days',
-                        className: 'text-center'
-                    },
+                   {
+    data: 'full_days',
+    name: 'full_days',
+    className: 'text-center',
+    render: function(data) {
+        return parseFloat(data || 0).toFixed(0);
+    }
+},
 
-                    {
-                        data: 'half_days',
-                        name: 'half_days',
-                        className: 'text-center'
-                    },
+{
+    data: 'half_days',
+    name: 'half_days',
+    className: 'text-center',
+    render: function(data) {
+        return parseFloat(data || 0).toFixed(0);
+    }
+},
 
-                    {
-                        data: 'absent_days',
-                        name: 'absent_days',
-                        className: 'text-center'
-                    },
+{
+    data: 'absent_days',
+    name: 'absent_days',
+    className: 'text-center',
+    render: function(data) {
+        return parseFloat(data || 0).toFixed(0);
+    }
+},
 
-                    {
-                        data: 'worked_days',
-                        name: 'worked_days',
-                        className: 'text-center'
-                    },
-
+{
+    data: 'worked_days',
+    name: 'worked_days',
+    className: 'text-center',
+    render: function(data) {
+        return parseFloat(data || 0).toFixed(0);
+    }
+},
                     {
                         data: 'gross_salary',
                         name: 'gross_salary',

@@ -15,6 +15,7 @@ class AttendanceController extends Controller
     public function Attendance(Request $request)
     {
         if ($request->method() == 'POST') {
+            
             if ($request->add_attendance) {
 
                 try {
