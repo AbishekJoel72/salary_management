@@ -370,7 +370,7 @@
 @endsection
 @section('script')
     @include("layout.dataTable")
-    <script src="js/pages/attendance.js"></script>
+    {{-- <script src="js/pages/attendance.js"></script> --}}
     <script>
 
 
