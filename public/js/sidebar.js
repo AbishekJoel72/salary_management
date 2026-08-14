@@ -12,46 +12,51 @@ function initializeSidebar() {
         return;
     }
 
+
+    // ================= SIDEBAR COLLAPSE =================
+
     menuOpen.addEventListener("click", function () {
 
         sidebar.classList.add("collapsed");
 
-        if (header) {
-            header.classList.add("collapsed");
-        }
+        header?.classList.add("collapsed");
+        footer?.classList.add("collapsed");
+        main?.classList.add("collapsed");
 
-        if (footer) {
-            footer.classList.add("collapsed");
-        }
-
-        if (main) {
-            main.classList.add("collapsed");
-        }
-        menuOpen.classList.add("d-none");
-        menuClose.classList.remove("d-none");
-
+        menuOpen.style.display = "none";
+        menuClose.style.display = "block";
     });
 
 
+    // ================= SIDEBAR EXPAND =================
 
     menuClose.addEventListener("click", function () {
+
         sidebar.classList.remove("collapsed");
 
-        if (header) {
-            header.classList.remove("collapsed");
-        }
+        header?.classList.remove("collapsed");
+        footer?.classList.remove("collapsed");
+        main?.classList.remove("collapsed");
 
-        if (footer) {
-            footer.classList.remove("collapsed");
-        }
-
-        if (main) {
-            main.classList.remove("collapsed");
-        }
-
-        menuClose.classList.add("d-none");
-        menuOpen.classList.remove("d-none");
-
+        menuClose.style.display = "none";
+        menuOpen.style.display = "block";
     });
+
+
+    // ================= PAYROLL SUBMENU =================
+
+    const payrollToggle = document.querySelector(".payroll-toggle");
+
+    if (payrollToggle) {
+
+        payrollToggle.addEventListener("click", function () {
+
+            const parent = this.closest(".has-submenu");
+
+            parent.classList.toggle("open");
+
+        });
+
+    }
 
 }

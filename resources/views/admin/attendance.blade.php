@@ -243,12 +243,134 @@
                 </div>
             </div>
         </div>
+
+        <div class="modal fade" id="Editmodel" tabindex="-1" aria-labelledby="EditmodelLabel" aria-hidden="true">
+
+            <div class="modal-dialog modal-dialog-top">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title"> Edit Attendance </h5>
+
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+
+
+                    <form action="{{ route('attendance') }}" method="POST" autocomplete="off" class="needs-validation"
+                        novalidate>
+
+                        @csrf
+
+                        <input type="hidden" name="edit_attendance" value="true">
+                        <input type="hidden" id="edit_attendance_id" name="edit_attendance_id">
+
+
+                        <div class="modal-body">
+                            <div class="row">
+
+
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label class="form-label mb-1">Employee<span class="text-danger">*</span></label>
+                                    <select name="employee_id" id="edit_employee_id" class="form-select" required>
+                                        <option value="" disabled selected>Select Employee</option>
+                                        @foreach ($employeedata as $item)
+                                            <option value="{{ $item->id }}">{{ $item->employee_code }} -
+                                                {{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <small class="text-errors"></small>
+                                </div>
+
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label class="form-label mb-1">Attendance Date<span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" name="attendance_date" id="edit_attendance_date"
+                                        class="form-control filter_date" placeholder="Select Date" required>
+                                    <small class="text-errors"></small>
+
+                                </div>
+
+
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label class="form-label mb-1">Status<span class="text-danger">*</span>
+                                    </label>
+
+                                    <select name="status" id="edit_attendance_status" class="form-select" required>
+                                        <option value="" disabled selected>Select Status</option>
+                                        <option value="present">Present</option>
+                                        <option value="half_day">Half Day </option>
+                                        <option value="absent">Absent</option>
+                                        <option value="leave">Leave</option>
+                                    </select>
+                                    <small class="text-errors"></small>
+                                </div>
+
+
+                                <div class="mb-3 col-md-6 form-field" id="edit_check_in_field">
+
+                                    <label class="form-label mb-1"> Check In
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" name="check_in" id="edit_check_in" class="form-control timepicker"
+                                        placeholder="HH:MM">
+                                    <small class="text-errors"></small>
+
+                                </div>
+
+
+
+                                <div class="mb-3 col-md-6 form-field" id="edit_check_out_field">
+                                    <label class="form-label mb-1">
+                                        Check Out
+                                        <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="text" name="check_out" id="edit_check_out" class="form-control timepicker"
+                                        placeholder="HH:MM">
+                                    <small class="text-errors"></small>
+
+                                </div>
+
+
+                                <div class="mb-3 col-md-6 form-field">
+                                    <label class="form-label mb-1">
+                                        Remarks
+                                    </label>
+                                    <input type="text" name="remarks" id="edit_remarks" class="form-control"
+                                        placeholder="Enter Remarks">
+                                    <small class="text-errors"></small>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="modal-footer d-flex justify-content-center">
+
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_confirm">
+
+                                <i class="fa-solid fa-paper-plane me-2"></i>
+                                Update
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
  
     </div>
 
 @endsection
 @section('script')
-    @include("layout.datatable")
+    @include("layout.dataTable")
+    <script src="js/pages/attendance.js"></script>
     <script>
 
 
@@ -280,6 +402,35 @@
 
             attendanceStatusChange();
 
+        });
+
+        function editAttendanceStatusChange() {
+
+            let status = $('#edit_attendance_status').val();
+
+            if (status === 'present' || status === 'half_day') {
+
+                $('#edit_check_in_field').show();
+                $('#edit_check_out_field').show();
+
+                $('#edit_check_in').prop('required', true);
+                $('#edit_check_out').prop('required', true);
+
+            } else {
+
+                $('#edit_check_in_field').hide();
+                $('#edit_check_out_field').hide();
+
+                $('#edit_check_in').prop('required', false);
+                $('#edit_check_out').prop('required', false);
+
+                $('#edit_check_in').val('');
+                $('#edit_check_out').val('');
+            }
+        }
+
+        $(document).on('change', '#edit_attendance_status', function () {
+            editAttendanceStatusChange();
         });
 
 
@@ -355,25 +506,91 @@
                     {
                         data: 'attendance_date',
                         name: 'attendance_date',
-                        className: 'text-center'
+                        className: 'text-center',
+
+                        render: function (data, type, row) {
+
+                            if (!data) {
+                                return '-';
+                            }
+
+                            let date = new Date(data);
+
+                            let day = String(date.getDate()).padStart(2, '0');
+                            let month = String(date.getMonth() + 1).padStart(2, '0');
+                            let year = date.getFullYear();
+
+                            return day + '-' + month + '-' + year;
+                        }
                     },
 
                     {
                         data: 'check_in',
                         name: 'check_in',
-                        className: 'text-center'
-                    },
+                        className: 'text-center',
 
+                        render: function (data, type, row) {
+
+                            if (!data) {
+                                return '-';
+                            }
+
+                            let time = data.substring(0, 5);
+
+                            let parts = time.split(':');
+                            let hours = parseInt(parts[0]);
+                            let minutes = parts[1];
+
+                            let ampm = hours >= 12 ? 'PM' : 'AM';
+
+                            hours = hours % 12;
+                            hours = hours ? hours : 12;
+
+                            return hours + ':' + minutes + ' ' + ampm;
+                        }
+                    },
                     {
                         data: 'check_out',
                         name: 'check_out',
-                        className: 'text-center'
+                        className: 'text-center',
+
+                        render: function (data, type, row) {
+
+                            if (!data) {
+                                return '-';
+                            }
+
+                            let time = data.substring(0, 5);
+
+                            let parts = time.split(':');
+                            let hours = parseInt(parts[0]);
+                            let minutes = parts[1];
+
+                            let ampm = hours >= 12 ? 'PM' : 'AM';
+
+                            hours = hours % 12;
+                            hours = hours ? hours : 12;
+
+                            return hours + ':' + minutes + ' ' + ampm;
+                        }
                     },
 
                     {
                         data: 'working_hours',
                         name: 'working_hours',
-                        className: 'text-center'
+                        className: 'text-center',
+
+                        render: function (data, type, row) {
+
+                            if (data === null || data === undefined || data === '') {
+                                return '-';
+                            }
+
+                            let hours = Math.floor(data);
+                            let minutes = Math.round((data - hours) * 60);
+
+                            return hours + ':' + String(minutes).padStart(2, '0') + ' hrs';
+                        }
                     },
 
                     {
@@ -478,7 +695,7 @@
                     if (response.length > 0) {
                         $.each(response, function (key, item) {
                             designation.append(
-                                '<option value="' +item.id +'">' +item.name +'</option>'
+                                '<option value="' + item.id + '">' + item.name + '</option>'
                             );
                         });
                     } else {
@@ -494,6 +711,112 @@
                         '<option value="">Unable to load designation</option>'
                     );
                 }
+            });
+        });
+
+        function formatTime12Hour(time) {
+
+            if (!time) {
+                return '';
+            }
+
+            let parts = time.split(':');
+
+            let hours = parseInt(parts[0], 10);
+            let minutes = parts[1];
+
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+
+            return hours + ':' + minutes + ' ' + ampm;
+        }
+
+
+        $(document).on('click', '.editRow', function () {
+            let id = $(this).data('id');
+            $.ajax({
+                url: "{{ route('attendance') }}",
+                type: "GET",
+                data: {
+                    id: id,
+                    get_atten: true
+                },
+                dataType: "json",
+                success: function (response) {
+                    $('#edit_attendance_id').val(response.id);
+                    $('#edit_employee_id').val(response.employee_id);
+
+                    if (response.attendance_date) {
+                        let dateParts = response.attendance_date.split('-');
+
+                        let formattedDate =
+                            dateParts[2] + '-' +
+                            dateParts[1] + '-' +
+                            dateParts[0];
+
+                        $('#edit_attendance_date').val(formattedDate);
+                    }
+
+                    $('#edit_attendance_status').val(response.status);
+                    $('#edit_check_in').val(formatTime12Hour(response.check_in));
+                    $('#edit_check_out').val(formatTime12Hour(response.check_out));
+                    $('#edit_remarks').val(response.remarks ?? '');
+                    editAttendanceStatusChange();
+                    $('#Editmodel').modal('show');
+                },
+
+                error: function (xhr) {
+                    console.log(xhr.responseText);
+                }
+            });
+        });
+
+        $(document).on('click', '.deleteRow', function () {
+            let id = $(this).data('id');
+            confirmAction(messages.delete_confirm, function () {
+                $.ajax({
+                    url: "{{ route('attendance') }}",
+                    type: 'GET',
+                    data: {
+                        id: id,
+                        get_delete: true
+                    },
+                    dataType: 'json',
+                    success: function (response) {
+                        $('#datatable').DataTable().ajax.reload(null, false);
+                        Swal.fire({
+                            title: 'Success',
+                            text: response.message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#4f46e5',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        })
+                    },
+
+                    error: function (xhr) {
+                        let message = "Something went wrong!";
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            message = xhr.responseJSON.message;
+                        }
+                        Swal.fire({
+                            title: 'Error',
+                            text: message,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#4f46e5',
+                            allowOutsideClick: false,
+                            width: '350px',
+                            customClass: {
+                                title: 'session-title',
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

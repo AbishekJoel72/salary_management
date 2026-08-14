@@ -180,7 +180,8 @@
  
 @endsection
 @section('script')
-    @include("layout.datatable")
+    @include("layout.dataTable")
+    <script src="{{ asset('js/pages/department.js') }}"></script>
     <script>
         $(document).ready(function () {
             var table = $('#datatable').DataTable({

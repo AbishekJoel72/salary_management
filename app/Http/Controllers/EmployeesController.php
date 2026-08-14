@@ -27,6 +27,28 @@ class EmployeesController extends Controller
                     ]);
                     if ($validation) {
 
+                        if (Employees::where('employee_code', $request->employee_code)->exists()) {
+                            session()->flash('error', 'Employee Code already exists.');
+
+                            return redirect()->back()->withInput();
+                        }
+
+                        if (! empty($request->email)) {
+                            if (Employees::where('email', $request->email)->exists()) {
+                                session()->flash('error', 'Email already exists.');
+
+                                return redirect()->back()->withInput();
+                            }
+                        }
+
+                        if (! empty($request->phone)) {
+                            if (Employees::where('phone', $request->phone)->exists()) {
+                                session()->flash('error', 'Phone number already exists.');
+
+                                return redirect()->back()->withInput();
+                            }
+                        }
+
                         $emp = new Employees;
                         $emp->department_id = $request->department_id;
                         $emp->designation_id = $request->designation_id;
@@ -152,7 +174,7 @@ class EmployeesController extends Controller
                 if ($delete) {
                     return response()->json([
                         'status' => true,
-                        'message' => 'Designation Deleted successfully.',
+                        'message' => 'Deleted successfully.',
                     ]);
                 }
             }

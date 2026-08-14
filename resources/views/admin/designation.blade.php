@@ -203,7 +203,10 @@
 
 @endsection
 @section('script')
-    @include("layout.datatable")
+    @include("layout.dataTable")
+
+    <script src="js/pages/designation.js"></script>
+    
     <script>
         $(document).ready(function () {
             var table = $('#datatable').DataTable({

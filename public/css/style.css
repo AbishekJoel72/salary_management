@@ -1039,6 +1039,61 @@ textarea:focus {
     transform: none;
 }
 
+
+
+.side-bar .has-submenu > a {
+    cursor: pointer;
+}
+
+.side-bar .submenu {
+    display: none;
+padding: 5px 0 5px 15px;
+    margin: 0;
+    list-style: none;
+}
+
+
+.side-bar .has-submenu.open > .submenu {
+    display: block;
+}
+
+
+.side-bar .submenu li {
+    margin-bottom: 3px;
+}
+
+
+.side-bar .submenu li a {
+    padding: 9px 12px;
+    font-size: 14px;
+    gap: 10px;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+
+.side-bar .submenu li a i {
+    font-size: 14px;
+    min-width: 20px;
+}
+
+
+
+.side-bar .submenu li a:hover {
+    background: rgba(255, 255, 255, 0.10);
+    color: var(--white);
+    transform: translateX(3px);
+}
+
+.submenu-arrow {
+    margin-left: auto !important;
+    font-size: 12px !important;
+    min-width: auto !important;
+    transition: transform 0.3s ease;
+}
+
+.has-submenu.open .submenu-arrow {
+    transform: rotate(90deg);
+}
 /* ------------------------------------------------header --------------------------------------------
   ----------------------------------------------------------------------------------------------------------
   ----------------------------------------------------------------------------------------------------------------------*/

@@ -18,6 +18,19 @@ class DepartmentController extends Controller
                         'department_code' => 'required',
                     ]);
                     if ($validation) {
+
+                        if (Department::where('code', $request->department_code)->exists()) {
+                            session()->flash('error', 'Department code already exists.');
+
+                            return redirect()->back()->withInput();
+                        }
+
+                        if (Department::where('name', $request->department_name)->exists()) {
+                            session()->flash('error', 'Department name already exists.');
+
+                            return redirect()->back()->withInput();
+                        }
+                        
                         $department = new Department;
                         $department->code = $request->department_code;
                         $department->name = $request->department_name;
@@ -106,7 +119,7 @@ class DepartmentController extends Controller
                 if ($delete) {
                     return response()->json([
                         'status' => true,
-                        'message' => 'Department Deleted successfully.',
+                        'message' => 'Deleted successfully.',
                     ]);
                 }
             }

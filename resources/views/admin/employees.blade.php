@@ -194,7 +194,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Email
+                                        Email <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="email" class="form-control" name="email" id="add_email"
@@ -206,7 +206,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Phone
+                                        Phone <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="text" class="form-control" name="phone" id="add_phone"
@@ -219,7 +219,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Employee Type <span class="text-danger">*</span>
+                                        Employee Type
                                     </label>
 
                                     <div class="d-flex gap-4 mt-2">
@@ -262,7 +262,7 @@
                                 </div>
 
 
-                                {{-- Monthly Salary --}}
+
                                 <div class="mb-3 col-md-6 form-field" id="monthly_salary_field">
 
                                     <label class="form-label mb-1">
@@ -278,7 +278,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Joining Date
+                                        Joining Date <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="text" class="form-control filter_date" name="joining_date"
@@ -390,7 +390,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Email
+                                        Email <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="email" class="form-control" name="email" id="edit_email"
@@ -402,7 +402,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Phone
+                                        Phone <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="text" class="form-control" name="phone" id="edit_phone"
@@ -415,7 +415,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Employee Type <span class="text-danger">*</span>
+                                        Employee Type
                                     </label>
 
                                     <div class="d-flex gap-4 mt-2">
@@ -472,7 +472,7 @@
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
-                                        Joining Date
+                                        Joining Date <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="text" class="form-control filter_date" name="joining_date"
@@ -544,7 +544,8 @@
 
 @endsection
 @section('script')
-    @include("layout.datatable")
+    @include("layout.dataTable")
+    <script src="js/pages/employees.js"></script>
     <script>
 
         function employeeTypeChange() {
@@ -861,7 +862,7 @@
 
         });
 
-        
+
         function loadEditDesignations(departmentId, designationId = null) {
             let designation = $('#edit_designation');
             designation.html(

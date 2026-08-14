@@ -42,12 +42,12 @@
 
                         <button type="submit" class="btn btn-custom-primary w-100">Login</button>
 
-                        <div class="text-center mt-4">
+                        {{-- <div class="text-center mt-4">
                             <span class="register-text">Don't have an account?</span>
                             <a href="{{ route('register') }}"  style="color: var(--primary-color); text-decoration: none;">
                                 Register Now
                             </a>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
             </div>

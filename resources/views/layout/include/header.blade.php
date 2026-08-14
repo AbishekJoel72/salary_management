@@ -7,9 +7,11 @@
     <nav class="ms-auto bg-light text-primary p-3">
         <div class="dropdown">
             <div class="d-flex flex-column align-items-start">
-
+{{--
                 <span><i class="fa fa-user"></i> {{ session('user_name') }}</span>
-                <span><i class="fa fa-envelope"></i> {{ session('user_email') }}</span>
+                <span><i class="fa fa-envelope"></i> {{ session('user_email') }}</span> --}}
+                <span><i class="fa fa-user"></i> Admin</span>
+                <span><i class="fa fa-envelope"></i> admin@gmail.com</span>
 
             </div>
 

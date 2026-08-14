@@ -14,59 +14,217 @@ class AttendanceController extends Controller
 {
     public function Attendance(Request $request)
     {
-        if ($request->add_attendance) {
-            try {
-                $validation = $request->validate([
-                    'employee_id' => 'required',
-                    'attendance_date' => 'required',
-                    'status' => 'required',
-                ]);
-                if ($validation) {
+        if ($request->method() == 'POST') {
+            if ($request->add_attendance) {
 
-                    $attendance = new Attendance;
-                    $attendance->employee_id = $request->employee_id;
-                    $attendance->attendance_date = Carbon::createFromFormat('d-m-Y', $request->attendance_date)->format('Y-m-d');
-                    $attendance->status = $request->status;
-                    if ($request->status == 'present' || $request->status == 'half_day') {
-                        $attendance->check_in = $request->check_in;
-                        $attendance->check_out = $request->check_out;
-                    } else {
-                        $attendance->check_in = null;
-                        $attendance->check_out = null;
-                    }
+                try {
 
-                    $workingHours = 0;
+                    $validation = $request->validate([
+                        'employee_id' => 'required',
+                        'attendance_date' => 'required',
+                        'status' => 'required',
+                    ]);
 
-                    if ($attendance->check_in && $attendance->check_out) {
-                        $checkIn = Carbon::createFromFormat('H:i', $attendance->check_in);
-                        $checkOut = Carbon::createFromFormat('H:i', $attendance->check_out);
-                        if ($checkOut->lessThan($checkIn)) {
-                            $checkOut->addDay();
+                    if ($validation) {
+
+                        $attendance = new Attendance;
+                        $attendance->employee_id = $request->employee_id;
+                        $attendance->attendance_date = Carbon::createFromFormat('d-m-Y', $request->attendance_date)->format('Y-m-d');
+
+                        if (
+                            $request->status == 'present' ||
+                            $request->status == 'half_day'
+                        ) {
+                            $attendance->check_in = $request->check_in;
+                            $attendance->check_out = $request->check_out;
+
+                        } else {
+                            $attendance->check_in = null;
+                            $attendance->check_out = null;
                         }
-                        $workingHours = $checkIn->diffInMinutes($checkOut) / 60;
+
+                        $workingHours = 0;
+
+                        if (
+                            $request->status == 'present' ||
+                            $request->status == 'half_day'
+                        ) {
+
+                            if ($request->check_in && $request->check_out) {
+
+                                $checkIn = Carbon::createFromFormat(
+                                    'g:i A',
+                                    strtoupper(trim($request->check_in))
+                                );
+
+                                $checkOut = Carbon::createFromFormat(
+                                    'g:i A',
+                                    strtoupper(trim($request->check_out))
+                                );
+
+                                if ($checkOut->lessThan($checkIn)) {
+                                    $checkOut->addDay();
+                                }
+
+                                $workingHours = $checkIn->diffInMinutes($checkOut) / 60;
+                                $attendance->check_in = $checkIn->format('H:i:s');
+                                $attendance->check_out = $checkOut->format('H:i:s');
+
+                            } else {
+
+                                $attendance->check_in = null;
+                                $attendance->check_out = null;
+                            }
+
+                        } else {
+
+                            $attendance->check_in = null;
+                            $attendance->check_out = null;
+                        }
+
+                        $attendance->working_hours = round($workingHours, 2);
+
+                        $attendance->day_value = round(
+                            min($workingHours / 8, 1),
+                            3
+                        );
+
+                        if ($workingHours >= 8) {
+                            $attendance->status = 'present';
+                        } elseif ($workingHours >= 4) {
+                            $attendance->status = 'half_day';
+                        } else {
+                            $attendance->status = $request->status;
+                        }
+
+                        $attendance->remarks = $request->remarks ?? null;
+                        $attendance->save();
+                        session()->flash('success', 'Attendance Details Added Successfully');
+
+                        return redirect()->route('attendance');
                     }
 
-                    $attendance->working_hours = round($workingHours, 2);
+                } catch (\Exception $e) {
 
-                    if ($request->status == 'present') {
-                        $attendance->day_value = 1.0;
-                    } elseif ($request->status == 'half_day') {
-                        $attendance->day_value = 0.5;
-                    } else {
-                        $attendance->day_value = 0.0;
-                    }
+                    session()->flash('error', $e->getMessage());
 
-                    $attendance->remarks = $request->remarks ?? null;
-                    $attendance->save();
-                    session()->flash('success', 'Attendance Details Added Successfully');
-
-                    return redirect()->route('attendance');
+                    return redirect()->back();
                 }
+            }
 
-            } catch (\Exception $e) {
-                session()->flash('error', $e->getMessage());
+            if ($request->edit_attendance) {
 
-                return redirect()->back();
+                try {
+
+                    $validation = $request->validate([
+                        'edit_attendance_id' => 'required',
+                        'employee_id' => 'required',
+                        'attendance_date' => 'required',
+                        'status' => 'required',
+                    ]);
+
+                    if ($request->edit_attendance_id) {
+
+                        $attendance = Attendance::where(
+                            'id',
+                            $request->edit_attendance_id
+                        )->first();
+
+                        if ($attendance) {
+
+                            $attendance->employee_id = $request->employee_id;
+
+                            $attendance->attendance_date = Carbon::createFromFormat(
+                                'd-m-Y',
+                                $request->attendance_date
+                            )->format('Y-m-d');
+
+                            $attendance->status = $request->status;
+
+                            if (
+                                $request->status == 'present' ||
+                                $request->status == 'half_day'
+                            ) {
+
+                                $attendance->check_in = $request->check_in
+                                    ? Carbon::createFromFormat(
+                                        'g:i A',
+                                        $request->check_in
+                                    )->format('H:i:s')
+                                    : null;
+
+                                $attendance->check_out = $request->check_out
+                                    ? Carbon::createFromFormat(
+                                        'g:i A',
+                                        $request->check_out
+                                    )->format('H:i:s')
+                                    : null;
+
+                            } else {
+
+                                $attendance->check_in = null;
+                                $attendance->check_out = null;
+                            }
+
+                            $workingHours = 0;
+
+                            if (
+                                $attendance->check_in &&
+                                $attendance->check_out
+                            ) {
+
+                                $checkIn = Carbon::createFromFormat(
+                                    'H:i:s',
+                                    $attendance->check_in
+                                );
+
+                                $checkOut = Carbon::createFromFormat(
+                                    'H:i:s',
+                                    $attendance->check_out
+                                );
+
+                                if ($checkOut->lessThan($checkIn)) {
+                                    $checkOut->addDay();
+                                }
+
+                                $workingHours =
+                                    $checkIn->diffInMinutes($checkOut) / 60;
+                            }
+
+                            $attendance->working_hours = round($workingHours, 2);
+
+                            $attendance->day_value = round(
+                                min($workingHours / 8, 1),
+                                3
+                            );
+
+                            if ($workingHours >= 8) {
+                                $attendance->status = 'present';
+                            } elseif ($workingHours >= 4) {
+                                $attendance->status = 'half_day';
+                            } else {
+                                $attendance->status = $request->status;
+                            }
+
+                            $attendance->remarks = $request->remarks ?? null;
+
+                            $attendance->save();
+
+                            session()->flash(
+                                'success',
+                                'Attendance Details Updated Successfully'
+                            );
+
+                            return redirect()->route('attendance');
+                        }
+                    }
+
+                } catch (\Exception $e) {
+
+                    session()->flash('error', $e->getMessage());
+
+                    return redirect()->back();
+                }
             }
         }
 
@@ -88,100 +246,152 @@ class AttendanceController extends Controller
         }
 
         if ($request->ajax()) {
-            if ($request->get_employee) {
+            if ($request->get_atten) {
                 $id = $request->id;
-                $emp = Employees::where('id', $id)->first();
+                $a = Attendance::where('id', $id)->first();
 
-                return response()->json($emp);
-            }
-
-            if ($request->get_status) {
-                $id = $request->id;
-                $status = Employees::where('id', $id)->first();
-
-                return response()->json($status);
+                return response()->json($a);
             }
 
             if ($request->get_delete) {
                 $id = $request->id;
-                $delete = Employees::where('id', $id)->delete();
+                $delete = Attendance::where('id', $id)->delete();
 
                 if ($delete) {
                     return response()->json([
                         'status' => true,
-                        'message' => 'Designation Deleted successfully.',
+                        'message' => 'Deleted successfully.',
                     ]);
                 }
             }
 
-            $data = Attendance::with('get_employee', 'get_employee.get_department', 'get_employee.get_designation');
+          $data = Attendance::with([
+    'get_employee',
+    'get_employee.get_department',
+    'get_employee.get_designation'
+]);
 
-            if ($request->employee_id) {
-                $data->where('employee_id', $request->employee_id);
-            }
+// Employee
+if ($request->filled('employee_id')) {
+    $data->where('employee_id', $request->employee_id);
+}
 
-            if ($request->department_id) {
-                $data->whereHas('get_employee', function ($query) use ($request) {
-                    $query->where('department_id', $request->department_id);
-                });
-            }
+// Department
+if ($request->filled('department_id')) {
+    $data->whereHas('get_employee', function ($query) use ($request) {
+        $query->where('department_id', $request->department_id);
+    });
+}
 
-            if ($request->designation_id) {
-                $data->whereHas('get_employee', function ($query) use ($request) {
-                    $query->where('designation_id', $request->designation_id);
-                });
-            }
+// Designation
+if ($request->filled('designation_id')) {
+    $data->whereHas('get_employee', function ($query) use ($request) {
+        $query->where('designation_id', $request->designation_id);
+    });
+}
 
-            if ($request->from_date) {
-                $fromDate = Carbon::createFromFormat('d-m-Y',$request->from_date)->format('Y-m-d');
-                $data->whereDate('attendance_date', '>=', $fromDate);
-            }
+// From Date
+if ($request->filled('from_date')) {
 
-            if ($request->to_date) {
-                $toDate = Carbon::createFromFormat('d-m-Y',$request->to_date)->format('Y-m-d');
-                $data->whereDate('attendance_date', '<=', $toDate);
-            }
+    try {
+        $fromDate = Carbon::createFromFormat(
+            'd-m-Y',
+            $request->from_date
+        )->format('Y-m-d');
 
-            if ($request->status) {
-                $data->where('status', $request->status);
-            }
+        $data->whereDate('attendance_date', '>=', $fromDate);
 
-            $data = $data->get();
+    } catch (\Exception $e) {
+        // Invalid date - ignore filter
+    }
+}
 
-            return DataTables::of($data)
-                ->addIndexColumn()
-                ->addColumn('department', function ($row) {
-                    return $row->get_employee->get_department->code.' - '.$row->get_employee->get_department->name;
-                })
-                ->addColumn('designation', function ($row) {
-                    return $row->get_employee->get_designation->name;
-                })
-                ->addColumn('actions', function ($row) {
-                    return '
-                        <div class="dropdown">
-                            <a href="#" class="text-dark " role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a href="javascript:void(0)"  class="editRow dropdown-item" data-id="'.$row->id.'">Edit</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)"  class="editStatusRow dropdown-item" data-id="'.$row->id.'">Status</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" class="deleteRow dropdown-item text-danger" data-id="'.$row->id.'">Delete</a>
-                                </li>
-                            </ul>
-                        </div>
-                    ';
-                })
-                ->rawColumns(['actions'])
-                ->make(true);
+// To Date
+if ($request->filled('to_date')) {
+
+    try {
+        $toDate = Carbon::createFromFormat(
+            'd-m-Y',
+            $request->to_date
+        )->format('Y-m-d');
+
+        $data->whereDate('attendance_date', '<=', $toDate);
+
+    } catch (\Exception $e) {
+        // Invalid date - ignore filter
+    }
+}
+
+// Status
+if ($request->filled('status')) {
+    $data->where('status', $request->status);
+}
+
+return DataTables::of($data)
+    ->addIndexColumn()
+
+    ->addColumn('department', function ($row) {
+
+        if (!$row->get_employee || !$row->get_employee->get_department) {
+            return '-';
+        }
+
+        return $row->get_employee->get_department->code
+            . ' - '
+            . $row->get_employee->get_department->name;
+    })
+
+    ->addColumn('designation', function ($row) {
+
+        if (!$row->get_employee || !$row->get_employee->get_designation) {
+            return '-';
+        }
+
+        return $row->get_employee->get_designation->name;
+    })
+
+    ->addColumn('actions', function ($row) {
+
+        return '
+            <div class="dropdown">
+                <a href="#" class="text-dark"
+                    role="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false">
+
+                    <i class="fas fa-ellipsis-v"></i>
+
+                </a>
+
+                <ul class="dropdown-menu">
+
+                    <li>
+                        <a href="javascript:void(0)"
+                            class="editRow dropdown-item"
+                            data-id="' . $row->id . '">
+                            Edit
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0)"
+                            class="deleteRow dropdown-item text-danger"
+                            data-id="' . $row->id . '">
+                            Delete
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        ';
+    })
+
+    ->rawColumns(['actions'])
+    ->make(true);
         }
 
         $this->data['employeedata'] = Employees::get();
-        $this->data['departmentdata'] = Department::get();
+        $this->data['departmentdata'] = Department::where('status','1')->get();
 
         return view('admin.attendance')->with($this->data);
     }

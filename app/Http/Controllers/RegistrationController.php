@@ -52,8 +52,8 @@ class RegistrationController extends Controller
         return view('login.login');
     }
 
-    public function Register(Request $request)
-    {
-        return view('login.registration');
-    }
+    // public function Register(Request $request)
+    // {
+    //     return view('login.registration');
+    // }
 }

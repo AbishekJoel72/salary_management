@@ -19,6 +19,12 @@ class DesignationController extends Controller
                         'designation_name' => 'required',
                     ]);
                     if ($validation) {
+                        
+                        if (Designation::where('name', $request->designation_name)->exists()) {
+                            session()->flash('error', 'Designation name already exists.');
+
+                            return redirect()->back()->withInput();
+                        }
                         $d = new Designation;
                         $d->department_id = $request->department;
                         $d->name = $request->designation_name;
@@ -106,7 +112,7 @@ class DesignationController extends Controller
                 if ($delete) {
                     return response()->json([
                         'status' => true,
-                        'message' => 'Designation Deleted successfully.',
+                        'message' => 'Deleted successfully.',
                     ]);
                 }
             }
