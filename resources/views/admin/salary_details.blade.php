@@ -167,15 +167,10 @@
 
 
             <div class="card-body table-body">
-
                 <div class="table-responsive">
-
-                    <table id="datatable" class="table table-bordered">
-
+                    <table id="datatable" class="table table-bordered ">
                         <thead>
-
                             <tr>
-
                                 <th>S.No</th>
                                 <th>Salary Period</th>
                                 <th>Employee</th>
@@ -191,19 +186,12 @@
                                 <th>Adjustment</th>
                                 <th>Net Salary</th>
                                 <th>Status</th>
-
                             </tr>
-
                         </thead>
-
                         <tbody></tbody>
-
                     </table>
-
                 </div>
-
             </div>
-
         </div>
 
     </div>
@@ -225,42 +213,27 @@
             let table = $('#datatable').DataTable({
 
                 processing: true,
-
                 serverSide: true,
-
                 ajax: {
-
                     url: "{{ route('salary_details') }}",
-
                     type: "GET",
-
                     data: function(d) {
-
                         d.get_salary_details = true;
-
                         d.salary_period_id =
                             $('#filter_salary_period').val();
-
                         d.employee_id =
                             $('#filter_employee').val();
-
                         d.salary_type =
                             $('#filter_salary_type').val();
-
                         d.status =
                             $('#filter_status').val();
-
                         d.start_date =
                             $('#filter_start_date').val();
-
                         d.end_date =
                             $('#filter_end_date').val();
-
                     }
 
                 },
-
-
                 columns: [
 
                     {
@@ -268,13 +241,13 @@
                         name: 'DT_RowIndex',
                         orderable: false,
                         searchable: false,
-                        className: 'text-center'
+                        className: 'text-center',
                     },
 
                     {
                         data: 'salary_period',
                         name: 'salary_period',
-                        className: 'text-center'
+                        className: 'text-start'
                     },
 
                     {
@@ -300,7 +273,11 @@
                         name: 'full_days',
                         className: 'text-center',
                         render: function(data) {
-                            return parseFloat(data || 0).toFixed(0);
+                            return `
+                <span class="badge bg-success-subtle text-success px-2 py-1">
+                    ${parseFloat(data || 0).toFixed(0)}
+                </span>
+            `;
                         }
                     },
 
@@ -309,7 +286,11 @@
                         name: 'half_days',
                         className: 'text-center',
                         render: function(data) {
-                            return parseFloat(data || 0).toFixed(0);
+                            return `
+                <span class="badge bg-warning-subtle text-warning px-2 py-1">
+                    ${parseFloat(data || 0).toFixed(0)}
+                </span>
+            `;
                         }
                     },
 
@@ -318,16 +299,11 @@
                         name: 'absent_days',
                         className: 'text-center',
                         render: function(data) {
-                            return parseFloat(data || 0).toFixed(0);
-                        }
-                    },
-
-                    {
-                        data: 'worked_days',
-                        name: 'worked_days',
-                        className: 'text-center',
-                        render: function(data) {
-                            return parseFloat(data || 0).toFixed(0);
+                            return `
+                <span class="badge bg-danger-subtle text-danger px-2 py-1">
+                    ${parseFloat(data || 0).toFixed(0)}
+                </span>
+            `;
                         }
                     },
 
@@ -336,9 +312,27 @@
                         name: 'leave_days',
                         className: 'text-center',
                         render: function(data) {
-                            return parseFloat(data || 0).toFixed(0);
+                            return `
+                <span class="badge bg-secondary-subtle text-secondary px-2 py-1">
+                    ${parseFloat(data || 0).toFixed(0)}
+                </span>
+            `;
                         }
                     },
+
+                    {
+                        data: 'worked_days',
+                        name: 'worked_days',
+                        className: 'text-center',
+                        render: function(data) {
+                            return `
+                <span class="badge bg-primary-subtle text-primary px-2 py-1">
+                    ${parseFloat(data || 0).toFixed(0)}
+                </span>
+            `;
+                        }
+                    },
+
                     {
                         data: 'gross_salary',
                         name: 'gross_salary',
@@ -388,11 +382,12 @@
                                 return '<span class="badge bg-warning">Pending</span>';
                             }
 
-                            return '<span class="badge bg-secondary">' +
-                                (data ?? '-') +
-                                '</span>';
+                            return `
+                <span class="badge bg-secondary">
+                    ${data ?? '-'}
+                </span>
+            `;
                         }
-
                     }
 
                 ],
