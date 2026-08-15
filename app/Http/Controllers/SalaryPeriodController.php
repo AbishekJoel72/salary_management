@@ -167,52 +167,51 @@ class SalaryPeriodController extends Controller
                             ->where('status', 'absent')
                             ->count();
 
-                        $workedDays =
-                            $fullDays +
-                            ($halfDays * 0.5);
+                        $leaveDays = $attendance
+                            ->where('status', 'leave')
+                            ->count();
 
                         if ($employee->employee_type === 'daily') {
 
                             $salaryType = 'daily';
+                            $baseSalary = (float) ($employee->daily_rate ?? 0);
 
-                            $baseSalary =
-                                (float) ($employee->daily_rate ?? 0);
+                            // Calculate worked_days based on actual working hours / day_value
+                            $totalDayValue = (float) $attendance->sum('day_value');
+                            if ($totalDayValue > 0) {
+                                $workedDays = $totalDayValue;
+                            } else {
+                                $totalHours = (float) $attendance->sum('working_hours');
+                                if ($totalHours > 0) {
+                                    $workedDays = round($totalHours / 8, 2);
+                                } else {
+                                    $workedDays = $fullDays + ($halfDays * 0.5);
+                                }
+                            }
+
+                            $grossSalary = round($workedDays * $baseSalary, 2);
+                            $deduction = 0;
+                            $adjustment = 0;
+                            $netSalary = max(0, $grossSalary - $deduction + $adjustment);
 
                         } else {
 
                             $salaryType = 'monthly';
+                            $baseSalary = (float) ($employee->monthly_salary ?? 0);
 
-                            $baseSalary =
-                                (float) ($employee->monthly_salary ?? 0);
-                        }
+                            $perDayRate = $periodDays > 0 ? ($baseSalary / $periodDays) : 0;
 
-                        if ($salaryType === 'daily') {
+                            // Unworked / Leave / Absent days
+                            $unworkedDays = $leaveDays + $absentDays + ($halfDays * 0.5);
+                            $workedDays = max(0, $periodDays - $unworkedDays);
 
-                            $grossSalary =
-                                $workedDays * $baseSalary;
+                            // Leave & Absent Salary Deduction
+                            $leaveDeduction = round($unworkedDays * $perDayRate, 2);
 
-                        } else {
-
-                            $perDaySalary =
-                                $periodDays > 0
-                                    ? $baseSalary / $periodDays
-                                    : 0;
-
-                            $grossSalary =
-                                $workedDays * $perDaySalary;
-                        }
-
-                        $deduction = 0;
-
-                        $adjustment = 0;
-
-                        $netSalary =
-                            $grossSalary
-                            - $deduction
-                            + $adjustment;
-
-                        if ($netSalary < 0) {
-                            $netSalary = 0;
+                            $grossSalary = round($baseSalary, 2);
+                            $deduction = $leaveDeduction;
+                            $adjustment = 0;
+                            $netSalary = max(0, round($baseSalary - $leaveDeduction + $adjustment, 2));
                         }
 
                         $salaryDetail = SalaryDetails::updateOrCreate(
@@ -229,13 +228,14 @@ class SalaryPeriodController extends Controller
                                 'full_days' => $fullDays,
                                 'half_days' => $halfDays,
                                 'absent_days' => $absentDays,
+                                'leave_days' => $leaveDays,
                                 'worked_days' => $workedDays,
 
                                 'gross_salary' => round($grossSalary, 2),
 
-                                'deduction' => $deduction,
+                                'deduction' => round($deduction, 2),
 
-                                'adjustment' => $adjustment,
+                                'adjustment' => round($adjustment, 2),
 
                                 'net_salary' => round($netSalary, 2),
 
