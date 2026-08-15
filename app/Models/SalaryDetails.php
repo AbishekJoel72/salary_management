@@ -19,6 +19,7 @@ class SalaryDetails extends Model
         'full_days',
         'half_days',
         'absent_days',
+        'leave_days',
         'worked_days',
         'gross_salary',
         'deduction',

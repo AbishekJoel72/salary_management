@@ -21,8 +21,8 @@ class EmployeesController extends Controller
                         'designation_id' => 'required',
                         'employee_code' => 'required',
                         'name' => 'required',
-                        'email' => 'required',
-                        'phone' => 'required',
+                        'email' => 'nullable|email',
+                        'phone' => 'nullable',
                         'joining_date' => 'required',
                     ]);
                     if ($validation) {
@@ -54,14 +54,20 @@ class EmployeesController extends Controller
                         $emp->designation_id = $request->designation_id;
                         $emp->employee_code = $request->employee_code;
                         $emp->name = $request->name;
-                        $emp->email = $request->email;
-                        $emp->phone = $request->phone;
+                        $emp->email = ! empty($request->email) ? $request->email : null;
+                        $emp->phone = ! empty($request->phone) ? $request->phone : null;
                         $emp->employee_type = $request->employee_type;
-                        $emp->daily_rate = $request->daily_rate ?? null;
-                        $emp->monthly_salary = $request->monthly_salary ?? null;
-                        $emp->joining_date = Carbon::createFromFormat('d-m-Y', $request->joining_date)->format('Y-m-d');
+                        $emp->daily_rate = ! empty($request->daily_rate) ? $request->daily_rate : null;
+                        $emp->monthly_salary = ! empty($request->monthly_salary) ? $request->monthly_salary : null;
+
+                        try {
+                            $emp->joining_date = Carbon::createFromFormat('d-m-Y', $request->joining_date)->format('Y-m-d');
+                        } catch (\Exception $ex) {
+                            $emp->joining_date = Carbon::parse($request->joining_date)->format('Y-m-d');
+                        }
+
                         $emp->save();
-                        session()->flash('success', 'Employee Details Added Sunccessfully');
+                        session()->flash('success', 'Employee Details Added Successfully');
 
                         return redirect()->route('employee');
 
@@ -70,7 +76,7 @@ class EmployeesController extends Controller
                 } catch (\Exception $e) {
                     session()->flash('error', $e->getMessage());
 
-                    return redirect()->back();
+                    return redirect()->back()->withInput();
                 }
             }
 
@@ -81,23 +87,29 @@ class EmployeesController extends Controller
                         'designation_id' => 'required',
                         'employee_code' => 'required',
                         'name' => 'required',
-                        'email' => 'required',
-                        'phone' => 'required',
+                        'email' => 'nullable|email',
+                        'phone' => 'nullable',
                         'joining_date' => 'required',
                     ]);
                     if ($validation) {
                         if ($request->id) {
+                            try {
+                                $joiningDate = Carbon::createFromFormat('d-m-Y', $request->joining_date)->format('Y-m-d');
+                            } catch (\Exception $ex) {
+                                $joiningDate = Carbon::parse($request->joining_date)->format('Y-m-d');
+                            }
+
                             Employees::where('id', $request->id)->update([
                                 'department_id' => $request->department_id,
                                 'designation_id' => $request->designation_id,
                                 'employee_code' => $request->employee_code,
                                 'name' => $request->name,
-                                'email' => $request->email,
-                                'phone' => $request->phone,
+                                'email' => ! empty($request->email) ? $request->email : null,
+                                'phone' => ! empty($request->phone) ? $request->phone : null,
                                 'employee_type' => $request->employee_type,
-                                'daily_rate' => $request->daily_rate,
-                                'monthly_salary' => $request->monthly_salary,
-                                'joining_date' => Carbon::createFromFormat('d-m-Y', $request->joining_date)->format('Y-m-d'),
+                                'daily_rate' => ! empty($request->daily_rate) ? $request->daily_rate : null,
+                                'monthly_salary' => ! empty($request->monthly_salary) ? $request->monthly_salary : null,
+                                'joining_date' => $joiningDate,
                             ]);
                             session()->flash('success', 'Employee Details Updated Successfully');
 
@@ -107,7 +119,7 @@ class EmployeesController extends Controller
                 } catch (\Exception $e) {
                     session()->flash('error', $e->getMessage());
 
-                    return redirect()->back();
+                    return redirect()->back()->withInput();
                 }
             }
 

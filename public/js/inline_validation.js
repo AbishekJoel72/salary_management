@@ -54,37 +54,37 @@ const InlineValidator = {
         }
 
         // Email
-        if (rule.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        if (rule.email && value !== "" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
             this.error(input, rule.messages.email);
             return false;
         }
 
         // Phone
-        if (rule.phone && !/^[6-9]\d{9}$/.test(value)) {
+        if (rule.phone && value !== "" && !/^[6-9]\d{9}$/.test(value)) {
             this.error(input, rule.messages.phone);
             return false;
         }
 
         // Number
-        if (rule.number && !/^\d+$/.test(value)) {
+        if (rule.number && value !== "" && !/^\d+$/.test(value)) {
             this.error(input, rule.messages.number);
             return false;
         }
 
         // Decimal
-        if (rule.decimal && !/^\d+(\.\d{1,2})?$/.test(value)) {
+        if (rule.decimal && value !== "" && !/^\d+(\.\d{1,2})?$/.test(value)) {
             this.error(input, rule.messages.decimal);
             return false;
         }
 
         // Alphabet
-        if (rule.alphabet && !/^[A-Za-z ]+$/.test(value)) {
+        if (rule.alphabet && value !== "" && !/^[A-Za-z ]+$/.test(value)) {
             this.error(input, rule.messages.alphabet);
             return false;
         }
 
         // Alpha Numeric (Special characters not allowed, Space allowed)
-        if (rule.alphaNumeric && !/^[A-Za-z0-9 ]+$/.test(value)) {
+        if (rule.alphaNumeric && value !== "" && !/^[A-Za-z0-9 ]+$/.test(value)) {
             this.error(input, rule.messages.alphaNumeric);
             return false;
         }

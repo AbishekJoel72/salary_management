@@ -298,6 +298,10 @@
                     Absent Days
                 </th>
 
+                <th class="col-days">
+                    Leave Days
+                </th>
+
                 <th class="col-worked">
                     Worked Days
                 </th>
@@ -406,6 +410,11 @@
 
                     <td class="text-center">
                         {{ $row->absent_days ?? 0 }}
+                    </td>
+
+
+                    <td class="text-center">
+                        {{ $row->leave_days ?? 0 }}
                     </td>
 
 

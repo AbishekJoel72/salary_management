@@ -184,6 +184,7 @@
                                 <th>Full Days</th>
                                 <th>Half Days</th>
                                 <th>Absent Days</th>
+                                <th>Leave Days</th>
                                 <th>Worked Days</th>
                                 <th>Gross Salary</th>
                                 <th>Deduction</th>
@@ -294,41 +295,50 @@
                         className: 'text-end'
                     },
 
-                   {
-    data: 'full_days',
-    name: 'full_days',
-    className: 'text-center',
-    render: function(data) {
-        return parseFloat(data || 0).toFixed(0);
-    }
-},
+                    {
+                        data: 'full_days',
+                        name: 'full_days',
+                        className: 'text-center',
+                        render: function(data) {
+                            return parseFloat(data || 0).toFixed(0);
+                        }
+                    },
 
-{
-    data: 'half_days',
-    name: 'half_days',
-    className: 'text-center',
-    render: function(data) {
-        return parseFloat(data || 0).toFixed(0);
-    }
-},
+                    {
+                        data: 'half_days',
+                        name: 'half_days',
+                        className: 'text-center',
+                        render: function(data) {
+                            return parseFloat(data || 0).toFixed(0);
+                        }
+                    },
 
-{
-    data: 'absent_days',
-    name: 'absent_days',
-    className: 'text-center',
-    render: function(data) {
-        return parseFloat(data || 0).toFixed(0);
-    }
-},
+                    {
+                        data: 'absent_days',
+                        name: 'absent_days',
+                        className: 'text-center',
+                        render: function(data) {
+                            return parseFloat(data || 0).toFixed(0);
+                        }
+                    },
 
-{
-    data: 'worked_days',
-    name: 'worked_days',
-    className: 'text-center',
-    render: function(data) {
-        return parseFloat(data || 0).toFixed(0);
-    }
-},
+                    {
+                        data: 'worked_days',
+                        name: 'worked_days',
+                        className: 'text-center',
+                        render: function(data) {
+                            return parseFloat(data || 0).toFixed(0);
+                        }
+                    },
+
+                    {
+                        data: 'leave_days',
+                        name: 'leave_days',
+                        className: 'text-center',
+                        render: function(data) {
+                            return parseFloat(data || 0).toFixed(0);
+                        }
+                    },
                     {
                         data: 'gross_salary',
                         name: 'gross_salary',
