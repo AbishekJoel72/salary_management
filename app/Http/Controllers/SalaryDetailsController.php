@@ -16,37 +16,37 @@ class SalaryDetailsController extends Controller
     {
         if ($request->ajax()) {
 
-            $salaryDetails = SalaryDetails::with(['get_salaryperiod','get_employee',])->select('salary_details.*');
+            $salaryDetails = SalaryDetails::with(['get_salaryperiod', 'get_employee'])->select('salary_details.*');
 
             if ($request->filled('salary_period_id')) {
-                $salaryDetails->where('salary_period_id',$request->salary_period_id);
+                $salaryDetails->where('salary_period_id', $request->salary_period_id);
             }
 
             if ($request->filled('employee_id')) {
-                $salaryDetails->where('employee_id',$request->employee_id);
+                $salaryDetails->where('employee_id', $request->employee_id);
             }
 
             if ($request->filled('salary_type')) {
-                $salaryDetails->where('salary_type',$request->salary_type);
+                $salaryDetails->where('salary_type', $request->salary_type);
             }
 
             if ($request->filled('status')) {
-                $salaryDetails->where('status',$request->status);
+                $salaryDetails->where('status', $request->status);
             }
 
             if ($request->filled('start_date')) {
-                $startDate = Carbon::createFromFormat('d-m-Y',$request->start_date)->format('Y-m-d');
+                $startDate = Carbon::createFromFormat('d-m-Y', $request->start_date)->format('Y-m-d');
                 $salaryDetails->whereHas('get_salaryperiod',
                     function ($query) use ($startDate) {
-                        $query->whereDate('start_date','>=',$startDate);
+                        $query->whereDate('start_date', '>=', $startDate);
                     }
                 );
             }
 
             if ($request->filled('end_date')) {
-                $endDate = Carbon::createFromFormat('d-m-Y',$request->end_date)->format('Y-m-d');
-                $salaryDetails->whereHas('get_salaryperiod',function ($query) use ($endDate) {
-                    $query->whereDate('end_date','<=',$endDate);
+                $endDate = Carbon::createFromFormat('d-m-Y', $request->end_date)->format('Y-m-d');
+                $salaryDetails->whereHas('get_salaryperiod', function ($query) use ($endDate) {
+                    $query->whereDate('end_date', '<=', $endDate);
                 });
             }
 
@@ -75,34 +75,18 @@ class SalaryDetailsController extends Controller
                     if (! $row->get_employee) {
                         return '-';
                     }
+
                     return $row->get_employee->employee_code.' - '.$row->get_employee->name;
-                })
-                ->editColumn('salary_type', function ($row) {
-                    return ucfirst($row->salary_type);
-                })
-                ->editColumn('base_salary', function ($row) {
-                    return number_format($row->base_salary,2);
-                })
-                ->editColumn('gross_salary', function ($row) {
-                    return number_format($row->gross_salary,2);
-                })
-                ->editColumn('deduction', function ($row) {
-                    return number_format($row->deduction,2);
-                })
-                ->editColumn('adjustment', function ($row) {
-                    return number_format($row->adjustment,2);
-                })
-                ->editColumn('net_salary', function ($row) {
-                    return number_format($row->net_salary,2);
                 })
                 ->make(true);
         }
 
+        $this->data['salaryperioddata'] = SalaryPeriod::orderBy('id', 'desc')->get();
+        $this->data['status'] = SalaryPeriod::select('status')
+            ->distinct()->get();
+        $this->data['employeedata'] = Employees::where('status', '1')->orderBy('name')->get();
 
-
-        $salaryperioddata = SalaryPeriod::orderBy('id','desc')->get();
-        $employeedata = Employees::where('status','1')->orderBy('name')->get();
-        return view('admin.salary_details',compact('salaryperioddata','employeedata'));
+        return view('admin.salary_details')->with($this->data);
     }
 
     public function SalaryDetailsPDF(Request $request)
@@ -143,7 +127,8 @@ class SalaryDetailsController extends Controller
         }
 
         $salaryDetails = $salaryDetails->orderBy('id', 'desc')->get();
-        $pdf = Pdf::loadView('admin.salary_details_pdf',compact('salaryDetails'));
+        $pdf = Pdf::loadView('admin.salary_details_pdf', compact('salaryDetails'));
+
         return $pdf->download('salary-details-'.date('d-m-Y').'.pdf');
     }
 }

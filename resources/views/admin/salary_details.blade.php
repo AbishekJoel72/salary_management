@@ -5,9 +5,7 @@
 
         <div class="card ">
             <div class="card-header bg-transparent">
-                <h5 class="card-title mb-0">
-                    Salary Details
-                </h5>
+                <h5 class="card-title mb-1">Salary Details</h5>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -54,10 +52,11 @@
                         <label class="form-label mb-1">Status</label>
                         <select id="filter_status" name="filter_status" class="form-select">
                             <option value=""> All Status </option>
-                            <option value="pending">Pending</option>
-                            <option value="calculated">Calculated</option>
-                            <option value="approved">Approved</option>
-                            <option value="paid">Paid</option>
+                            @foreach ($status as $item)
+                                <option value="{{ $item->status }}">
+                                    {{ ucfirst($item->status) }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -145,15 +144,14 @@
                     type: "GET",
                     data: function(d) {
                         d.salary_period_id = $('#filter_salary_period').val();
-                        d.employee_id =$('#filter_employee').val();
-                        d.salary_type =$('#filter_salary_type').val();
-                        d.status =$('#filter_status').val();
-                        d.start_date =$('#filter_start_date').val();
-                        d.end_date =$('#filter_end_date').val();
+                        d.employee_id = $('#filter_employee').val();
+                        d.salary_type = $('#filter_salary_type').val();
+                        d.status = $('#filter_status').val();
+                        d.start_date = $('#filter_start_date').val();
+                        d.end_date = $('#filter_end_date').val();
                     }
                 },
-                columns: [
-                    {
+                columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
@@ -173,12 +171,20 @@
                     {
                         data: 'salary_type',
                         name: 'salary_type',
-                        className: 'text-center'
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            return data ?
+                                data.charAt(0).toUpperCase() + data.slice(1) :
+                                '-';
+                        }
                     },
                     {
                         data: 'base_salary',
                         name: 'base_salary',
-                        className: 'text-end'
+                        className: 'text-end fw-semibold',
+                        render: function(data, type, row) {
+                            return parseFloat(data || 0).toFixed(2);
+                        }
                     },
                     {
                         data: 'full_days',
@@ -243,22 +249,34 @@
                     {
                         data: 'gross_salary',
                         name: 'gross_salary',
-                        className: 'text-end'
+                        className: 'text-end fw-semibold',
+                        render: function(data, type, row) {
+                            return parseFloat(data || 0).toFixed(2);
+                        }
                     },
                     {
                         data: 'deduction',
                         name: 'deduction',
-                        className: 'text-end'
+                        className: 'text-end',
+                        render: function(data, type, row) {
+                            return parseFloat(data || 0).toFixed(2);
+                        }
                     },
                     {
                         data: 'adjustment',
                         name: 'adjustment',
-                        className: 'text-end'
+                        className: 'text-end',
+                        render: function(data, type, row) {
+                            return parseFloat(data || 0).toFixed(2);
+                        }
                     },
                     {
                         data: 'net_salary',
                         name: 'net_salary',
-                        className: 'text-end fw-semibold'
+                        className: 'text-end fw-semibold',
+                        render: function(data, type, row) {
+                            return parseFloat(data || 0).toFixed(2);
+                        }
                     },
                     {
                         data: 'status',

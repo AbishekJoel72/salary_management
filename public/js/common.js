@@ -67,4 +67,13 @@ function confirmAction(message, callback) {
         }
     });
 
+
 }
+
+$(document).on('click', '.submenu-toggle', function (e) {
+    e.preventDefault();
+
+    let parent = $(this).closest('.has-submenu');
+
+    parent.toggleClass('open');
+});
