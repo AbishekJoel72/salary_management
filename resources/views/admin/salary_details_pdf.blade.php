@@ -3,19 +3,15 @@
 
 <head>
     <meta charset="UTF-8">
-
     <title>Salary Details</title>
-
     <style>
         @page {
             size: A4 landscape;
             margin: 25px 20px;
         }
-
         * {
             box-sizing: border-box;
         }
-
         body {
             font-family: DejaVu Sans, sans-serif;
             font-size: 9px;
@@ -23,12 +19,10 @@
             margin: 0;
             padding: 0;
         }
-
         .header {
             text-align: center;
             margin-bottom: 15px;
         }
-
         .header h2 {
             margin: 0 0 5px 0;
             font-size: 16px;
@@ -192,11 +186,7 @@
     {{-- Header --}}
     <div class="header">
         <h2>Salary Details Report</h2>
-
-        <p>
-            Generated Date:
-            {{ now()->format('d-m-Y H:i') }}
-        </p>
+        <p> Generated Date:{{ now()->format('d-m-Y H:i') }}</p>
     </div>
 
 
@@ -209,304 +199,123 @@
     )
 
         <div class="filter-info">
-
             <table>
-
                 <tr>
-
-                    <td class="filter-label">
-                        Period Type:
-                    </td>
-
+                    <td class="filter-label">Period Type:</td>
                     <td class="filter-value">
                         {{ !empty($filters['period_type']) ? ucfirst($filters['period_type']) : 'All' }}
                     </td>
-
                     <td class="filter-label">
                         Status:
                     </td>
-
                     <td class="filter-value">
                         {{ !empty($filters['status']) ? ucfirst($filters['status']) : 'All' }}
                     </td>
-
                 </tr>
-
                 <tr>
-
                     <td class="filter-label">
                         Start Date:
                     </td>
-
                     <td class="filter-value">
                         {{ !empty($filters['start_date']) ? $filters['start_date'] : 'All' }}
                     </td>
-
                     <td class="filter-label">
                         End Date:
                     </td>
-
                     <td class="filter-value">
                         {{ !empty($filters['end_date']) ? $filters['end_date'] : 'All' }}
                     </td>
-
                 </tr>
-
             </table>
-
         </div>
-
     @endif
 
 
     {{-- Salary Table --}}
     <table class="salary-table">
-
         <thead>
-
             <tr>
-
-                <th class="col-sno">
-                    S.No
-                </th>
-
-                <th class="col-period">
-                    Salary Period
-                </th>
-
-                <th class="col-employee">
-                    Employee
-                </th>
-
-                <th class="col-type">
-                    Salary Type
-                </th>
-
-                <th class="col-base">
-                    Base Salary
-                </th>
-
-                <th class="col-days">
-                    Full Days
-                </th>
-
-                <th class="col-days">
-                    Half Days
-                </th>
-
-                <th class="col-days">
-                    Absent Days
-                </th>
-
-                <th class="col-days">
-                    Leave Days
-                </th>
-
-                <th class="col-worked">
-                    Worked Days
-                </th>
-
-                <th class="col-gross">
-                    Gross Salary
-                </th>
-
-                <th class="col-deduction">
-                    Deduction
-                </th>
-
-                <th class="col-adjustment">
-                    Adjustment
-                </th>
-
-                <th class="col-net">
-                    Net Salary
-                </th>
-
-                <th class="col-status">
-                    Status
-                </th>
-
+                <th class="col-sno">S.No</th>
+                <th class="col-period">Salary Period</th>
+                <th class="col-employee">Employee</th>
+                <th class="col-type">Salary Type</th>
+                <th class="col-base">Base Salary</th>
+                <th class="col-days">Full Days</th>
+                <th class="col-days">Half Days</th>
+                <th class="col-days">Absent Days</th>
+                <th class="col-days">Leave Days</th>
+                <th class="col-worked">Worked Days</th>
+                <th class="col-gross"> Gross Salary</th>
+                <th class="col-deduction">Deduction</th>
+                <th class="col-adjustment">Adjustment </th>
+                <th class="col-net">Net Salary</th>
+                <th class="col-status">Status</th>
             </tr>
-
         </thead>
-
-
         <tbody>
-
             @forelse($salaryDetails as $index => $row)
-
                 <tr>
-
+                    <td class="text-center">{{ $index + 1 }} </td>
                     <td class="text-center">
-                        {{ $index + 1 }}
-                    </td>
-
-
-                    <td class="text-center">
-
                         @if($row->get_salaryperiod)
-
                             {{ ucfirst($row->get_salaryperiod->period_type) }}
-
                             <br>
-
                             {{ \Carbon\Carbon::parse($row->get_salaryperiod->start_date)->format('d-m-Y') }}
-
                             <br>
-
                             to
-
                             <br>
-
                             {{ \Carbon\Carbon::parse($row->get_salaryperiod->end_date)->format('d-m-Y') }}
-
                         @else
-
                             -
-
                         @endif
-
                     </td>
-
-
                     <td class="text-left">
-
                         @if($row->get_employee)
-
                             {{ $row->get_employee->employee_code }}
-
                             <br>
-
                             {{ $row->get_employee->name }}
-
                         @else
-
                             -
-
                         @endif
-
                     </td>
-
-
-                    <td class="text-center">
-                        {{ ucfirst($row->salary_type ?? '-') }}
-                    </td>
-
-
-                    <td class="text-right">
-                        {{ number_format($row->base_salary ?? 0, 2) }}
-                    </td>
-
-
-                    <td class="text-center">
-                        {{ $row->full_days ?? 0 }}
-                    </td>
-
-
-                    <td class="text-center">
-                        {{ $row->half_days ?? 0 }}
-                    </td>
-
-
-                    <td class="text-center">
-                        {{ $row->absent_days ?? 0 }}
-                    </td>
-
-
-                    <td class="text-center">
-                        {{ $row->leave_days ?? 0 }}
-                    </td>
-
-
-                    <td class="text-center">
-                        {{ $row->worked_days ?? 0 }}
-                    </td>
-
-
-                    <td class="text-right">
-                        {{ number_format($row->gross_salary ?? 0, 2) }}
-                    </td>
-
-
-                    <td class="text-right">
-                        {{ number_format($row->deduction ?? 0, 2) }}
-                    </td>
-
-
-                    <td class="text-right">
-                        {{ number_format($row->adjustment ?? 0, 2) }}
-                    </td>
-
-
+                    <td class="text-center">{{ ucfirst($row->salary_type ?? '-') }}</td>
+                    <td class="text-right"> {{ number_format($row->base_salary ?? 0, 2) }}</td>
+                    <td class="text-center">{{ $row->full_days ?? 0 }}</td>
+                    <td class="text-center">{{ $row->half_days ?? 0 }}</td>
+                    <td class="text-center">{{ $row->absent_days ?? 0 }}</td>
+                    <td class="text-center">{{ $row->leave_days ?? 0 }}</td>
+                    <td class="text-center">{{ $row->worked_days ?? 0 }}</td>
+                    <td class="text-right">{{ number_format($row->gross_salary ?? 0, 2) }}</td>
+                    <td class="text-right">{{ number_format($row->deduction ?? 0, 2) }}</td>
+                    <td class="text-right">{{ number_format($row->adjustment ?? 0, 2) }}</td>
                     <td class="text-right">
                         <strong>
                             {{ number_format($row->net_salary ?? 0, 2) }}
                         </strong>
                     </td>
-
-
                     <td class="text-center">
-
                         @if($row->status === 'calculated')
-
-                            <span class="status status-calculated">
-                                Calculated
-                            </span>
-
+                            <span class="status status-calculated">Calculated</span>
                         @elseif($row->status === 'approved')
-
-                            <span class="status status-approved">
-                                Approved
-                            </span>
-
+                            <span class="status status-approved">Approved</span>
                         @elseif($row->status === 'paid')
-
-                            <span class="status status-paid">
-                                Paid
-                            </span>
-
+                            <span class="status status-paid">Paid</span>
                         @elseif($row->status === 'pending')
-
-                            <span class="status status-pending">
-                                Pending
-                            </span>
-
+                            <span class="status status-pending">Pending</span>
                         @else
-
-                            <span class="status status-default">
-                                {{ ucfirst($row->status ?? '-') }}
-                            </span>
-
+                            <span class="status status-default">{{ ucfirst($row->status ?? '-') }}</span>
                         @endif
-
                     </td>
-
                 </tr>
-
             @empty
-
                 <tr>
-
-                    <td colspan="14" class="text-center">
-                        No salary details found.
-                    </td>
-
+                    <td colspan="14" class="text-center">No salary details found.</td>
                 </tr>
-
             @endforelse
-
         </tbody>
-
     </table>
-
-
     <div class="footer">
-
-        Total Records:
-        {{ $salaryDetails->count() }}
-
+        Total Records:{{ $salaryDetails->count() }}
     </div>
-
 </body>
-
 </html>

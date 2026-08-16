@@ -14,6 +14,7 @@ class EmployeesController extends Controller
     public function Employees(Request $request)
     {
         if ($request->method() == 'POST') {
+
             if ($request->add_employee) {
                 try {
                     $validation = $request->validate([
@@ -26,13 +27,11 @@ class EmployeesController extends Controller
                         'joining_date' => 'required',
                     ]);
                     if ($validation) {
-
                         if (Employees::where('employee_code', $request->employee_code)->exists()) {
                             session()->flash('error', 'Employee Code already exists.');
 
                             return redirect()->back()->withInput();
                         }
-
                         if (! empty($request->email)) {
                             if (Employees::where('email', $request->email)->exists()) {
                                 session()->flash('error', 'Email already exists.');
@@ -40,7 +39,6 @@ class EmployeesController extends Controller
                                 return redirect()->back()->withInput();
                             }
                         }
-
                         if (! empty($request->phone)) {
                             if (Employees::where('phone', $request->phone)->exists()) {
                                 session()->flash('error', 'Phone number already exists.');
@@ -150,15 +148,11 @@ class EmployeesController extends Controller
         if ($request->method() == 'GET') {
 
             if ($request->get_designation_data) {
-
                 $department_id = $request->departmentId;
-
                 $designations = Designation::where(
                     'department_id',
                     $department_id
-                )
-                    ->where('status', '1')
-                    ->get();
+                )->where('status', '1')->get();
 
                 return response()->json($designations);
             }

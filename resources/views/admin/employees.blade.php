@@ -1,21 +1,17 @@
 @extends('layout.default')
 @section('content')
-      <div class="container">
+    <div class="container">
 
         <div class="card">
             <div class="card-header bg-transparent mt-2">
                 <h5 class="card-title">Employee Filter</h5>
             </div>
-
             <div class="card-body">
                 <div class="row">
-
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Department</label>
-
                         <select name="filter_department" id="filter_department" class="form-select">
                             <option value="">All Department</option>
-
                             @foreach ($departmentdata as $item)
                                 <option value="{{ $item->id }}">
                                     {{ $item->code }} - {{ $item->name }}
@@ -26,7 +22,6 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Designation</label>
-
                         <select name="filter_designation" id="filter_designation" class="form-select">
                             <option value="">All Designation</option>
                         </select>
@@ -34,7 +29,6 @@
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Employee Type</label>
-
                         <select name="filter_employee_type" id="filter_employee_type" class="form-select">
                             <option value="">All Employee Type</option>
                             <option value="daily">Daily</option>
@@ -54,11 +48,8 @@
                             placeholder="Employee Name">
                     </div>
 
-
-                    <!-- Status -->
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Status</label>
-
                         <select name="filter_status" id="filter_status" class="form-select">
                             <option value="">All Status</option>
                             <option value="1">Active</option>
@@ -68,9 +59,7 @@
 
                 </div>
             </div>
-
             <div class="card-footer d-flex justify-content-center gap-2 bg-transparent">
-
                 <button type="button" class="btn btn-primary" id="filterBtn">
                     <i class="fa-solid fa-filter"></i> Show Filter
                 </button>
@@ -78,7 +67,6 @@
                 <button type="reset" class="btn btn-secondary" id="resetBtn">
                     <i class="fa-solid fa-rotate-right"></i> Reset
                 </button>
-
             </div>
         </div>
 
@@ -118,11 +106,10 @@
                 </div>
             </div>
         </div>
- 
+
         <div class="modal fade" id="Addmodel" tabindex="-1" aria-labelledby="AddmodelLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-top modal-lg">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title">Add Employee</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -130,19 +117,13 @@
 
                     <form action="{{ route('employee') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
-
                         @csrf
-
                         <input type="hidden" name="add_employee" value="true">
-
                         <div class="modal-body">
                             <div class="row">
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Department <span class="text-danger">*</span>
                                     </label>
-
                                     <select name="department_id" id="add_department" class="form-select" required>
                                         <option value="" disabled selected> Select Department</option>
                                         @foreach ($departmentdata as $item)
@@ -150,13 +131,9 @@
                                                 {{ $item->code }} - {{ $item->name }}
                                             </option>
                                         @endforeach
-
                                     </select>
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Designation <span class="text-danger">*</span></label>
@@ -166,16 +143,12 @@
                                     <small class="text-errors"></small>
                                 </div>
 
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Employee Code <span class="text-danger">*</span>
                                     </label>
-
-                                    <input type="text" class="form-control" name="employee_code" id="add_employee_code"
-                                        placeholder="Enter Employee Code" required>
-
+                                    <input type="text" class="form-control" name="employee_code"
+                                        id="add_employee_code" placeholder="Enter Employee Code" required>
                                     <small class="text-errors"></small>
                                 </div>
 
@@ -183,124 +156,87 @@
                                     <label class="form-label mb-1">
                                         Employee Name <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="text" class="form-control" name="name" id="add_name"
                                         placeholder="Enter Employee Name" required>
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Email <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="email" class="form-control" name="email" id="add_email"
                                         placeholder="Enter Email">
-
                                     <small class="text-errors"></small>
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Phone <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="text" class="form-control" name="phone" id="add_phone"
                                         placeholder="Enter Phone Number">
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Employee Type
                                     </label>
-
                                     <div class="d-flex gap-4 mt-2">
-
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="employee_type" checked
                                                 id="add_employee_type_daily" value="daily" required>
-
                                             <label class="form-check-label" for="add_employee_type_daily">
                                                 Daily
                                             </label>
                                         </div>
-
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="employee_type"
                                                 id="add_employee_type_monthly" value="monthly" required>
-
                                             <label class="form-check-label" for="add_employee_type_monthly">
                                                 Monthly
                                             </label>
                                         </div>
-
                                     </div>
-
                                     <small class="text-errors"></small>
                                 </div>
 
-
-
                                 <div class="mb-3 col-md-6 form-field" id="daily_rate_field">
-
                                     <label class="form-label mb-1">
                                         Daily Rate
                                     </label>
-
-                                    <input type="number" step="0.01" min="0" class="form-control" name="daily_rate"
-                                        id="add_daily_rate" placeholder="Enter Daily Rate">
-
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        name="daily_rate" id="add_daily_rate" placeholder="Enter Daily Rate">
                                     <small class="text-errors"></small>
                                 </div>
 
-
-
                                 <div class="mb-3 col-md-6 form-field" id="monthly_salary_field">
-
                                     <label class="form-label mb-1">
                                         Monthly Salary
                                     </label>
-
-                                    <input type="number" step="0.01" min="0" class="form-control" name="monthly_salary"
-                                        id="add_monthly_salary" placeholder="Enter Monthly Salary">
-
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        name="monthly_salary" id="add_monthly_salary" placeholder="Enter Monthly Salary">
                                     <small class="text-errors"></small>
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Joining Date <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="text" class="form-control filter_date" name="joining_date"
                                         id="add_joining_date" placeholder="Joining Date">
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
-
                             </div>
                         </div>
-
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="insert_confirm">
-
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="insert_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i>
                                 Submit
-
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -309,28 +245,20 @@
         <div class="modal fade" id="Editmodel" tabindex="-1" aria-labelledby="EditmodelLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-top modal-lg">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Employee</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-
                     <form action="{{ route('employee') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
-
                         @csrf
-
                         <input type="hidden" name="edit_employee" value="true">
                         <input type="hidden" id="edit_employee_id" name="id">
-
                         <div class="modal-body">
                             <div class="row">
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Department <span class="text-danger">*</span>
                                     </label>
-
                                     <select name="department_id" id="edit_department" class="form-select" required>
                                         <option value="" disabled selected> Select Department</option>
                                         @foreach ($departmentdata as $item)
@@ -338,17 +266,12 @@
                                                 {{ $item->code }} - {{ $item->name }}
                                             </option>
                                         @endforeach
-
                                     </select>
-
                                     <small class="text-errors"></small>
                                 </div>
 
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Designation <span class="text-danger">*</span></label>
-
                                     <select name="designation_id" id="edit_designation" class="form-select" required>
                                         <option value="" disabled selected>Select Designation</option>
                                         @foreach ($designationdata as $item)
@@ -356,22 +279,16 @@
                                                 {{ $item->name }}
                                             </option>
                                         @endforeach
-
                                     </select>
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Employee Code <span class="text-danger">*</span>
                                     </label>
-
-                                    <input type="text" class="form-control" name="employee_code" id="edit_employee_code"
-                                        placeholder="Enter Employee Code" required>
-
+                                    <input type="text" class="form-control" name="employee_code"
+                                        id="edit_employee_code" placeholder="Enter Employee Code" required>
                                     <small class="text-errors"></small>
                                 </div>
 
@@ -379,51 +296,37 @@
                                     <label class="form-label mb-1">
                                         Employee Name <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="text" class="form-control" name="name" id="edit_name"
                                         placeholder="Enter Employee Name" required>
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Email <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="email" class="form-control" name="email" id="edit_email"
                                         placeholder="Enter Email">
-
                                     <small class="text-errors"></small>
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Phone <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="text" class="form-control" name="phone" id="edit_phone"
                                         placeholder="Enter Phone Number">
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Employee Type
                                     </label>
-
                                     <div class="d-flex gap-4 mt-2">
-
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="employee_type"
                                                 id="edit_employee_type_daily" value="daily" required checked>
-
                                             <label class="form-check-label" for="edit_employee_type_daily">
                                                 Daily
                                             </label>
@@ -432,69 +335,50 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="employee_type"
                                                 id="edit_employee_type_monthly" value="monthly" required>
-
                                             <label class="form-check-label" for="edit_employee_type_monthly">
                                                 Monthly
                                             </label>
                                         </div>
-
                                     </div>
-
                                     <small class="text-errors"></small>
                                 </div>
 
-
-
                                 <div class="mb-3 col-md-6 form-field" id="edit_daily_rate_field">
-
                                     <label class="form-label mb-1">
                                         Daily Rate
                                     </label>
-
-                                    <input type="number" step="0.01" min="0" class="form-control" name="daily_rate"
-                                        id="edit_daily_rate" placeholder="Enter Daily Rate">
-
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        name="daily_rate" id="edit_daily_rate" placeholder="Enter Daily Rate">
                                     <small class="text-errors"></small>
                                 </div>
 
                                 <div class="mb-3 col-md-6 form-field" id="edit_monthly_salary_field">
-
                                     <label class="form-label mb-1">
                                         Monthly Salary
                                     </label>
-
-                                    <input type="number" step="0.01" min="0" class="form-control" name="monthly_salary"
-                                        id="edit_monthly_salary" placeholder="Enter Monthly Salary">
-
+                                    <input type="number" step="0.01" min="0" class="form-control"
+                                        name="monthly_salary" id="edit_monthly_salary"
+                                        placeholder="Enter Monthly Salary">
                                     <small class="text-errors"></small>
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
                                         Joining Date <span class="text-danger">*</span>
                                     </label>
-
                                     <input type="text" class="form-control filter_date" name="joining_date"
                                         id="edit_joining_date" placeholder="Joining Date">
-
                                     <small class="text-errors"></small>
                                 </div>
-
-
-
                             </div>
                         </div>
-
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_confirm">
-
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i>
                                 Update
-
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>
@@ -532,7 +416,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_state">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -541,13 +426,11 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('script')
-    @include("layout.dataTable")
+    @include('layout.dataTable')
     <script src="js/pages/employees.js"></script>
     <script>
-
         function employeeTypeChange() {
             let type = $('#Addmodel input[name="employee_type"]:checked').val();
             if (type === 'daily') {
@@ -581,18 +464,11 @@
         }
 
 
+        $(document).on('change', '#Addmodel input[name="employee_type"]', function() {
+            employeeTypeChange();
+        });
 
-        $(document).on(
-            'change',
-            '#Addmodel input[name="employee_type"]',
-            function () {
-                employeeTypeChange();
-            }
-        );
-
-
-        $(document).ready(function () {
-
+        $(document).ready(function() {
             $('.filter_date').datepicker({
                 format: 'dd-mm-yyyy',
                 autoclose: true,
@@ -606,7 +482,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{{ route('employee') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.department = $('#filter_department').val();
                         d.designation = $('#filter_designation').val();
                         d.employee_type = $('#filter_employee_type').val();
@@ -616,8 +492,7 @@
                     }
                 },
 
-                columns: [
-                    {
+                columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
@@ -659,61 +534,64 @@
                         data: 'employee_type',
                         name: 'employee_type',
                         className: 'text-center',
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             if (data === 'daily') {
-                                return '<span class="badge bg-info">Daily</span>';
+                                return `
+                                    <span class="badge bg-info-subtle text-info px-2 py-1">
+                                        Daily
+                                    </span>
+                                `;
                             }
                             if (data === 'monthly') {
-                                return '<span class="badge bg-primary">Monthly</span>';
+                                return `
+                                    <span class="badge bg-primary-subtle text-primary px-2 py-1">
+                                        Monthly
+                                    </span>
+                                `;
                             }
-                            return '-';
+                            return `
+                                <span class="badge bg-secondary-subtle text-secondary px-2 py-1">
+                                    -
+                                </span>
+                            `;
                         }
                     },
-
                     {
                         data: 'daily_rate',
                         name: 'daily_rate',
                         className: 'text-center',
-
-                        render: function (data, type, row) {
-
+                        render: function(data, type, row) {
                             return data !== null &&
                                 data !== undefined &&
-                                data !== ''
-                                ? data
-                                : '-';
+                                data !== '' ?
+                                data :
+                                '-';
                         }
                     },
                     {
                         data: 'monthly_salary',
                         name: 'monthly_salary',
                         className: 'text-center',
-
-                        render: function (data, type, row) {
-
+                        render: function(data, type, row) {
                             return data !== null &&
                                 data !== undefined &&
-                                data !== ''
-                                ? data
-                                : '-';
+                                data !== '' ?
+                                data :
+                                '-';
                         }
                     },
                     {
                         data: 'joining_date',
                         name: 'joining_date',
                         className: 'text-center',
-                        render: function (data, type, row) {
-
+                        render: function(data, type, row) {
                             if (!data) {
                                 return '-';
                             }
-
                             let date = new Date(data);
-
                             let day = String(date.getDate()).padStart(2, '0');
                             let month = String(date.getMonth() + 1).padStart(2, '0');
                             let year = date.getFullYear();
-
                             return day + '-' + month + '-' + year;
                         }
                     },
@@ -723,11 +601,19 @@
                         className: 'text-center',
                         orderable: false,
                         searchable: false,
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
                             if (data == 1) {
-                                return '<span class="badge bg-success">Active</span>';
+                                return `
+                                    <span class="badge bg-success-subtle text-success px-2 py-1">
+                                        Active
+                                    </span>
+                                `;
                             } else {
-                                return '<span class="badge bg-danger">Inactive</span>';
+                                return `
+                                    <span class="badge bg-danger-subtle text-danger px-2 py-1">
+                                        Inactive
+                                    </span>
+                                `;
                             }
                         }
                     },
@@ -742,13 +628,11 @@
 
                 ]
             });
-
-            $('#filterBtn').click(function (e) {
+            $('#filterBtn').click(function(e) {
                 e.preventDefault();
                 table.ajax.reload();
             });
-
-            $('#resetBtn').click(function () {
+            $('#resetBtn').click(function() {
                 $('#filter_department').val('');
                 $('#filter_designation').html(
                     '<option value="">All Designation</option>'
@@ -759,23 +643,20 @@
                 $('#filter_status').val('');
                 table.ajax.reload();
             });
-
         });
 
-        $(document).on('change', '#add_department', function () {
+        $(document).on('change', '#add_department', function() {
             let departmentId = $(this).val();
             let designation = $('#add_designation');
             designation.html(
                 '<option value="" disabled selected>Loading...</option>'
             );
-
             if (!departmentId) {
                 designation.html(
                     '<option value="" disabled selected>Select Designation</option>'
                 );
                 return;
             }
-
             $.ajax({
                 url: "{{ route('employee') }}",
                 type: "GET",
@@ -784,13 +665,13 @@
                     get_designation_data: true
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     designation.empty();
                     designation.append(
                         '<option value="" disabled selected>Select Designation</option>'
                     );
                     if (response.length > 0) {
-                        $.each(response, function (key, item) {
+                        $.each(response, function(key, item) {
                             designation.append(
                                 '<option value="' + item.id + '">' + item.name + '</option>'
                             );
@@ -801,8 +682,7 @@
                         );
                     }
                 },
-
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
                     designation.html(
                         '<option value="" disabled selected>Unable to load designation</option>'
@@ -811,7 +691,7 @@
             });
         });
 
-        $(document).on('change', '#filter_department', function () {
+        $(document).on('change', '#filter_department', function() {
             let departmentId = $(this).val();
             let designation = $('#filter_designation');
             designation.html(
@@ -823,7 +703,6 @@
                 );
                 return;
             }
-
             $.ajax({
                 url: "{{ route('employee') }}",
                 type: "GET",
@@ -832,15 +711,16 @@
                     get_designation_data: true
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     designation.empty();
                     designation.append(
                         '<option value="">All Designation</option>'
                     );
 
                     if (response.length > 0) {
-                        $.each(response, function (key, item) {
-                            designation.append('<option value="' + item.id + '">' + item.name + '</option>');
+                        $.each(response, function(key, item) {
+                            designation.append('<option value="' + item.id + '">' + item.name +
+                                '</option>');
                         });
                     } else {
                         designation.append(
@@ -848,18 +728,13 @@
                         );
                     }
                 },
-
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
-
                     designation.html(
                         '<option value="">Unable to load designation</option>'
                     );
-
                 }
-
             });
-
         });
 
 
@@ -868,14 +743,12 @@
             designation.html(
                 '<option value="" disabled selected>Loading...</option>'
             );
-
             if (!departmentId) {
                 designation.html(
                     '<option value="" disabled selected>Select Designation</option>'
                 );
                 return;
             }
-
             $.ajax({
                 url: "{{ route('employee') }}",
                 type: "GET",
@@ -884,18 +757,16 @@
                     get_designation_data: true
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     designation.empty();
                     designation.append(
                         '<option value="" disabled>Select Designation</option>'
                     );
-
                     if (response.length > 0) {
-                        $.each(response, function (key, item) {
+                        $.each(response, function(key, item) {
                             designation.append(
                                 '<option value="' + item.id + '">' + item.name + '</option>'
                             );
-
                         });
                         if (designationId) {
                             designation.val(designationId);
@@ -906,8 +777,7 @@
                         );
                     }
                 },
-
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
                     designation.html(
                         '<option value="" disabled selected>Unable to load designation</option>'
@@ -942,21 +812,17 @@
             }
         }
 
-        $(document).on(
-            'change',
-            '#Editmodel input[name="employee_type"]',
-            function () {
-                editEmployeeTypeChange();
-            }
-        );
+        $(document).on('change','#Editmodel input[name="employee_type"]',function() {
+            editEmployeeTypeChange();
+        });
 
 
-        $(document).on('change', '#edit_department', function () {
+        $(document).on('change', '#edit_department', function() {
             let departmentId = $(this).val();
             loadEditDesignations(departmentId);
         });
 
-        $(document).on('click', '.editRow', function () {
+        $(document).on('click', '.editRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('employee') }}",
@@ -966,7 +832,7 @@
                     get_employee: true
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     $('#edit_employee_id').val(response.id);
                     $('#edit_department').val(response.department_id);
                     $('#edit_designation').val(response.designation_id);
@@ -974,47 +840,36 @@
                         response.department_id,
                         response.designation_id
                     );
-
                     $('#edit_employee_code').val(response.employee_code);
                     $('#edit_name').val(response.name);
                     $('#edit_email').val(response.email);
                     $('#edit_phone').val(response.phone);
-
                     $('#Editmodel input[name="employee_type"]')
                         .prop('checked', false);
-
                     $('#Editmodel #edit_employee_type_' + response.employee_type)
                         .prop('checked', true);
-
-
                     $('#edit_daily_rate').val(response.daily_rate);
                     $('#edit_monthly_salary').val(response.monthly_salary);
-
                     if (response.joining_date) {
-                        let dateParts = response.joining_date.split('-');
-
+                        let dateParts = response.joining_date.split('-')
                         let formattedDate =
                             dateParts[2] + '-' +
                             dateParts[1] + '-' +
                             dateParts[0];
-
                         $('#edit_joining_date').val(formattedDate);
                     } else {
                         $('#edit_joining_date').val('');
                     }
-
                     editEmployeeTypeChange();
-
                     $('#Editmodel').modal('show');
                 },
-
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
                 }
             });
         });
 
-        $(document).on('click', '.editStatusRow', function () {
+        $(document).on('click', '.editStatusRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('employee') }}",
@@ -1024,18 +879,16 @@
                     get_status: true
                 },
                 dataType: 'json',
-                success: function (response) {
-
+                success: function(response) {
                     $('#edit_status_id').val(response.id);
                     if (response.status == 1) {
                         $('#edit_active').prop('checked', true);
                     } else {
                         $('#edit_inactive').prop('checked', true);
                     }
-
                     $('#Editstatusmodel').modal('show');
                 },
-                error: function () {
+                error: function() {
                     console.log(xhr.responseText);
                 }
             });
@@ -1043,9 +896,9 @@
         });
 
 
-        $(document).on('click', '.deleteRow', function () {
+        $(document).on('click', '.deleteRow', function() {
             let id = $(this).data('id');
-            confirmAction(messages.delete_confirm, function () {
+            confirmAction(messages.delete_confirm, function() {
                 $.ajax({
                     url: "{{ route('employee') }}",
                     type: 'GET',
@@ -1054,7 +907,7 @@
                         get_delete: true
                     },
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         $('#datatable').DataTable().ajax.reload(null, false);
                         Swal.fire({
                             title: 'Success',
@@ -1068,8 +921,7 @@
                             }
                         })
                     },
-
-                    error: function (xhr) {
+                    error: function(xhr) {
                         let message = "Something went wrong!";
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             message = xhr.responseJSON.message;
@@ -1089,6 +941,5 @@
                 });
             });
         });
-
     </script>
 @endsection
