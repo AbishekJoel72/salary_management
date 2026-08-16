@@ -12,6 +12,7 @@ class DesignationController extends Controller
     public function Designation(Request $request)
     {
         if ($request->method() == 'POST') {
+
             if ($request->add_designation) {
                 try {
                     $validation = $request->validate([
@@ -19,12 +20,13 @@ class DesignationController extends Controller
                         'designation_name' => 'required',
                     ]);
                     if ($validation) {
-                        
+
                         if (Designation::where('name', $request->designation_name)->exists()) {
                             session()->flash('error', 'Designation name already exists.');
 
                             return redirect()->back()->withInput();
                         }
+
                         $d = new Designation;
                         $d->department_id = $request->department;
                         $d->name = $request->designation_name;
@@ -117,7 +119,7 @@ class DesignationController extends Controller
                 }
             }
 
-            $data = Designation::select([
+            $data = Designation::with('get_department')->select([
                 'id',
                 'department_id',
                 'name',

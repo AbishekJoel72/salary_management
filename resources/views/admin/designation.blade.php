@@ -1,6 +1,6 @@
 @extends('layout.default')
 @section('content')
-      <div class="container">
+    <div class="container">
 
         <div class="card">
             <div class="card-header bg-transparent mt-2">
@@ -10,7 +10,6 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label mb-1"> Department </label>
-
                         <select name="filter_department" id="filter_department" class="form-select">
                             <option value=""> All Department</option>
                             @foreach ($departmentdata as $item)
@@ -29,7 +28,6 @@
                 </div>
             </div>
             <div class="card-footer d-flex justify-content-center gap-2 bg-transparent">
-
                 <button type="button" class="btn btn-primary" id="filterBtn">
                     <i class="fa-solid fa-filter"></i> Show Filter
                 </button>
@@ -37,7 +35,6 @@
                 <button type="reset" class="btn btn-secondary" id="resetBtn">
                     <i class="fa-solid fa-rotate-right"></i> Reset
                 </button>
-
             </div>
         </div>
 
@@ -88,7 +85,8 @@
                                     <select name="department" id="add_department" class="form-select">
                                         <option value="" disabled selected> All Department</option>
                                         @foreach ($departmentdata as $item)
-                                            <option value="{{ $item->id }}">{{ $item->code }} - {{ $item->name }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->code }} - {{ $item->name }}
+                                            </option>
                                         @endforeach
 
                                     </select>
@@ -134,7 +132,8 @@
                                     <select name="department" id="edit_department" class="form-select">
                                         <option value="" selected disabled> All Department</option>
                                         @foreach ($departmentdata as $item)
-                                            <option value="{{ $item->id }}">{{ $item->code }} - {{ $item->name }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->code }} - {{ $item->name }}
+                                            </option>
                                         @endforeach
 
                                     </select>
@@ -151,7 +150,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_confirm">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -159,7 +159,7 @@
                 </div>
             </div>
         </div>
- 
+
         <div class="modal fade" id="Editstatusmodel" tabindex="-1" aria-labelledby="EditstatusmodelLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-top">
@@ -168,8 +168,8 @@
                         <h5 class="modal-title">Edit Status</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="{{ route('designation') }}" method="POST" autocomplete="off" class="needs-validation"
-                        novalidate>
+                    <form action="{{ route('designation') }}" method="POST" autocomplete="off"
+                        class="needs-validation" novalidate>
                         @csrf
                         <input type="hidden" name="edit_status" value="true">
                         <input type="hidden" id="edit_status_id" name="id">
@@ -191,7 +191,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_state">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -200,21 +201,18 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('script')
-    @include("layout.dataTable")
-
+    @include('layout.dataTable')
     <script src="js/pages/designation.js"></script>
-    
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('designation') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.department = $('#filter_department').val();
                         d.designation = $('#filter_designation').val();
                     }
@@ -222,56 +220,62 @@
 
 
                 columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false,
-                    className: 'text-center',
-                    width: '5%'
-                },
-                {
-                    data: 'department',
-                    name: 'department',
-                    className: 'text-center',
-                },
-                {
-                    data: 'name',
-                    name: 'name',
-                    className: 'text-center',
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                        width: '5%'
+                    },
+                    {
+                        data: 'department',
+                        name: 'department',
+                        className: 'text-center',
+                    },
+                    {
+                        data: 'name',
+                        name: 'name',
+                        className: 'text-center',
 
-                },
-                {
-                    data: 'status',
-                    name: 'status',
-                    className: 'text-center',
-                    orderable: false,
-                    searchable: false,
-                    render: function (data, type, row) {
-
-                        if (data == 1) {
-                            return '<span class="badge bg-success">Active</span>';
-                        } else {
-                            return '<span class="badge bg-danger">Inactive</span>';
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
+                            if (data == 1) {
+                                return `
+                                <span class="badge bg-success-subtle text-success px-2 py-1">
+                                    Active
+                                </span>
+                            `;
+                            } else {
+                                return `
+                                <span class="badge bg-danger-subtle text-danger px-2 py-1">
+                                    Inactive
+                                </span>
+                            `;
+                            }
                         }
-
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                        width: '5%'
                     }
-                },
-                {
-                    data: 'actions',
-                    name: 'actions',
-                    className: 'text-center',
-                    orderable: false,
-                    searchable: false,
-                    width: '5%'
-                }
                 ]
             });
-            $('#filterBtn').click(function (e) {
+            $('#filterBtn').click(function(e) {
                 e.preventDefault();
                 table.ajax.reload();
             });
 
-            $('#resetBtn').click(function () {
+            $('#resetBtn').click(function() {
                 $('#filter_department').val('');
                 $('#filter_designation').val('');
                 table.ajax.reload();
@@ -280,39 +284,29 @@
 
         });
 
-        $(document).on('click', '.editRow', function () {
-
+        $(document).on('click', '.editRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('designation') }}",
                 type: "GET",
-
                 data: {
                     id: id,
                     get_designation: true
                 },
-
                 dataType: "json",
-
-                success: function (response) {
-
-                    console.log(response);
-
+                success: function(response) {
                     $('#edit_designation_id').val(response.id);
                     $('#edit_department').val(response.department_id);
                     $('#edit_designation_name').val(response.name);
-
                     $('#Editmodel').modal('show');
                 },
-
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
                 }
             });
-
         });
 
-        $(document).on('click', '.editStatusRow', function () {
+        $(document).on('click', '.editStatusRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('designation') }}",
@@ -322,7 +316,7 @@
                     get_status: true
                 },
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
 
                     $('#edit_status_id').val(response.id);
                     if (response.status == 1) {
@@ -333,16 +327,15 @@
 
                     $('#Editstatusmodel').modal('show');
                 },
-                error: function () {
+                error: function() {
                     console.log(xhr.responseText);
                 }
             });
-
         });
 
-        $(document).on('click', '.deleteRow', function () {
+        $(document).on('click', '.deleteRow', function() {
             let id = $(this).data('id');
-            confirmAction(messages.delete_confirm, function () {
+            confirmAction(messages.delete_confirm, function() {
                 $.ajax({
                     url: "{{ route('designation') }}",
                     type: 'GET',
@@ -351,7 +344,7 @@
                         get_delete: true
                     },
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         $('#datatable').DataTable().ajax.reload(null, false);
                         Swal.fire({
                             title: 'Success',
@@ -366,7 +359,7 @@
                         })
                     },
 
-                    error: function (xhr) {
+                    error: function(xhr) {
                         let message = "Something went wrong!";
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             message = xhr.responseJSON.message;
@@ -386,6 +379,5 @@
                 });
             });
         });
-
     </script>
 @endsection

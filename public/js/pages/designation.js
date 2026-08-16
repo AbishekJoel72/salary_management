@@ -3,7 +3,7 @@ const designationRules = {
     department: {
         required: true,
         messages: {
-            required: "Please select Department."
+            required: "Please select the Field."
         }
     },
 
@@ -20,7 +20,7 @@ const designationRules = {
 
 $(function () {
 
-    $('#Addmodel form, #Editmodel form').on('submit', function (e) {
+    $('form').on('submit', function (e) {
 
         let isValid = true;
 
@@ -41,14 +41,10 @@ $(function () {
 
 
 
-    $(document).on(
-        'keyup blur change',
-        '#Addmodel .form-control, #Addmodel .form-select, #Editmodel .form-control, #Editmodel .form-select',
-        function () {
+    $(document).on('keyup blur change','.form-control, .form-select',function () {
 
-            InlineValidator.validateField($(this), designationRules);
+        InlineValidator.validateField($(this), designationRules);
 
-        }
-    );
+    });
 
 });

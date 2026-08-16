@@ -1,5 +1,4 @@
 <div class="side-bar" id="sidebar">
-
     <h3 class="text-center sidebar-title">
         <span class="full-text">
             Salary Management
@@ -7,7 +6,6 @@
     </h3>
 
     <hr class="mt-4 mb-1">
-
     <ul class="list-unstyled">
         {{-- @if (session()->has('user_role')) --}}
 
@@ -58,19 +56,12 @@
         </li> --}}
 
         <li class="has-submenu">
-
             <a href="javascript:void(0);" class="payroll-toggle">
-
                 <i class="fa-solid fa-file-invoice-dollar me-2"></i>
-
                 <span class="sidebar-text">Payroll</span>
-
                 <i class="fa-solid fa-chevron-right submenu-arrow"></i>
-
             </a>
-
             <ul class="submenu">
-
                 <li class="{{ Request::routeIs('salary_period') ? 'active' : '' }}">
                     <a href="{{ route('salary_period') }}">
                         <i class="fa-solid fa-calendar-days"></i>
@@ -93,7 +84,6 @@
                 </li> --}}
 
             </ul>
-
         </li>
 
         {{-- <li>
@@ -176,8 +166,6 @@
                 <span class="sidebar-text">Logout</span>
             </a>
         </li> --}}
-
-
 
     </ul>
 </div>
