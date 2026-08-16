@@ -11,6 +11,7 @@ class DepartmentController extends Controller
     public function Department(Request $request)
     {
         if ($request->method() == 'POST') {
+
             if ($request->add_department) {
                 try {
                     $validation = $request->validate([
@@ -72,6 +73,7 @@ class DepartmentController extends Controller
                     return redirect()->back();
                 }
             }
+            
             if ($request->edit_status) {
                 try {
                     $validation = $request->validate([
@@ -164,7 +166,7 @@ class DepartmentController extends Controller
                 ->rawColumns(['actions'])
                 ->make(true);
         }
-        
+
 
         return view('admin.department');
     }

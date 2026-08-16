@@ -1,16 +1,17 @@
 @extends('layout.default')
 @section('content')
-      <div class="container">
+    <div class="container">
 
-        <div class="card mt-3">
+        <div class="card">
             <div class="card-header bg-transparent mt-2">
                 <h5 class="card-title">Departments Filter</h5>
             </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-12 mb-3">
-                        <label  class="form-label mb-1"> Department </label>
-                        <input type="text" name="filter_department" id="filter_department" class="form-control" placeholder="Department">
+                        <label class="form-label mb-1"> Department </label>
+                        <input type="text" name="filter_department" id="filter_department" class="form-control"
+                            placeholder="Department">
                     </div>
 
                 </div>
@@ -72,15 +73,15 @@
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Department Code <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="add_department_code" name="department_code"
-                                        placeholder="Enter department code" required>
+                                    <input type="text" class="form-control" id="add_department_code"
+                                        name="department_code" placeholder="Enter department code" required>
                                     <small class="text-errors"></small>
                                 </div>
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Department Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="add_department_name" name="department_name"
-                                        placeholder="Enter department name" required>
+                                    <input type="text" class="form-control" id="add_department_name"
+                                        name="department_name" placeholder="Enter department name" required>
                                     <small class="text-errors"></small>
                                 </div>
                             </div>
@@ -113,21 +114,22 @@
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Department Code <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="edit_department_code" name="department_code"
-                                        placeholder="Enter department code" required>
+                                    <input type="text" class="form-control" id="edit_department_code"
+                                        name="department_code" placeholder="Enter department code" required>
                                     <small class="text-errors"></small>
                                 </div>
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Department Name <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" class="form-control" id="edit_department_name" name="department_name"
-                                        placeholder="Enter department name" required>
+                                    <input type="text" class="form-control" id="edit_department_name"
+                                        name="department_name" placeholder="Enter department name" required>
                                     <small class="text-errors"></small>
                                 </div>
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_confirm">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -167,7 +169,8 @@
                             </div>
                         </div>
                         <div class="modal-footer d-flex justify-content-center">
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_state">
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_state">
                                 <i class="fa-solid fa-paper-plane me-2"></i> Update
                             </button>
                         </div>
@@ -175,77 +178,84 @@
                 </div>
             </div>
         </div>
- 
+
     </div>
- 
 @endsection
 @section('script')
-    @include("layout.dataTable")
+    @include('layout.dataTable')
     <script src="{{ asset('js/pages/department.js') }}"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     url: "{{ route('department') }}",
-                    data: function (d) {
+                    data: function(d) {
                         d.department = $('#filter_department').val();
                     }
                 },
 
 
                 columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false,
-                    className: 'text-center',
-                    width: '5%'
-                },
-                {
-                    data: 'code',
-                    name: 'code',
-                    className: 'text-center',
-                },
-                {
-                    data: 'name',
-                    name: 'name',
-                    className: 'text-center',
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false,
+                        className: 'text-center',
+                        width: '5%'
+                    },
+                    {
+                        data: 'code',
+                        name: 'code',
+                        className: 'text-center',
+                    },
+                    {
+                        data: 'name',
+                        name: 'name',
+                        className: 'text-center',
 
-                },
-                {
-                    data: 'status',
-                    name: 'status',
-                    className: 'text-center',
-                    orderable: false,
-                    searchable: false,
-                    render: function (data, type, row) {
+                    },
+                    {
+                        data: 'status',
+                        name: 'status',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                        render: function(data, type, row) {
 
-                        if (data == 1) {
-                            return '<span class="badge bg-success">Active</span>';
-                        } else {
-                            return '<span class="badge bg-danger">Inactive</span>';
+                            if (data == 1) {
+                                return `
+                                <span class="badge bg-success-subtle text-success px-2 py-1">
+                                    Active
+                                </span>
+                            `;
+                            } else {
+                                return `
+                                    <span class="badge bg-danger-subtle text-danger px-2 py-1">
+                                        In Active
+                                    </span>
+                                `;
+                            }
+
                         }
-
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false,
+                        width: '5%'
                     }
-                },
-                {
-                    data: 'actions',
-                    name: 'actions',
-                    className: 'text-center',
-                    orderable: false,
-                    searchable: false,
-                    width: '5%'
-                }
                 ]
             });
-            $('#filterBtn').click(function (e) {
+            $('#filterBtn').click(function(e) {
                 e.preventDefault();
                 table.ajax.reload();
             });
 
-            $('#resetBtn').click(function () {
+            $('#resetBtn').click(function() {
                 $('#filter_department').val('');
                 table.ajax.reload();
             });
@@ -253,7 +263,7 @@
 
         });
 
-        $(document).on('click', '.editRow', function () {
+        $(document).on('click', '.editRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('department') }}",
@@ -263,21 +273,21 @@
                     get_department: true
                 },
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
 
                     $('#edit_department_id').val(response.id);
                     $('#edit_department_code').val(response.code);
                     $('#edit_department_name').val(response.name);
                     $('#Editmodel').modal('show');
                 },
-                error: function () {
+                error: function() {
                     console.log(xhr.responseText);
                 }
             });
 
         });
 
-        $(document).on('click', '.editStatusRow', function () {
+        $(document).on('click', '.editStatusRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('department') }}",
@@ -287,7 +297,7 @@
                     get_status: true
                 },
                 dataType: 'json',
-                success: function (response) {
+                success: function(response) {
 
                     $('#edit_status_id').val(response.id);
                     if (response.status == 1) {
@@ -298,7 +308,7 @@
 
                     $('#Editstatusmodel').modal('show');
                 },
-                error: function () {
+                error: function() {
                     console.log(xhr.responseText);
                 }
             });
@@ -351,6 +361,5 @@
                 });
             });
         });
-
     </script>
 @endsection
