@@ -569,31 +569,18 @@ textarea:focus {
   ----------------------------------------------------------------------------------------------------------------------*/
 
 
-/* =========================================================
-   TIMEPICKER
-   ========================================================= */
-
 .bootstrap-timepicker-widget {
     z-index: 1060 !important;
-
     border: 1px solid var(--border-color) !important;
     border-radius: var(--radius-md) !important;
-
     padding: 8px !important;
-
     background: var(--bg-card) !important;
-
     box-shadow: var(--shadow-lg) !important;
-
     font-family: 'Poppins', sans-serif;
-
     color: var(--text-primary);
 }
 
 
-/* =========================================================
-   TIMEPICKER TABLE
-   ========================================================= */
 
 .bootstrap-timepicker-widget table {
     width: 100%;
@@ -602,129 +589,76 @@ textarea:focus {
 
 .bootstrap-timepicker-widget table td {
     padding: 4px !important;
-
     text-align: center;
 }
 
 
-/* =========================================================
-   TIME INPUT
-   ========================================================= */
-
 .bootstrap-timepicker-widget input {
     width: 55px;
-
     height: 38px;
-
     padding: 6px 8px;
-
     border: 1px solid var(--border-color);
-
     border-radius: var(--radius-sm);
-
     background: var(--bg-card);
-
     color: var(--text-primary);
-
     font-family: 'Poppins', sans-serif;
-
     font-size: 14px;
-
     text-align: center;
-
     outline: none;
 }
 
 
 .bootstrap-timepicker-widget input:focus {
     border-color: var(--primary-color);
-
     box-shadow: 0 0 0 3px rgba(var(--primary-rgb),
             0.12);
 }
 
 
-/* =========================================================
-   UP / DOWN BUTTONS
-   ========================================================= */
-
 .bootstrap-timepicker-widget a {
     color: var(--primary-color) !important;
-
     font-size: 16px;
-
     text-decoration: none;
-
     border-radius: var(--radius-sm);
 }
 
 
 .bootstrap-timepicker-widget a:hover {
     background: var(--primary-light) !important;
-
     color: var(--primary-hover) !important;
 }
 
 
-/* =========================================================
-   MERIDIAN - AM / PM
-   ========================================================= */
-
 .bootstrap-timepicker-widget .bootstrap-timepicker-meridian {
     width: 55px;
-
     height: 38px;
-
     padding: 6px;
-
     border: 1px solid var(--border-color);
-
     border-radius: var(--radius-sm);
-
     background: var(--bg-card);
-
     color: var(--primary-color);
-
     font-weight: 600;
-
     cursor: pointer;
 }
 
-
 .bootstrap-timepicker-widget .bootstrap-timepicker-meridian:hover {
     background: var(--primary-light);
-
     color: var(--primary-hover);
 }
 
 
-/* =========================================================
-   HOUR / MINUTE SEPARATOR
-   ========================================================= */
-
 .bootstrap-timepicker-widget .separator {
     color: var(--text-secondary);
-
     font-weight: 600;
-
     font-size: 16px;
 }
-
-
-/* =========================================================
-   DISABLED
-   ========================================================= */
+ */
 
 .bootstrap-timepicker-widget .disabled {
     color: var(--text-muted) !important;
-
     cursor: not-allowed;
 }
 
-
-/* =========================================================
-   MODAL SUPPORT
-   ========================================================= */
 
 .modal .bootstrap-timepicker-widget {
     z-index: 1060 !important;
@@ -746,14 +680,20 @@ textarea:focus {
 }
 
 
-
-#datatable {
+#datatable,
+#salaryPeriodsTable,
+#salaryDetailsTable,
+#recentEmployeesTable {
     width: 100% !important;
     margin-top: 12px;
     border-collapse: collapse !important;
 }
 
-#datatable thead th {
+
+#datatable thead th,
+#salaryPeriodsTable thead th,
+#salaryDetailsTable thead th,
+#recentEmployeesTable thead th {
     background: #fff;
     padding: 10px 12px;
     font-weight: 600;
@@ -766,7 +706,13 @@ textarea:focus {
 }
 
 #datatable thead th,
-#datatable tbody td {
+#datatable tbody td,
+#salaryPeriodsTable thead th,
+#salaryPeriodsTable tbody td,
+#salaryDetailsTable thead th,
+#salaryDetailsTable tbody td,
+#recentEmployeesTable thead th,
+#recentEmployeesTable tbody td {
     padding: 8px 10px !important;
     font-size: 13px;
     white-space: nowrap !important;
