@@ -1,6 +1,6 @@
 @extends('layout.default')
 @section('content')
-      <div class="container">
+    <div class="container">
 
         <div class="card">
             <div class="card-header bg-transparent mt-2">
@@ -10,24 +10,18 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Employee</label>
-
                         <select name="filter_employee_id" id="filter_employee_id" class="form-select">
                             <option value="">All Employees</option>
-
                             @foreach ($employeedata as $item)
                                 <option value="{{ $item->id }}">
                                     {{ $item->employee_code }} - {{ $item->name }}
                                 </option>
                             @endforeach
-
                         </select>
                     </div>
 
-
-
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">Department</label>
-
                         <select name="filter_department_id" id="filter_department_id" class="form-select">
                             <option value="">All Departments</option>
                             @foreach ($departmentdata as $item)
@@ -38,7 +32,6 @@
                         </select>
                     </div>
 
-
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1"> Designation</label>
                         <select name="filter_designation_id" id="filter_designation_id" class="form-select">
@@ -46,15 +39,11 @@
                         </select>
                     </div>
 
-
-
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">From Date</label>
                         <input type="text" name="filter_from_date" id="filter_from_date" class="form-control filter_date"
                             placeholder="Select Date">
-
                     </div>
-
 
                     <div class="col-md-4 mb-3">
                         <label class="form-label mb-1">To Date</label>
@@ -74,19 +63,14 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="card-footer d-flex justify-content-center gap-2 bg-transparent">
                 <button type="button" class="btn btn-primary" id="filterBtn">
                     <i class="fa-solid fa-filter"></i> Show Filter
                 </button>
-
                 <button type="button" class="btn btn-secondary" id="resetBtn">
                     <i class="fa-solid fa-rotate-right"></i>Reset
                 </button>
-
             </div>
-
         </div>
 
         <div class="card mt-3">
@@ -112,6 +96,7 @@
                                 <th>Check In</th>
                                 <th>Check Out</th>
                                 <th>Work Hours</th>
+                                <th>Day Value</th>
                                 <th>Status</th>
                                 <th>Remarks</th>
                                 <th>Actions</th>
@@ -122,33 +107,21 @@
                 </div>
             </div>
         </div>
- 
 
         <div class="modal fade" id="Addmodel" tabindex="-1" aria-labelledby="AddmodelLabel" aria-hidden="true">
-
             <div class="modal-dialog modal-dialog-top">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title"> Add Attendance </h5>
-
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-
-
                     <form action="{{ route('attendance') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
-
                         @csrf
-
                         <input type="hidden" name="add_attendance" value="true">
-
-
                         <div class="modal-body">
                             <div class="row">
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Employee<span class="text-danger">*</span></label>
                                     <select name="employee_id" id="add_employee_id" class="form-select" required>
@@ -161,21 +134,16 @@
                                     </select>
                                     <small class="text-errors"></small>
                                 </div>
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Attendance Date<span class="text-danger">*</span>
                                     </label>
                                     <input type="text" name="attendance_date" id="add_attendance_date"
                                         class="form-control filter_date" placeholder="Select Date" required>
                                     <small class="text-errors"></small>
-
                                 </div>
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Status<span class="text-danger">*</span>
                                     </label>
-
                                     <select name="status" id="add_attendance_status" class="form-select" required>
                                         <option value="" disabled selected>Select Status</option>
                                         <option value="present">Present</option>
@@ -188,29 +156,23 @@
 
 
                                 <div class="mb-3 col-md-6 form-field" id="add_check_in_field">
-
                                     <label class="form-label mb-1"> Check In
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" name="check_in" id="add_check_in" class="form-control timepicker"
-                                        placeholder="HH:MM">
+                                    <input type="text" name="check_in" id="add_check_in"
+                                        class="form-control timepicker" placeholder="HH:MM">
                                     <small class="text-errors"></small>
-
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field" id="add_check_out_field">
                                     <label class="form-label mb-1">
                                         Check Out
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" name="check_out" id="add_check_out" class="form-control timepicker"
-                                        placeholder="HH:MM">
+                                    <input type="text" name="check_out" id="add_check_out"
+                                        class="form-control timepicker" placeholder="HH:MM">
                                     <small class="text-errors"></small>
-
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
@@ -219,57 +181,36 @@
                                     <input type="text" name="remarks" id="add_remarks" class="form-control"
                                         placeholder="Enter Remarks">
                                     <small class="text-errors"></small>
-
                                 </div>
-
                             </div>
-
                         </div>
-
-
                         <div class="modal-footer d-flex justify-content-center">
-
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="insert_confirm">
-
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="insert_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i>
                                 Submit
-
                             </button>
-
                         </div>
-
                     </form>
-
                 </div>
             </div>
         </div>
 
         <div class="modal fade" id="Editmodel" tabindex="-1" aria-labelledby="EditmodelLabel" aria-hidden="true">
-
             <div class="modal-dialog modal-dialog-top">
                 <div class="modal-content">
-
                     <div class="modal-header">
                         <h5 class="modal-title"> Edit Attendance </h5>
-
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
-
-
                     <form action="{{ route('attendance') }}" method="POST" autocomplete="off" class="needs-validation"
                         novalidate>
-
                         @csrf
-
                         <input type="hidden" name="edit_attendance" value="true">
-                        <input type="hidden" id="edit_attendance_id" name="edit_attendance_id">
-
-
+                        <input type="hidden" id="edit_attendance_id" name="id">
                         <div class="modal-body">
                             <div class="row">
-
-
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Employee<span class="text-danger">*</span></label>
                                     <select name="employee_id" id="edit_employee_id" class="form-select" required>
@@ -289,14 +230,11 @@
                                     <input type="text" name="attendance_date" id="edit_attendance_date"
                                         class="form-control filter_date" placeholder="Select Date" required>
                                     <small class="text-errors"></small>
-
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">Status<span class="text-danger">*</span>
                                     </label>
-
                                     <select name="status" id="edit_attendance_status" class="form-select" required>
                                         <option value="" disabled selected>Select Status</option>
                                         <option value="present">Present</option>
@@ -307,31 +245,24 @@
                                     <small class="text-errors"></small>
                                 </div>
 
-
                                 <div class="mb-3 col-md-6 form-field" id="edit_check_in_field">
-
                                     <label class="form-label mb-1"> Check In
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" name="check_in" id="edit_check_in" class="form-control timepicker"
-                                        placeholder="HH:MM">
+                                    <input type="text" name="check_in" id="edit_check_in"
+                                        class="form-control timepicker" placeholder="HH:MM">
                                     <small class="text-errors"></small>
-
                                 </div>
-
-
 
                                 <div class="mb-3 col-md-6 form-field" id="edit_check_out_field">
                                     <label class="form-label mb-1">
                                         Check Out
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" name="check_out" id="edit_check_out" class="form-control timepicker"
-                                        placeholder="HH:MM">
+                                    <input type="text" name="check_out" id="edit_check_out"
+                                        class="form-control timepicker" placeholder="HH:MM">
                                     <small class="text-errors"></small>
-
                                 </div>
-
 
                                 <div class="mb-3 col-md-6 form-field">
                                     <label class="form-label mb-1">
@@ -340,40 +271,27 @@
                                     <input type="text" name="remarks" id="edit_remarks" class="form-control"
                                         placeholder="Enter Remarks">
                                     <small class="text-errors"></small>
-
                                 </div>
-
                             </div>
-
                         </div>
-
-
                         <div class="modal-footer d-flex justify-content-center">
-
-                            <button type="submit" class="btn btn-primary px-4 confirmSubmit" data-message="update_confirm">
-
+                            <button type="submit" class="btn btn-primary px-4 confirmSubmit"
+                                data-message="update_confirm">
                                 <i class="fa-solid fa-paper-plane me-2"></i>
                                 Update
-
                             </button>
-
                         </div>
-
                     </form>
-
                 </div>
             </div>
         </div>
- 
-    </div>
 
+    </div>
 @endsection
 @section('script')
-    @include("layout.dataTable")
+    @include('layout.dataTable')
     {{-- <script src="js/pages/attendance.js"></script> --}}
     <script>
-
-
         function attendanceStatusChange() {
             let status = $('#add_attendance_status').val();
             if (status === 'present' || status === 'half_day') {
@@ -398,16 +316,12 @@
         }
 
 
-        $(document).on('change', '#add_attendance_status', function () {
-
+        $(document).on('change', '#add_attendance_status', function() {
             attendanceStatusChange();
-
         });
 
         function editAttendanceStatusChange() {
-
             let status = $('#edit_attendance_status').val();
-
             if (status === 'present' || status === 'half_day') {
 
                 $('#edit_check_in_field').show();
@@ -429,12 +343,12 @@
             }
         }
 
-        $(document).on('change', '#edit_attendance_status', function () {
+        $(document).on('change', '#edit_attendance_status', function() {
             editAttendanceStatusChange();
         });
 
 
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('.filter_date').datepicker({
                 format: 'dd-mm-yyyy',
                 autoclose: true,
@@ -457,26 +371,19 @@
             var table = $('#datatable').DataTable({
                 processing: true,
                 serverSide: true,
-
                 ajax: {
                     url: "{{ route('attendance') }}",
-
-                    data: function (d) {
-
+                    data: function(d) {
                         d.employee_id = $('#filter_employee_id').val();
                         d.department_id = $('#filter_department_id').val();
                         d.designation_id = $('#filter_designation_id').val();
-
                         d.from_date = $('#filter_from_date').val();
                         d.to_date = $('#filter_to_date').val();
-
                         d.status = $('#filter_status').val();
                     }
                 },
 
-                columns: [
-
-                    {
+                columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
                         orderable: false,
@@ -486,8 +393,8 @@
                     },
 
                     {
-                        data: 'get_employee.name',
-                        name: 'get_employee.name',
+                        data: 'employee',
+                        name: 'employee',
                         className: 'text-center'
                     },
 
@@ -508,7 +415,7 @@
                         name: 'attendance_date',
                         className: 'text-center',
 
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
 
                             if (!data) {
                                 return '-';
@@ -529,7 +436,7 @@
                         name: 'check_in',
                         className: 'text-center',
 
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
 
                             if (!data) {
                                 return '-';
@@ -554,7 +461,7 @@
                         name: 'check_out',
                         className: 'text-center',
 
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
 
                             if (!data) {
                                 return '-';
@@ -580,7 +487,7 @@
                         name: 'working_hours',
                         className: 'text-center',
 
-                        render: function (data, type, row) {
+                        render: function(data, type, row) {
 
                             if (data === null || data === undefined || data === '') {
                                 return '-';
@@ -592,31 +499,53 @@
                             return hours + ':' + String(minutes).padStart(2, '0') + ' hrs';
                         }
                     },
+                    {
+                        data: 'day_value',
+                        name: 'day_value',
+                        className: 'text-center',
+                        render: function(data) {
+                            return parseFloat(data || 0);
+                        }
+                    },
 
                     {
                         data: 'status',
                         name: 'status',
                         className: 'text-center',
-
-                        render: function (data, type, row) {
-
+                        render: function(data, type, row) {
                             if (data === 'present') {
-                                return '<span class="badge bg-success">Present</span>';
+                                return `
+                                    <span class="badge bg-success-subtle text-success px-2 py-1">
+                                        Present
+                                    </span>
+                                `;
                             }
-
                             if (data === 'half_day') {
-                                return '<span class="badge bg-warning">Half Day</span>';
+                                return `
+                                    <span class="badge bg-warning-subtle text-warning px-2 py-1">
+                                        Half Day
+                                    </span>
+                                `;
                             }
-
                             if (data === 'absent') {
-                                return '<span class="badge bg-danger">Absent</span>';
+                                return `
+                                    <span class="badge bg-danger-subtle text-danger px-2 py-1">
+                                        Absent
+                                    </span>
+                                `;
                             }
-
                             if (data === 'leave') {
-                                return '<span class="badge bg-info">Leave</span>';
+                                return `
+                                    <span class="badge bg-info-subtle text-info px-2 py-1">
+                                        Leave
+                                    </span>
+                                `;
                             }
-
-                            return '-';
+                            return `
+                                <span class="badge bg-secondary-subtle text-secondary px-2 py-1">
+                                    -
+                                </span>
+                            `;
                         }
                     },
 
@@ -625,7 +554,7 @@
                         name: 'remarks',
                         className: 'text-center',
 
-                        render: function (data) {
+                        render: function(data) {
                             return data ? data : '-';
                         }
                     },
@@ -641,14 +570,14 @@
 
                 ]
             });
-            $('#filterBtn').click(function (e) {
+            $('#filterBtn').click(function(e) {
 
                 e.preventDefault();
 
                 table.ajax.reload();
             });
 
-            $('#resetBtn').click(function () {
+            $('#resetBtn').click(function() {
 
                 $('#filter_employee_id').val('');
                 $('#filter_department_id').val('');
@@ -666,7 +595,7 @@
         });
 
 
-        $(document).on('change', '#filter_department_id', function () {
+        $(document).on('change', '#filter_department_id', function() {
             let departmentId = $(this).val();
             let designation = $('#filter_designation_id');
             designation.html(
@@ -687,13 +616,13 @@
                     get_designation_data: true
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     designation.empty();
                     designation.append(
                         '<option value="">All Designations</option>'
                     );
                     if (response.length > 0) {
-                        $.each(response, function (key, item) {
+                        $.each(response, function(key, item) {
                             designation.append(
                                 '<option value="' + item.id + '">' + item.name + '</option>'
                             );
@@ -705,7 +634,7 @@
                     }
                 },
 
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
                     designation.html(
                         '<option value="">Unable to load designation</option>'
@@ -734,7 +663,7 @@
         }
 
 
-        $(document).on('click', '.editRow', function () {
+        $(document).on('click', '.editRow', function() {
             let id = $(this).data('id');
             $.ajax({
                 url: "{{ route('attendance') }}",
@@ -744,7 +673,7 @@
                     get_atten: true
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     $('#edit_attendance_id').val(response.id);
                     $('#edit_employee_id').val(response.employee_id);
 
@@ -767,15 +696,15 @@
                     $('#Editmodel').modal('show');
                 },
 
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr.responseText);
                 }
             });
         });
 
-        $(document).on('click', '.deleteRow', function () {
+        $(document).on('click', '.deleteRow', function() {
             let id = $(this).data('id');
-            confirmAction(messages.delete_confirm, function () {
+            confirmAction(messages.delete_confirm, function() {
                 $.ajax({
                     url: "{{ route('attendance') }}",
                     type: 'GET',
@@ -784,7 +713,7 @@
                         get_delete: true
                     },
                     dataType: 'json',
-                    success: function (response) {
+                    success: function(response) {
                         $('#datatable').DataTable().ajax.reload(null, false);
                         Swal.fire({
                             title: 'Success',
@@ -799,7 +728,7 @@
                         })
                     },
 
-                    error: function (xhr) {
+                    error: function(xhr) {
                         let message = "Something went wrong!";
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             message = xhr.responseJSON.message;
