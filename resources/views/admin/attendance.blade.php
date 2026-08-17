@@ -75,7 +75,7 @@
 
         <div class="card mt-3">
             <div class="card-header bg-transparent d-flex justify-content-between align-items-center py-2">
-                <h5 class="card-title">Employees</h5>
+                <h5 class="card-title">Attendance</h5>
                 <div class="d-flex align-items-center gap-2 ms-auto">
                     <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                         data-bs-target="#Addmodel">

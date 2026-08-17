@@ -8,6 +8,7 @@ use App\Http\Controllers\EmployeesController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\SalaryDetailsController;
 use App\Http\Controllers\SalaryPaymentController;
+
 use App\Http\Controllers\SalaryPeriodController;
 use App\Models\SalaryPayment;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,8 @@ use Illuminate\Support\Facades\Route;
     Route::any('/salary_period', [SalaryPeriodController::class, 'SalaryPeriod'])->name('salary_period');
     Route::any('/salary_details', [SalaryDetailsController::class, 'SalaryDetails'])->name('salary_details');
     Route::any('/salary_details_export', [SalaryDetailsController::class, 'SalaryDetailsPDF'])->name('salary_details_export');
-    // Route::any('/salary_payment', [SalaryPaymentController::class, 'SalaryPayment'])->name('salary_payment');
+    Route::any('/salary_payment', [SalaryPaymentController::class, 'SalaryPayment'])->name('salary_payment');
+    Route::any('/salary_payment_export', [SalaryPaymentController::class, 'SalaryPaymentPDF'])->name('salary_payment_export');
 
 // });
 

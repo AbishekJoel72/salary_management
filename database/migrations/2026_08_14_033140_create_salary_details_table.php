@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('full_days', 5, 1)->default(0);
             $table->decimal('half_days', 5, 1)->default(0);
             $table->decimal('absent_days', 5, 1)->default(0);
+            $table->decimal('leave_days', 5, 1)->default(0);
             $table->decimal('worked_days', 5, 1)->default(0);
             $table->decimal('gross_salary', 10, 2)->default(0);
             $table->decimal('deduction', 10, 2)->default(0);

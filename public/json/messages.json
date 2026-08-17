@@ -2,5 +2,9 @@
     "insert_confirm": "Are you sure you want to Insert",
     "update_confirm": "Are you sure you want to Update",
     "update_state": "Are you sure you want to Update Status",
-    "delete_confirm": "Are you sure you want to delete"
+    "delete_confirm": "Are you sure you want to delete",
+    "calculate_confirm": "Are you sure you want to calculate this salary period?",
+    "approve_confirm": "Are you sure you want to approve this salary period?",
+    "pay_confirm": "Are you sure you want to mark this salary period as Paid?",
+    "cancel_confirm": "Are you sure you want to cancel this salary period?"
 }

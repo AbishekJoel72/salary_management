@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('calculated_at')->nullable();
             $table->timestamp('approved_at')->nullable();
             $table->timestamp('paid_at')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
             $table->timestamps();
 
         });

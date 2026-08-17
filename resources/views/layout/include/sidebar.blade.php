@@ -70,12 +70,12 @@
                     </a>
                 </li>
 
-                {{-- <li class="{{ Request::routeIs('salary_payment') ? 'active' : '' }}">
+                <li class="{{ Request::routeIs('salary_payment') ? 'active' : '' }}">
                     <a href="{{ route('salary_payment') }}">
                         <span class="submenu-dot"></span>
                         <span class="sidebar-text">Salary Payment</span>
                     </a>
-                </li> --}}
+                </li>
 
             </ul>
         </li>

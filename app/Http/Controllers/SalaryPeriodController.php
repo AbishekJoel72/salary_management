@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Employees;
 use App\Models\SalaryDetails;
+use App\Models\SalaryPayment;
 use App\Models\SalaryPeriod;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,13 +22,11 @@ class SalaryPeriodController extends Controller
                 try {
 
                     $validation = $request->validate([
-                        'period_type' => 'required|in:weekly,monthly',
+                        'period_type' => 'required',
                         'start_date' => 'required',
                         'end_date' => 'required',
                     ]);
-
                     if ($validation) {
-
                         $salaryPeriod = new SalaryPeriod;
                         $salaryPeriod->period_type = $request->period_type;
                         $salaryPeriod->start_date = Carbon::createFromFormat('d-m-Y', $request->start_date)->format('Y-m-d');
@@ -40,7 +39,6 @@ class SalaryPeriodController extends Controller
                     }
 
                 } catch (\Exception $e) {
-
                     session()->flash('error', $e->getMessage());
 
                     return redirect()->back();
@@ -48,63 +46,53 @@ class SalaryPeriodController extends Controller
             }
 
             if ($request->edit_salary_period) {
-                $validation = $request->validate([
-                    'edit_salary_period_id' => 'required|exists:salary_periods,id',
-                    'period_type' => 'required|in:weekly,monthly',
-                    'start_date' => 'required|date',
-                    'end_date' => 'required|date|after_or_equal:start_date',
+                try {
+                    $validation = $request->validate([
+                        'period_type' => 'required',
+                        'start_date' => 'required',
+                        'end_date' => 'required',
+                    ]);
+                    if ($validation) {
+                        if ($request->id) {
+                            $salaryPeriod = SalaryPeriod::where('id', $request->id)->first();
 
-                ]);
+                            if (in_array($salaryPeriod->status, ['approved', 'paid', 'cancelled'])) {
+                                session()->flash('error', 'Approved, Paid or Cancelled salary period cannot be edited.');
 
-                $salaryPeriod = SalaryPeriod::find(
-                    $request->edit_salary_period_id
-                );
+                                return redirect()->back();
+                            }
 
-                if (! $salaryPeriod) {
+                            $salaryPeriod->update([
+                                'period_type' => $request->period_type,
+                                'start_date' => Carbon::parse($request->start_date)->format('Y-m-d'),
+                                'end_date' => Carbon::parse($request->end_date)->format('Y-m-d'),
+                            ]);
+                            session()->flash('success', 'Salary period updated successfully.');
 
-                    return redirect()
-                        ->back()
-                        ->with('error', 'Salary period not found.');
+                            return redirect()->back();
 
+                        }
+                    }
+                } catch (\Exception $e) {
+                    session()->flash('error', $e->getMessage());
+
+                    return redirect()->back();
                 }
 
-                if (in_array($salaryPeriod->status, ['approved', 'paid'])) {
-                    return redirect()
-                        ->back()
-                        ->with(
-                            'error',
-                            'Approved or Paid salary period cannot be edited.'
-                        );
-
-                }
-
-                $salaryPeriod->update([
-                    'period_type' => $request->period_type,
-                    'start_date' => Carbon::parse($request->start_date)->format('Y-m-d'),
-                    'end_date' => Carbon::parse($request->end_date)->format('Y-m-d'),
-                ]);
-
-                return redirect()
-                    ->back()
-                    ->with(
-                        'success',
-                        'Salary period updated successfully.'
-                    );
             }
         }
 
+
+
         if ($request->ajax()) {
 
+            // ----------------------------------------------------------------------------------------------
+            // ------------------------------------ Ajax Calculated ---------------------------------------
             if ($request->calculate_salary_period) {
-
                 try {
-
                     DB::beginTransaction();
-
                     $salaryPeriod = SalaryPeriod::find($request->id);
-
                     if (! $salaryPeriod) {
-
                         return response()->json([
                             'status' => false,
                             'message' => 'Salary period not found.',
@@ -112,71 +100,42 @@ class SalaryPeriodController extends Controller
                     }
 
                     if ($salaryPeriod->status !== 'draft') {
-
                         return response()->json([
                             'status' => false,
                             'message' => 'Only draft salary periods can be calculated.',
                         ]);
                     }
 
-                    $employeeType = $salaryPeriod->period_type === 'weekly'
-                        ? 'daily'
-                        : 'monthly';
-
-                    $employees = Employees::where('status', '1')
-                        ->where('employee_type', $employeeType)
-                        ->get();
+                    $employeeType = $salaryPeriod->period_type === 'weekly'? 'daily': 'monthly';
+                    $employees = Employees::where('status', '1')->where('employee_type', $employeeType)->get();
 
                     if ($employees->isEmpty()) {
-
                         return response()->json([
                             'status' => false,
                             'message' => 'No '.$employeeType.' employees found for this salary period.',
                         ]);
                     }
 
-                    $periodDays = Carbon::parse($salaryPeriod->start_date)
-                        ->diffInDays(
-                            Carbon::parse($salaryPeriod->end_date)
-                        ) + 1;
+                    $periodDays = Carbon::parse($salaryPeriod->start_date)->diffInDays(Carbon::parse($salaryPeriod->end_date)) + 1;
 
                     foreach ($employees as $employee) {
-
-                        $attendance = Attendance::where(
-                            'employee_id',
-                            $employee->id
-                        )
+                        $attendance = Attendance::where('employee_id',$employee->id)
                             ->whereBetween(
                                 'attendance_date',
                                 [
                                     $salaryPeriod->start_date,
                                     $salaryPeriod->end_date,
                                 ]
-                            )
-                            ->get();
+                            )->get();
 
-                        $fullDays = $attendance
-                            ->where('status', 'present')
-                            ->count();
-
-                        $halfDays = $attendance
-                            ->where('status', 'half_day')
-                            ->count();
-
-                        $absentDays = $attendance
-                            ->where('status', 'absent')
-                            ->count();
-
-                        $leaveDays = $attendance
-                            ->where('status', 'leave')
-                            ->count();
+                        $fullDays = $attendance->where('status', 'present')->count();
+                        $halfDays = $attendance->where('status', 'half_day')->count();
+                        $absentDays = $attendance->where('status', 'absent')->count();
+                        $leaveDays = $attendance->where('status', 'leave')->count();
 
                         if ($employee->employee_type === 'daily') {
-
                             $salaryType = 'daily';
                             $baseSalary = (float) ($employee->daily_rate ?? 0);
-
-                            // Calculate worked_days based on actual working hours / day_value
                             $totalDayValue = (float) $attendance->sum('day_value');
                             if ($totalDayValue > 0) {
                                 $workedDays = $totalDayValue;
@@ -198,16 +157,10 @@ class SalaryPeriodController extends Controller
 
                             $salaryType = 'monthly';
                             $baseSalary = (float) ($employee->monthly_salary ?? 0);
-
                             $perDayRate = $periodDays > 0 ? ($baseSalary / $periodDays) : 0;
-
-                            // Unworked / Leave / Absent days
                             $unworkedDays = $leaveDays + $absentDays + ($halfDays * 0.5);
                             $workedDays = max(0, $periodDays - $unworkedDays);
-
-                            // Leave & Absent Salary Deduction
                             $leaveDeduction = round($unworkedDays * $perDayRate, 2);
-
                             $grossSalary = round($baseSalary, 2);
                             $deduction = $leaveDeduction;
                             $adjustment = 0;
@@ -215,51 +168,36 @@ class SalaryPeriodController extends Controller
                         }
 
                         $salaryDetail = SalaryDetails::updateOrCreate(
-
                             [
                                 'salary_period_id' => $salaryPeriod->id,
                                 'employee_id' => $employee->id,
                             ],
-
                             [
                                 'salary_type' => $salaryType,
                                 'base_salary' => round($baseSalary, 2),
-
                                 'full_days' => $fullDays,
                                 'half_days' => $halfDays,
                                 'absent_days' => $absentDays,
                                 'leave_days' => $leaveDays,
                                 'worked_days' => $workedDays,
-
                                 'gross_salary' => round($grossSalary, 2),
-
                                 'deduction' => round($deduction, 2),
-
                                 'adjustment' => round($adjustment, 2),
-
                                 'net_salary' => round($netSalary, 2),
-
                                 'status' => 'calculated',
                             ]
                         );
                     }
 
-                    $salaryPeriod->update([
-                        'status' => 'calculated',
-                        'calculated_at' => now(),
-                    ]);
-
+                    $salaryPeriod->update(['status' => 'calculated','calculated_at' => now(),]);
                     DB::commit();
-
                     return response()->json([
                         'status' => true,
                         'message' => 'Salary calculated successfully.',
                     ]);
 
                 } catch (\Exception $e) {
-
                     DB::rollBack();
-
                     return response()->json([
                         'status' => false,
                         'message' => $e->getMessage(),
@@ -267,16 +205,15 @@ class SalaryPeriodController extends Controller
                 }
             }
 
+            // ----------------------------------------------------------------------------------------------
+            // ------------------------------------ Ajax Approved At ---------------------------------------
+
             if ($request->approve_salary_period) {
-
                 try {
-
                     DB::beginTransaction();
-
                     $salaryPeriod = SalaryPeriod::find($request->id);
 
                     if (! $salaryPeriod) {
-
                         return response()->json([
                             'status' => false,
                             'message' => 'Salary period not found.',
@@ -284,49 +221,34 @@ class SalaryPeriodController extends Controller
                     }
 
                     if ($salaryPeriod->status !== 'calculated') {
-
                         return response()->json([
                             'status' => false,
                             'message' => 'Only calculated salary periods can be approved.',
                         ]);
                     }
 
-                    $salaryDetailsCount = SalaryDetails::where(
-                        'salary_period_id',
-                        $salaryPeriod->id
-                    )->count();
+                    $salaryDetailsCount = SalaryDetails::where('salary_period_id',$salaryPeriod->id)->count();
 
                     if ($salaryDetailsCount == 0) {
-
                         return response()->json([
                             'status' => false,
                             'message' => 'No salary details found for this period.',
                         ]);
                     }
 
-                    SalaryDetails::where(
-                        'salary_period_id',
-                        $salaryPeriod->id
-                    )->update([
-                        'status' => 'approved',
-                    ]);
-
+                    SalaryDetails::where('salary_period_id',$salaryPeriod->id)->update(['status' => 'approved',]);
                     $salaryPeriod->update([
                         'status' => 'approved',
                         'approved_at' => now(),
                     ]);
-
                     DB::commit();
-
                     return response()->json([
                         'status' => true,
                         'message' => 'Salary period and salary details approved successfully.',
                     ]);
 
                 } catch (\Exception $e) {
-
                     DB::rollBack();
-
                     return response()->json([
                         'status' => false,
                         'message' => $e->getMessage(),
@@ -334,88 +256,126 @@ class SalaryPeriodController extends Controller
                 }
             }
 
+            // ----------------------------------------------------------------------------------------------
+            // ------------------------------------ Ajax Paid ---------------------------------------
+
             if ($request->pay_salary_period) {
+                DB::beginTransaction();
+                try {
+                    $salaryPeriod = SalaryPeriod::find($request->id);
+                    if (! $salaryPeriod) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Salary period not found.',
+                        ], 404);
+                    }
+                    if ($salaryPeriod->status !== 'approved') {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Only approved salary period can be paid.',
+                        ]);
+                    }
 
-                $salaryPeriod = SalaryPeriod::find($request->id);
+                    $paymentMethod = $salaryPeriod->period_type == 'weekly'? 'cash': 'bank_transfer';
+                    $salaryDetails = SalaryDetails::where('salary_period_id',$salaryPeriod->id)->get();
 
-                if (! $salaryPeriod) {
+                    if ($salaryDetails->isEmpty()) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'No salary details found for this period.',
+                        ]);
+                    }
+
+                    foreach ($salaryDetails as $salaryDetail) {
+                        $alreadyPaid = SalaryPayment::where('salary_detail_id',$salaryDetail->id)->exists();
+
+                        if ($alreadyPaid) {
+                            continue;
+                        }
+
+                        SalaryPayment::create([
+                            'salary_detail_id' => $salaryDetail->id,
+                            'payment_date' => now()->format('Y-m-d'),
+                            'amount' => $salaryDetail->net_salary,
+                            'payment_method' => $paymentMethod,
+                            'transaction_reference' => null,
+                            'remarks' => ucfirst($salaryPeriod->period_type).' salary payment',
+                        ]);
+
+                        $salaryDetail->status = 'paid';
+                        $salaryDetail->save();
+                    }
+
+                    $salaryPeriod->status = 'paid';
+                    $salaryPeriod->paid_at = now();
+                    $salaryPeriod->save();
+                    DB::commit();
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Salary payment completed successfully.',
+                    ]);
+
+                } catch (\Exception $e) {
+                    DB::rollBack();
                     return response()->json([
                         'status' => false,
-                        'message' => 'Salary period not found.',
-                    ]);
+                        'message' => $e->getMessage(),
+                    ], 500);
                 }
-
-                if ($salaryPeriod->status !== 'approved') {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Only approved salary periods can be paid.',
-                    ]);
-                }
-
-                $salaryPeriod->update([
-                    'status' => 'paid',
-                    'paid_at' => now(),
-                ]);
-
-                SalaryDetails::where('salary_period_id', $salaryPeriod->id)
-                    ->where('status', 'approved')
-                    ->update([
-                        'status' => 'paid',
-                    ]);
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Salary period and salary details marked as paid successfully.',
-                ]);
             }
+
+            // ----------------------------------------------------------------------------------------------
+            // ------------------------------------ Ajax Cancelled ---------------------------------------
+            if ($request->cancel_salary_period) {
+                try {
+                    $salaryPeriod = SalaryPeriod::find($request->id);
+
+                    if (! $salaryPeriod) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'Salary period not found.',
+                        ], 404);
+                    }
+
+                    if (in_array($salaryPeriod->status, ['paid', 'cancelled'])) {
+                        return response()->json([
+                            'status' => false,
+                            'message' => 'This salary period cannot be cancelled.',
+                        ]);
+                    }
+
+                    $salaryPeriod->status = 'cancelled';
+                    $salaryPeriod->cancelled_at = now();
+                    $salaryPeriod->save();
+
+                    return response()->json([
+                        'status' => true,
+                        'message' => 'Salary period cancelled successfully.',
+                    ]);
+
+                } catch (\Exception $e) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => $e->getMessage(),
+                    ], 500);
+                }
+            }
+            
+            // ----------------------------------------------------------------------------------------------
+            // ------------------------------------ Data Table Data's---------------------------------------
 
             if ($request->edit_data) {
                 $id = $request->id;
-                $salaryPeriod = SalaryPeriod::find($id);
-                if (! $salaryPeriod) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Salary period not found.',
-                    ], 404);
-                }
+                $salaryPeriod = SalaryPeriod::where('id', $id)->first();
 
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'id' => $salaryPeriod->id,
-                        'period_type' => $salaryPeriod->period_type,
-                        'start_date' => Carbon::parse($salaryPeriod->start_date)->format('d-m-Y'),
-                        'end_date' => Carbon::parse($salaryPeriod->end_date)->format('d-m-Y'),
-                        'status' => $salaryPeriod->status,
-                    ],
-                ]);
+                return response()->json($salaryPeriod);
             }
 
             if ($request->view_data) {
                 $id = $request->id;
-                $salaryPeriod = SalaryPeriod::find($id);
-                if (! $salaryPeriod) {
-                    return response()->json([
-                        'status' => false,
-                        'message' => 'Salary period not found.',
-                    ], 404);
-                }
+                $salaryPeriod = SalaryPeriod::where('id', $id)->first();
 
-                return response()->json([
-                    'status' => true,
-                    'data' => [
-                        'id' => $salaryPeriod->id,
-                        'period_type' => ucfirst($salaryPeriod->period_type),
-                        'start_date' => Carbon::parse($salaryPeriod->start_date)->format('d-m-Y'),
-                        'end_date' => Carbon::parse($salaryPeriod->end_date)->format('d-m-Y'),
-                        'status' => ucfirst($salaryPeriod->status),
-                        'approved_at' => $salaryPeriod->approved_at
-                            ? Carbon::parse($salaryPeriod->approved_at)
-                                ->format('d-m-Y h:i A')
-                            : '-',
-                    ],
-
-                ]);
+                return response()->json($salaryPeriod);
             }
 
             if ($request->get_delete) {
@@ -430,30 +390,19 @@ class SalaryPeriodController extends Controller
                 }
             }
 
-            $salaryPeriods = SalaryPeriod::query()
-                ->orderBy('id', 'desc');
+            $salaryPeriods = SalaryPeriod::query()->orderBy('id', 'desc');
 
             if ($request->filled('period_type')) {
                 $salaryPeriods->where('period_type', $request->period_type);
             }
 
             if ($request->filled('start_date')) {
-
-                $startDate = Carbon::createFromFormat(
-                    'd-m-Y',
-                    $request->start_date
-                )->format('Y-m-d');
-
+                $startDate = Carbon::createFromFormat('d-m-Y', $request->start_date)->format('Y-m-d');
                 $salaryPeriods->whereDate('start_date', '>=', $startDate);
             }
 
             if ($request->filled('end_date')) {
-
-                $endDate = Carbon::createFromFormat(
-                    'd-m-Y',
-                    $request->end_date
-                )->format('Y-m-d');
-
+                $endDate = Carbon::createFromFormat('d-m-Y', $request->end_date)->format('Y-m-d');
                 $salaryPeriods->whereDate('end_date', '<=', $endDate);
             }
 
@@ -463,21 +412,6 @@ class SalaryPeriodController extends Controller
 
             return DataTables::of($salaryPeriods)
                 ->addIndexColumn()
-                ->editColumn('start_date', function ($row) {
-                    return $row->start_date ? Carbon::parse($row->start_date)->format('d-m-Y') : '-';
-                })
-                ->editColumn('end_date', function ($row) {
-                    return $row->end_date ? Carbon::parse($row->end_date)->format('d-m-Y') : '-';
-                })
-                ->editColumn('calculated_at', function ($row) {
-                    return $row->calculated_at ? Carbon::parse($row->calculated_at)->format('d-m-Y') : '-';
-                })
-                ->editColumn('approved_at', function ($row) {
-                    return $row->approved_at ? Carbon::parse($row->approved_at)->format('d-m-Y') : '-';
-                })
-                ->editColumn('paid_at', function ($row) {
-                    return $row->paid_at ? Carbon::parse($row->paid_at)->format('d-m-Y') : '-';
-                })
                 ->addColumn('actions', function ($row) {
                     $html = '<div class="dropdown"><a href="#" class="text-dark" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></a><ul class="dropdown-menu">';
                     $html .= '<li><a href="javascript:void(0)" class="View dropdown-item" data-id="'.$row->id.'">View</a></li>';
@@ -488,9 +422,11 @@ class SalaryPeriodController extends Controller
                     }
                     if ($row->status == 'calculated') {
                         $html .= '<li><a href="javascript:void(0)" class="approveRow dropdown-item" data-id="'.$row->id.'">Approve</a></li>';
+                        $html .= '<li><a href="javascript:void(0)" class="cancelRow dropdown-item" data-id="'.$row->id.'">Cancelled</a></li>';
                     }
                     if ($row->status == 'approved') {
                         $html .= '<li><a href="javascript:void(0)" class="payRow dropdown-item" data-id="'.$row->id.'">Pay</a></li>';
+                        $html .= '<li><a href="javascript:void(0)" class="cancelRow dropdown-item" data-id="'.$row->id.'">Cancelled</a></li>';
                     }
                     $html .= '</ul></div>';
 

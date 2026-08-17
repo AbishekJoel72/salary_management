@@ -453,6 +453,7 @@
                                 <th>Calculated</th>
                                 <th>Approved</th>
                                 <th>Paid</th>
+                                <th>Cancelled</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -699,6 +700,31 @@
                     {
                         data: 'paid_at',
                         name: 'paid_at',
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            if (!data) {
+                                return '-';
+                            }
+
+                            let date = new Date(data);
+
+                            let day = String(date.getDate()).padStart(2, '0');
+                            let month = String(date.getMonth() + 1).padStart(2, '0');
+                            let year = date.getFullYear();
+
+                            let hours = date.getHours();
+                            let minutes = String(date.getMinutes()).padStart(2, '0');
+
+                            let ampm = hours >= 12 ? 'PM' : 'AM';
+                            hours = hours % 12;
+                            hours = hours ? hours : 12;
+
+                            return `${day}-${month}-${year} - ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+                        }
+                    },
+                    {
+                        data: 'cancelled_at',
+                        name: 'cancelled_at',
                         className: 'text-center',
                         render: function(data, type, row) {
                             if (!data) {
