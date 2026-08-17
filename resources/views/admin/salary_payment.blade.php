@@ -1,15 +1,76 @@
 @extends('layout.default')
 @section('content')
     <div class="container">
+
         <div class="card mt-3">
             <div class="card-header bg-transparent">
-                <h5 class="card-title mb-1"> Salary Payment Filter</h5>
+                <h5 class="card-title mb-1">Salary Payment Filter</h5>
             </div>
 
             <div class="card-body">
                 <div class="row align-items-end">
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Employee</label>
+                        <select class="form-select" id="filter_employee" name="filter_employee">
+                            <option value="">All Employees</option>
+
+                            @foreach ($employees as $employee)
+                                <option value="{{ $employee->id }}">
+                                    {{ $employee->employee_code }} - {{ $employee->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Department</label>
+                        <select class="form-select" id="filter_department" name="filter_department">
+                            <option value="">All Departments</option>
+
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}">
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Designation</label>
+                        <select class="form-select" id="filter_designation" name="filter_designation">
+                            <option value="">All Designations</option>
+
+                            @foreach ($designations as $designation)
+                                <option value="{{ $designation->id }}">
+                                    {{ $designation->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">Salary Type</label>
+                        <select class="form-select" id="filter_salary_type" name="filter_salary_type">
+                            <option value="">All Salary Type</option>
+                            <option value="daily">Daily</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mt-3">
+                        <label class="form-label fw-semibold">Salary Status</label>
+                        <select class="form-select" id="filter_status" name="filter_status">
+                            <option value="">All Status</option>
+                            <option value="calculated">Calculated</option>
+                            <option value="approved">Approved</option>
+                            <option value="paid">Paid</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 mt-3">
                         <label class="form-label fw-semibold">Payment Method</label>
                         <select class="form-select" id="filter_payment_method" name="filter_payment_method">
                             <option value="">All Payment Method</option>
@@ -19,21 +80,21 @@
                         </select>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3 mt-3">
                         <label class="form-label fw-semibold">Payment Date From</label>
                         <input type="text" class="form-control filter_date" id="filter_payment_date_from"
                             placeholder="Select From Date" name="filter_payment_date_from">
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3 mt-3">
                         <label class="form-label fw-semibold">Payment Date To</label>
                         <input type="text" class="form-control filter_date" id="filter_payment_date_to"
                             placeholder="Select To Date" name="filter_payment_date_to">
                     </div>
 
-
                 </div>
             </div>
+
             <div class="card-footer d-flex justify-content-center gap-2 bg-transparent">
 
                 <button type="button" class="btn btn-primary" id="filterBtn">
@@ -62,12 +123,15 @@
                         <thead>
                             <tr>
                                 <th>S.No</th>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Designation</th>
                                 <th>Net Salary</th>
                                 <th>Status</th>
                                 <th>Payment Date</th>
                                 <th>Payment Amount</th>
                                 <th>Payment Method</th>
-                                <th>Transaction Reference</th>
+                                <th>Transaction </th>
                                 <th>Remarks</th>
                             </tr>
                         </thead>
@@ -95,6 +159,11 @@
                 ajax: {
                     url: "{{ route('salary_payment') }}",
                     data: function(d) {
+                        d.filter_employee = $('#filter_employee').val();
+                        d.filter_department = $('#filter_department').val();
+                        d.filter_designation = $('#filter_designation').val();
+                        d.filter_salary_type = $('#filter_salary_type').val();
+                        d.filter_status = $('#filter_status').val();
                         d.filter_payment_method = $('#filter_payment_method').val();
                         d.filter_payment_date_from = $('#filter_payment_date_from').val();
                         d.filter_payment_date_to = $('#filter_payment_date_to').val();
@@ -107,6 +176,24 @@
                         className: 'text-center',
                         orderable: false,
                         searchable: false
+                    },
+                    {
+                        data: 'employee',
+                        name: 'employee',
+                        className: 'text-center',
+
+                    },
+                    {
+                        data: 'department',
+                        name: 'department',
+                        className: 'text-center',
+
+                    },
+                    {
+                        data: 'designation',
+                        name: 'designation',
+                        className: 'text-center',
+
                     },
                     {
                         data: 'get_salarydetail.net_salary',
@@ -218,27 +305,39 @@
             });
 
             $('#resetBtn').click(function() {
-                $('#filter_payment_method').val('');
+                $('#filter_employee').val('');
+                $('#filter_department').val('');
+                $('#filter_designation').val('')
+                $('#filter_salary_type').val('');
+                $('#filter_status').val('');
+                $('#filter_payment_method').val('')
                 $('#filter_payment_date_from').val('');
                 $('#filter_payment_date_to').val('');
-
                 table.ajax.reload();
             });
         });
 
+
         $(document).on('click', '.exportBtn', function(e) {
             e.preventDefault();
-
             let type = $(this).data('type');
+            let employee = $('#filter_employee').val();
+            let department = $('#filter_department').val();
+            let designation = $('#filter_designation').val();
+            let salary_type = $('#filter_salary_type').val();
+            let status = $('#filter_status').val();
             let payment_method = $('#filter_payment_method').val();
             let payment_date_from = $('#filter_payment_date_from').val();
             let payment_date_to = $('#filter_payment_date_to').val();
-
             let url = "{{ route('salary_payment_export') }}";
-
             window.location.href =
                 url +
                 '?type=' + encodeURIComponent(type) +
+                '&employee=' + encodeURIComponent(employee) +
+                '&department=' + encodeURIComponent(department) +
+                '&designation=' + encodeURIComponent(designation) +
+                '&salary_type=' + encodeURIComponent(salary_type) +
+                '&status=' + encodeURIComponent(status) +
                 '&payment_method=' + encodeURIComponent(payment_method) +
                 '&payment_date_from=' + encodeURIComponent(payment_date_from) +
                 '&payment_date_to=' + encodeURIComponent(payment_date_to);

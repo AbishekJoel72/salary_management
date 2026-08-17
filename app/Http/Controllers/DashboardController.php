@@ -31,6 +31,7 @@ class DashboardController extends Controller
 
             if ($request->type == 'salary_details') {
                 $details = SalaryDetails::with(['get_employee', 'get_salaryperiod'])->latest('id');
+
                 return DataTables::of($details)
                     ->addIndexColumn()
                     ->addColumn('employee', function ($row) {
@@ -54,6 +55,30 @@ class DashboardController extends Controller
                         return $start.' - '.$end;
                     })
 
+                    ->make(true);
+            }
+
+            if ($request->type == 'salary_payment') {
+                $salaryPayment = SalaryPayment::with([
+                    'get_salarydetail',
+                    'get_salarydetail.get_employee',
+                    'get_salarydetail.get_employee.get_department',
+                    'get_salarydetail.get_employee.get_designation',
+                ]);
+
+                return DataTables::of($salaryPayment)
+                    ->addIndexColumn()
+                    ->addColumn('employee', function ($row) {
+                        return $row->get_salarydetail->get_employee->employee_code.' -'.
+                        $row->get_salarydetail->get_employee->name;
+                    })
+                    ->addColumn('department', function ($row) {
+                        return $row->get_salarydetail->get_employee->get_department->code.' -'.
+                        $row->get_salarydetail->get_employee->get_department->name;
+                    })
+                    ->addColumn('designation', function ($row) {
+                        return $row->get_salarydetail->get_employee->get_designation->name;
+                    })
                     ->make(true);
             }
 

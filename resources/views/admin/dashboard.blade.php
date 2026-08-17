@@ -313,35 +313,35 @@
                     <div class="col">
                         <h4>{{ $draftSalaryPeriods }}</h4>
                         <span class="badge bg-secondary-subtle text-secondary px-2 py-1">
-                             Draft
+                            Draft
                         </span>
                     </div>
 
                     <div class="col">
                         <h4>{{ $calculatedSalaryPeriods }}</h4>
                         <span class="badge bg-info-subtle text-info px-2 py-1">
-                             Calculated
+                            Calculated
                         </span>
                     </div>
 
                     <div class="col">
                         <h4>{{ $approvedSalaryPeriods }}</h4>
                         <span class="badge bg-warning-subtle text-warning px-2 py-1">
-                             Approved
+                            Approved
                         </span>
                     </div>
 
                     <div class="col">
                         <h4>{{ $paidSalaryPeriods }}</h4>
                         <span class="badge bg-success-subtle text-success px-2 py-1">
-                             Paid
+                            Paid
                         </span>
                     </div>
 
                     <div class="col">
                         <h4>{{ $cancelledSalaryPeriods }}</h4>
                         <span class="badge bg-danger-subtle text-danger px-2 py-1">
-                             Cancelled
+                            Cancelled
                         </span>
                     </div>
 
@@ -433,6 +433,7 @@
             </div>
         </div>
 
+
         {{-- ========================================================= --}}
         {{-- RECENT SALARY PERIODS --}}
         {{-- ========================================================= --}}
@@ -461,6 +462,8 @@
                 </div>
             </div>
         </div>
+
+
 
         {{-- ========================================================= --}}
         {{-- RECENT SALARY DETAILS --}}
@@ -495,6 +498,42 @@
             </div>
         </div>
 
+
+
+
+        {{-- ========================================================= --}}
+        {{-- RECENT SALARY PAYMENT --}}
+        {{-- ========================================================= --}}
+        <div class="card db-card shadow-sm mt-3">
+            <div class="card-header bg-transparent">
+                <h6 class="mb-0"><i class="bi bi-receipt me-2 text-primary"></i>Recent Salary Payment</h6>
+            </div>
+            <div class="card-body table-body">
+                <div class="table-responsive">
+                    <table id="salaryPaymentTable" class="table table-bordered align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Employee</th>
+                                <th>Department</th>
+                                <th>Designation</th>
+                                <th>Net Salary</th>
+                                <th>Status</th>
+                                <th>Payment Date</th>
+                                <th>Payment Amount</th>
+                                <th>Payment Method</th>
+                                <th>Transaction </th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        
         {{-- ========================================================= --}}
         {{-- RECENT EMPLOYEES --}}
         {{-- ========================================================= --}}
@@ -531,7 +570,11 @@
 
     <script>
         $(document).ready(function() {
-
+            /*
+            |--------------------------------------------------------------------------
+            | SALARY Period
+            |--------------------------------------------------------------------------
+            */
 
             $('#salaryPeriodsTable').DataTable({
                 processing: true,
@@ -943,6 +986,161 @@
 
                 ]
 
+            });
+
+            /*
+                |--------------------------------------------------------------------------
+                | SALARY Payment
+                |--------------------------------------------------------------------------
+            */
+
+            $('#salaryPaymentTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('dashboard') }}",
+                    type: "GET",
+                    data: {
+                        type: "salary_payment"
+                    }
+                },
+                pageLength: 10,
+                lengthMenu: [
+                    [10, 25, 50, 100],
+                    [10, 25, 50, 100]
+                ],
+                searching: true,
+                ordering: true,
+                responsive: true,
+                autoWidth: false,
+                order: [
+                    [0, 'desc']
+                ],
+                columns: [
+                    {
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        className: 'text-center',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'employee',
+                        name: 'employee',
+                        className: 'text-center',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'department',
+                        name: 'department',
+                        className: 'text-center',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'designation',
+                        name: 'designation',
+                        className: 'text-center',
+                        defaultContent: '-'
+                    },
+                    {
+                        data: 'get_salarydetail.net_salary',
+                        name: 'get_salarydetail.net_salary',
+                        className: 'text-center fw-semibold',
+                        render: function(data) {
+                            if (data === null || data === undefined || data === '') {
+                                return '-';
+                            }
+                            return parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        data: 'get_salarydetail.status',
+                        name: 'get_salarydetail.status',
+                        className: 'text-center',
+                        render: function(data) {
+                            if (!data) {
+                                return '-';
+                             }
+                            switch (data) {
+                                case 'calculated':
+                                    return '<span class="badge bg-info-subtle text-info">Calculated</span>';
+                                case 'approved':
+                                    return '<span class="badge bg-success-subtle text-success">Approved</span>';
+                                case 'paid':
+                                    return '<span class="badge bg-primary-subtle text-primary">Paid</span>';
+                                case 'cancelled':
+                                    return '<span class="badge bg-danger-subtle text-danger">Cancelled</span>';
+                                default:
+                                    return '<span class="badge bg-secondary-subtle text-secondary">' +
+                                        data.charAt(0).toUpperCase() + data.slice(1) +
+                                        '</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: 'payment_date',
+                        name: 'payment_date',
+                        className: 'text-center',
+                        render: function(data) {
+                            if (!data) {
+                                return '-';
+                            }
+                            let date = new Date(data);
+                            let day = String(date.getDate()).padStart(2, '0');
+                            let month = String(date.getMonth() + 1).padStart(2, '0');
+                            let year = date.getFullYear();
+                            return `${day}-${month}-${year}`;
+                        }
+                    },
+                    {
+                        data: 'amount',
+                        name: 'amount',
+                        className: 'text-center fw-semibold',
+                        render: function(data) {
+                            if (data === null || data === undefined || data === '') {
+                                return '-';
+                            }
+                            return parseFloat(data).toFixed(2);
+                        }
+                    },
+                    {
+                        data: 'payment_method',
+                        name: 'payment_method',
+                        className: 'text-center',
+                        render: function(data) {
+                            if (!data) {
+                                return '-';
+                            }
+                            switch (data) {
+                                case 'cash':
+                                    return '<span class="badge bg-success-subtle text-success">Cash</span>';
+                                case 'bank_transfer':
+                                    return '<span class="badge bg-primary-subtle text-primary">Bank Transfer</span>';
+                                case 'upi':
+                                    return '<span class="badge bg-info-subtle text-info">UPI</span>';
+                                default:
+                                    return data;
+                            }
+                        }
+                    },
+                    {
+                        data: 'transaction_reference',
+                        name: 'transaction_reference',
+                        className: 'text-center',
+
+                        render: function(data) {
+                            return data ? data : '-';
+                        }
+                    },
+                    {
+                        data: 'remarks',
+                        name: 'remarks',
+                        className: 'text-center',
+                        render: function(data) {
+                            return data ? data : '-';
+                        }
+                    }
+                ]
             });
 
 

@@ -683,7 +683,8 @@ textarea:focus {
 #datatable,
 #salaryPeriodsTable,
 #salaryDetailsTable,
-#recentEmployeesTable {
+#recentEmployeesTable,
+#salaryPaymentTable {
     width: 100% !important;
     margin-top: 12px;
     border-collapse: collapse !important;
@@ -693,7 +694,8 @@ textarea:focus {
 #datatable thead th,
 #salaryPeriodsTable thead th,
 #salaryDetailsTable thead th,
-#recentEmployeesTable thead th {
+#recentEmployeesTable thead th,
+#salaryPaymentTable thead th {
     background: #fff;
     padding: 10px 12px;
     font-weight: 600;
@@ -712,7 +714,9 @@ textarea:focus {
 #salaryDetailsTable thead th,
 #salaryDetailsTable tbody td,
 #recentEmployeesTable thead th,
-#recentEmployeesTable tbody td {
+#recentEmployeesTable tbody td,
+#salaryPaymentTable thead th,
+#salaryPaymentTable tbody td{
     padding: 8px 10px !important;
     font-size: 13px;
     white-space: nowrap !important;
