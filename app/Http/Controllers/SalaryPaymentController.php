@@ -44,21 +44,6 @@ class SalaryPaymentController extends Controller
                 );
             }
 
-            if ($request->filled('filter_salary_type')) {
-                $data->whereHas('get_salarydetail', function ($query) use ($request) {
-                    $query->where('salary_type', $request->filter_salary_type);
-                });
-            }
-
-            if ($request->filled('filter_status')) {
-                $data->whereHas('get_salarydetail', function ($query) use ($request) {
-                    $query->where('status', $request->filter_status);
-                });
-            }
-
-            if ($request->filter_payment_method) {
-                $data->where('payment_method', $request->filter_payment_method);
-            }
 
             if ($request->filter_payment_date_from) {
                 $fromDate = Carbon::createFromFormat('d-m-Y', $request->filter_payment_date_from)->format('Y-m-d');
@@ -121,22 +106,6 @@ class SalaryPaymentController extends Controller
                 $query->where('designation_id', $request->filter_designation);
             }
             );
-        }
-
-        if ($request->filled('filter_salary_type')) {
-            $salaryPayments->whereHas('get_salarydetail', function ($query) use ($request) {
-                $query->where('salary_type', $request->filter_salary_type);
-            });
-        }
-
-        if ($request->filled('filter_status')) {
-            $salaryPayments->whereHas('get_salarydetail', function ($query) use ($request) {
-                $query->where('status', $request->filter_status);
-            });
-        }
-
-        if ($request->filter_payment_method) {
-            $salaryPayments->where('payment_method', $request->filter_payment_method);
         }
 
         if ($request->filter_payment_date_from) {

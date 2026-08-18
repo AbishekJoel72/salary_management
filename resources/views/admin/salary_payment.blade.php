@@ -10,7 +10,7 @@
             <div class="card-body">
                 <div class="row align-items-end">
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold">Employee</label>
                         <select class="form-select" id="filter_employee" name="filter_employee">
                             <option value="">All Employees</option>
@@ -24,7 +24,7 @@
                     </div>
 
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold">Department</label>
                         <select class="form-select" id="filter_department" name="filter_department">
                             <option value="">All Departments</option>
@@ -37,7 +37,7 @@
                         </select>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold">Designation</label>
                         <select class="form-select" id="filter_designation" name="filter_designation">
                             <option value="">All Designations</option>
@@ -49,44 +49,13 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <div class="col-md-3">
-                        <label class="form-label fw-semibold">Salary Type</label>
-                        <select class="form-select" id="filter_salary_type" name="filter_salary_type">
-                            <option value="">All Salary Type</option>
-                            <option value="daily">Daily</option>
-                            <option value="monthly">Monthly</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mt-3">
-                        <label class="form-label fw-semibold">Salary Status</label>
-                        <select class="form-select" id="filter_status" name="filter_status">
-                            <option value="">All Status</option>
-                            <option value="calculated">Calculated</option>
-                            <option value="approved">Approved</option>
-                            <option value="paid">Paid</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mt-3">
-                        <label class="form-label fw-semibold">Payment Method</label>
-                        <select class="form-select" id="filter_payment_method" name="filter_payment_method">
-                            <option value="">All Payment Method</option>
-                            <option value="cash">Cash</option>
-                            <option value="bank_transfer">Bank Transfer</option>
-                            <option value="upi">UPI</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-3 mt-3">
+                    <div class="col-md-6 mt-3">
                         <label class="form-label fw-semibold">Payment Date From</label>
                         <input type="text" class="form-control filter_date" id="filter_payment_date_from"
                             placeholder="Select From Date" name="filter_payment_date_from">
                     </div>
 
-                    <div class="col-md-3 mt-3">
+                    <div class="col-md-6 mt-3">
                         <label class="form-label fw-semibold">Payment Date To</label>
                         <input type="text" class="form-control filter_date" id="filter_payment_date_to"
                             placeholder="Select To Date" name="filter_payment_date_to">
@@ -162,9 +131,6 @@
                         d.filter_employee = $('#filter_employee').val();
                         d.filter_department = $('#filter_department').val();
                         d.filter_designation = $('#filter_designation').val();
-                        d.filter_salary_type = $('#filter_salary_type').val();
-                        d.filter_status = $('#filter_status').val();
-                        d.filter_payment_method = $('#filter_payment_method').val();
                         d.filter_payment_date_from = $('#filter_payment_date_from').val();
                         d.filter_payment_date_to = $('#filter_payment_date_to').val();
                     }
@@ -308,9 +274,6 @@
                 $('#filter_employee').val('');
                 $('#filter_department').val('');
                 $('#filter_designation').val('')
-                $('#filter_salary_type').val('');
-                $('#filter_status').val('');
-                $('#filter_payment_method').val('')
                 $('#filter_payment_date_from').val('');
                 $('#filter_payment_date_to').val('');
                 table.ajax.reload();
@@ -324,9 +287,6 @@
             let employee = $('#filter_employee').val();
             let department = $('#filter_department').val();
             let designation = $('#filter_designation').val();
-            let salary_type = $('#filter_salary_type').val();
-            let status = $('#filter_status').val();
-            let payment_method = $('#filter_payment_method').val();
             let payment_date_from = $('#filter_payment_date_from').val();
             let payment_date_to = $('#filter_payment_date_to').val();
             let url = "{{ route('salary_payment_export') }}";
@@ -336,9 +296,6 @@
                 '&employee=' + encodeURIComponent(employee) +
                 '&department=' + encodeURIComponent(department) +
                 '&designation=' + encodeURIComponent(designation) +
-                '&salary_type=' + encodeURIComponent(salary_type) +
-                '&status=' + encodeURIComponent(status) +
-                '&payment_method=' + encodeURIComponent(payment_method) +
                 '&payment_date_from=' + encodeURIComponent(payment_date_from) +
                 '&payment_date_to=' + encodeURIComponent(payment_date_to);
         });

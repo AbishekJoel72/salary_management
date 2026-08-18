@@ -360,7 +360,7 @@ class SalaryPeriodController extends Controller
                     ], 500);
                 }
             }
-            
+
             // ----------------------------------------------------------------------------------------------
             // ------------------------------------ Data Table Data's---------------------------------------
 
@@ -422,11 +422,11 @@ class SalaryPeriodController extends Controller
                     }
                     if ($row->status == 'calculated') {
                         $html .= '<li><a href="javascript:void(0)" class="approveRow dropdown-item" data-id="'.$row->id.'">Approve</a></li>';
-                        $html .= '<li><a href="javascript:void(0)" class="cancelRow dropdown-item" data-id="'.$row->id.'">Cancelled</a></li>';
+                        // $html .= '<li><a href="javascript:void(0)" class="cancelRow dropdown-item" data-id="'.$row->id.'">Cancelled</a></li>';
                     }
                     if ($row->status == 'approved') {
                         $html .= '<li><a href="javascript:void(0)" class="payRow dropdown-item" data-id="'.$row->id.'">Pay</a></li>';
-                        $html .= '<li><a href="javascript:void(0)" class="cancelRow dropdown-item" data-id="'.$row->id.'">Cancelled</a></li>';
+                        // $html .= '<li><a href="javascript:void(0)" class="cancelRow dropdown-item" data-id="'.$row->id.'">Cancelled</a></li>';
                     }
                     $html .= '</ul></div>';
 

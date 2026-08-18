@@ -79,7 +79,7 @@
                                 <th>Calculated At</th>
                                 <th>Approved At</th>
                                 <th>Paid At</th>
-                                <th>Cancelled At</th>
+                                {{-- <th>Cancelled At</th> --}}
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -476,31 +476,31 @@
                             return `${day}-${month}-${year} - ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
                         }
                     },
-                    {
-                        data: 'cancelled_at',
-                        name: 'cancelled_at',
-                        className: 'text-center',
-                        render: function(data, type, row) {
-                            if (!data) {
-                                return '-';
-                            }
+                    // {
+                    //     data: 'cancelled_at',
+                    //     name: 'cancelled_at',
+                    //     className: 'text-center',
+                    //     render: function(data, type, row) {
+                    //         if (!data) {
+                    //             return '-';
+                    //         }
 
-                            let date = new Date(data);
+                    //         let date = new Date(data);
 
-                            let day = String(date.getDate()).padStart(2, '0');
-                            let month = String(date.getMonth() + 1).padStart(2, '0');
-                            let year = date.getFullYear();
+                    //         let day = String(date.getDate()).padStart(2, '0');
+                    //         let month = String(date.getMonth() + 1).padStart(2, '0');
+                    //         let year = date.getFullYear();
 
-                            let hours = date.getHours();
-                            let minutes = String(date.getMinutes()).padStart(2, '0');
+                    //         let hours = date.getHours();
+                    //         let minutes = String(date.getMinutes()).padStart(2, '0');
 
-                            let ampm = hours >= 12 ? 'PM' : 'AM';
-                            hours = hours % 12;
-                            hours = hours ? hours : 12;
+                    //         let ampm = hours >= 12 ? 'PM' : 'AM';
+                    //         hours = hours % 12;
+                    //         hours = hours ? hours : 12;
 
-                            return `${day}-${month}-${year} - ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
-                        }
-                    },
+                    //         return `${day}-${month}-${year} - ${String(hours).padStart(2, '0')}:${minutes} ${ampm}`;
+                    //     }
+                    // },
                     {
                         data: 'actions',
                         name: 'actions',
@@ -877,66 +877,66 @@
         });
 
 
-        $(document).on('click', '.cancelRow', function() {
-            let id = $(this).data('id');
-            confirmAction(messages.cancel_confirm, function() {
-                $.ajax({
-                    url: "{{ route('salary_period') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        id: id,
-                        cancel_salary_period: true
-                    },
-                    success: function(response) {
-                        if (response.status === true) {
-                            $('#datatable').DataTable().ajax.reload(null, false);
-                            Swal.fire({
-                                title: 'Success',
-                                text: response.message,
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#4f46e5',
-                                allowOutsideClick: false,
-                                width: '350px',
-                                customClass: {
-                                    title: 'session-title'
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Error',
-                                text: response.message,
-                                confirmButtonText: 'OK',
-                                confirmButtonColor: '#4f46e5',
-                                allowOutsideClick: false,
-                                width: '350px',
-                                customClass: {
-                                    title: 'session-title'
-                                }
-                            });
-                        }
-                    },
-                    error: function(xhr) {
-                        let message = "Something went wrong!";
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            message = xhr.responseJSON.message;
-                        }
-                        Swal.fire({
-                            title: 'Error',
-                            text: message,
-                            confirmButtonText: 'OK',
-                            confirmButtonColor: '#4f46e5',
-                            allowOutsideClick: false,
-                            width: '350px',
-                            customClass: {
-                                title: 'session-title'
-                            }
-                        });
-                    }
-                });
+        // $(document).on('click', '.cancelRow', function() {
+        //     let id = $(this).data('id');
+        //     confirmAction(messages.cancel_confirm, function() {
+        //         $.ajax({
+        //             url: "{{ route('salary_period') }}",
+        //             type: "POST",
+        //             data: {
+        //                 _token: "{{ csrf_token() }}",
+        //                 id: id,
+        //                 cancel_salary_period: true
+        //             },
+        //             success: function(response) {
+        //                 if (response.status === true) {
+        //                     $('#datatable').DataTable().ajax.reload(null, false);
+        //                     Swal.fire({
+        //                         title: 'Success',
+        //                         text: response.message,
+        //                         confirmButtonText: 'OK',
+        //                         confirmButtonColor: '#4f46e5',
+        //                         allowOutsideClick: false,
+        //                         width: '350px',
+        //                         customClass: {
+        //                             title: 'session-title'
+        //                         }
+        //                     });
+        //                 } else {
+        //                     Swal.fire({
+        //                         title: 'Error',
+        //                         text: response.message,
+        //                         confirmButtonText: 'OK',
+        //                         confirmButtonColor: '#4f46e5',
+        //                         allowOutsideClick: false,
+        //                         width: '350px',
+        //                         customClass: {
+        //                             title: 'session-title'
+        //                         }
+        //                     });
+        //                 }
+        //             },
+        //             error: function(xhr) {
+        //                 let message = "Something went wrong!";
+        //                 if (xhr.responseJSON && xhr.responseJSON.message) {
+        //                     message = xhr.responseJSON.message;
+        //                 }
+        //                 Swal.fire({
+        //                     title: 'Error',
+        //                     text: message,
+        //                     confirmButtonText: 'OK',
+        //                     confirmButtonColor: '#4f46e5',
+        //                     allowOutsideClick: false,
+        //                     width: '350px',
+        //                     customClass: {
+        //                         title: 'session-title'
+        //                     }
+        //                 });
+        //             }
+        //         });
 
-            });
-        });
+        //     });
+        // });
 
 
         $(document).on('click', '.deleteRow', function() {
